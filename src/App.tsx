@@ -298,7 +298,7 @@ const Hero = () => (
           <span className="block text-[#86868B]">Precyzyjne pisma</span>
         </h1>
         <p className="text-lg md:text-xl text-[#424245] mt-8 max-w-3xl font-light leading-relaxed">
-          Pismo w Sprawie to coś więcej niż wirtualna kancelaria prawna. To relacja oparta o wzajemne porozumienie pomiędzy klientem, a prawniczką, którego implikacją jest zaoszczędzony czas, estetyczny dokument skrojony na miarę oraz ciągły kontakt i pewność.
+          Pismo w Sprawie to coś więcej niż wirtualna kancelaria prawna. To relacja oparta o wzajemne porozumienie pomiędzy klientem, a prawnikiem, którego implikacją jest zaoszczędzony czas, estetyczny dokument skrojony na miarę oraz ciągły kontakt i pewność.
         </p>
         <div className="flex flex-wrap gap-3 mt-10">
           <a
@@ -427,10 +427,10 @@ const AboutSection = () => (
       </div>
 
       <div>
-        <SectionHeading eyebrow="O startupie" title="Pismo tworzone przez ludzi, którzy umieją porządkować trudne sprawy." />
+        <SectionHeading eyebrow="O startupie" title="O Pismo w Sprawie" />
         <div className="space-y-5 text-lg text-[#424245] leading-relaxed font-light">
           <p>
-            Nazywam się Karolina Zdrojek i jestem prawniczką oraz założycielką Pismo w Sprawie. W swojej pracy łączę praktykę prawniczą z umiejętnością prostego wyjaśniania trudnych treści, które wykorzystuję również w krótkich formach na TikToku.
+            Nazywam się Karolina Zdrojek i jestem prawnikiem oraz założycielką Pismo w Sprawie. W swojej pracy łączę praktykę prawniczą z umiejętnością prostego wyjaśniania trudnych treści, które wykorzystuję również w krótkich formach na TikToku.
           </p>
           <p>
             Zależy mi na tym, aby dokument był nie tylko poprawny, ale też zrozumiały dla osoby, która ma się nim posłużyć. Ukończyłam studia podyplomowe z zakresu prawa medycznego, które pozostaje jednym z ważnych obszarów moich zainteresowań zawodowych.
