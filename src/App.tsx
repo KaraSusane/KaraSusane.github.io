@@ -1,14 +1,12 @@
-import { useState, type FormEvent, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
   ChevronDown,
   FileText,
   Mail,
-  Paperclip,
   Scale,
   ShieldCheck,
-  Sparkles,
 } from 'lucide-react';
 import { StorytellingSection } from './components/StorytellingSection';
 
@@ -300,7 +298,7 @@ const Hero = () => (
           <span className="block text-[#86868B]">Precyzyjne pisma</span>
         </h1>
         <p className="text-lg md:text-xl text-[#424245] mt-8 max-w-3xl font-light leading-relaxed">
-          Pismo w Sprawie to coś więcej niż wirtualna kancelaria prawna. To relacja oparta o wzajemne porozumienie pomiędzy klientem, a prawnikiem, którego implikacją jest zaoszczędzony czas, estetyczny dokument skrojony na miarę oraz ciągły kontakt i pewność.
+          Pismo w Sprawie to coś więcej niż wirtualna kancelaria prawna. To relacja oparta o wzajemne porozumienie pomiędzy klientem, a prawniczką, którego implikacją jest zaoszczędzony czas, estetyczny dokument skrojony na miarę oraz ciągły kontakt i pewność.
         </p>
         <div className="flex flex-wrap gap-3 mt-10">
           <a
@@ -418,12 +416,14 @@ const CooperationSection = () => (
 const AboutSection = () => (
   <section id="o-startupie" className="py-24 px-5 md:px-8 bg-white border-y border-gray-100 scroll-mt-28">
     <div className="max-w-7xl mx-auto grid lg:grid-cols-[420px_1fr] gap-10 items-start">
-      <div className="sticky top-28">
-        <div className="aspect-[4/5] rounded-lg border border-dashed border-[#D4AF37]/50 bg-[#FBFBFD] flex flex-col items-center justify-center text-center p-8">
-          <Sparkles className="w-8 h-8 text-[#D4AF37] mb-4" />
-          <p className="text-sm uppercase tracking-[0.24em] font-bold text-[#86868B]">Slot na zdjęcie</p>
-          <p className="text-sm text-[#424245] font-light mt-4">Miejsce na portret lub zdjęcie założycielki.</p>
-        </div>
+      <div>
+        <figure className="overflow-hidden rounded-lg border border-gray-100 bg-[#FBFBFD] shadow-[0_24px_80px_rgba(0,0,0,0.06)]">
+          <img
+            src="/karolina-zdrojek.jpg"
+            alt="Karolina Zdrojek"
+            className="block aspect-[4/5] w-full object-cover object-top"
+          />
+        </figure>
       </div>
 
       <div>
@@ -481,96 +481,23 @@ const BlogSection = () => (
   </section>
 );
 
-const ContactSection = () => {
-  const [name, setName] = useState('');
-  const [caseTopic, setCaseTopic] = useState('');
-  const [fileNames, setFileNames] = useState<string[]>([]);
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const body = [
-      `Imię i nazwisko: ${name}`,
-      '',
-      'Czego dotyczy sprawa:',
-      caseTopic,
-      '',
-      fileNames.length ? `Dokumenty do załączenia: ${fileNames.join(', ')}` : 'Dokumenty do załączenia: brak wskazanych plików',
-      '',
-      'Uwaga: jeżeli korzystasz z formularza na stronie statycznej, dołącz dokumenty ręcznie w wiadomości e-mail.',
-    ].join('\n');
-
-    window.location.href = mailto('Nowe zgłoszenie z formularza Pismo w Sprawie', body);
-  };
-
-  return (
-    <section id="kontakt" className="py-24 px-5 md:px-8 bg-white border-y border-gray-100 scroll-mt-28">
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-[0.9fr_1.1fr] gap-8 items-start">
-        <div>
-          <SectionHeading eyebrow="Kontakt" title="Opisz sprawę. Wrócimy z konkretną wyceną.">
-            W sprawach dotyczących współpracy, wyceny albo realizacji zlecenia proszę o kontakt:
-          </SectionHeading>
-          <a
-            href={mailto()}
-            className="inline-flex items-center gap-3 text-lg font-medium"
-          >
-            <Mail className="w-5 h-5 text-[#D4AF37]" />
-            {contactEmail}
-          </a>
-        </div>
-
-        <form onSubmit={handleSubmit} className="bg-[#FBFBFD] border border-gray-100 rounded-lg p-7 md:p-8 space-y-5">
-          <label className="block">
-            <span className="text-xs uppercase tracking-[0.22em] font-bold text-[#86868B]">Imię i nazwisko</span>
-            <input
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              required
-              className="mt-3 w-full rounded-lg border border-gray-200 bg-white px-4 py-3 outline-none focus:border-[#D4AF37]"
-            />
-          </label>
-          <label className="block">
-            <span className="text-xs uppercase tracking-[0.22em] font-bold text-[#86868B]">Czego dotyczy sprawa</span>
-            <textarea
-              value={caseTopic}
-              onChange={(event) => setCaseTopic(event.target.value)}
-              required
-              rows={5}
-              className="mt-3 w-full rounded-lg border border-gray-200 bg-white px-4 py-3 outline-none focus:border-[#D4AF37] resize-none"
-            />
-          </label>
-          <label className="block">
-            <span className="text-xs uppercase tracking-[0.22em] font-bold text-[#86868B]">Załączenie dokumentów</span>
-            <div className="mt-3 rounded-lg border border-dashed border-gray-300 bg-white p-5">
-              <div className="flex items-center gap-3 text-sm text-[#424245]">
-                <Paperclip className="w-5 h-5 text-[#D4AF37]" />
-                <input
-                  type="file"
-                  multiple
-                  onChange={(event) => {
-                    const files = event.currentTarget.files
-                      ? Array.from<File>(event.currentTarget.files)
-                      : [];
-                    setFileNames(files.map((file) => file.name));
-                  }}
-                  className="block w-full text-sm"
-                />
-              </div>
-              <p className="text-xs text-[#86868B] leading-relaxed mt-3">
-                Strona otworzy wiadomość e-mail. Dokumenty trzeba dołączyć ręcznie w aplikacji pocztowej.
-              </p>
-            </div>
-          </label>
-          <button
-            type="submit"
-            className="w-full inline-flex items-center justify-center bg-[#1D1D1F] text-white rounded-full px-7 py-3 text-sm font-medium hover:bg-gray-800 transition-colors"
-          >
-            Przygotuj wiadomość e-mail
-          </button>
-        </form>
-      </div>
-    </section>
-  );
-};
+const ContactSection = () => (
+  <section id="kontakt" className="py-24 px-5 md:px-8 bg-white border-y border-gray-100 scroll-mt-28">
+    <div className="max-w-6xl mx-auto">
+      <SectionHeading eyebrow="Kontakt" title="Opisz sprawę. Wrócimy z konkretną wyceną.">
+        W sprawach dotyczących współpracy, wyceny albo realizacji zlecenia proszę o kontakt mailowy.
+      </SectionHeading>
+      <a
+        href={mailto()}
+        className="inline-flex items-center gap-3 rounded-full bg-[#1D1D1F] px-7 py-3 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
+      >
+        <Mail className="w-5 h-5 text-[#D4AF37]" />
+        Napisz maila
+      </a>
+      <p className="mt-5 text-lg font-medium text-[#424245]">{contactEmail}</p>
+    </div>
+  </section>
+);
 
 const PolicySection = () => (
   <section id="polityka" className="py-24 px-5 md:px-8 bg-[#FBFBFD] scroll-mt-28">
