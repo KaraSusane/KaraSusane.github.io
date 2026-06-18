@@ -1,12 +1,14 @@
-import { type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
   ChevronDown,
   FileText,
   Mail,
+  Menu,
   Scale,
   ShieldCheck,
+  X,
 } from 'lucide-react';
 import { StorytellingSection } from './components/StorytellingSection';
 
@@ -242,51 +244,106 @@ const SectionHeading = ({
   </div>
 );
 
-const Navigation = () => (
-  <nav className="fixed top-0 left-0 right-0 min-h-16 bg-white/88 backdrop-blur-md z-50 border-b border-gray-100 px-5 md:px-8 xl:px-10 py-3">
-    <div className="flex items-center justify-between gap-4">
-      <a href="/" className="flex items-center gap-3 shrink-0">
-        <Scale className="text-[#1D1D1F] w-5 h-5" />
-        <span className="font-semibold tracking-tight text-sm uppercase">Pismo w Sprawie</span>
-      </a>
+const Navigation = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-      <div className="hidden xl:flex items-center gap-6 text-[10px] font-medium uppercase tracking-[0.16em] text-[#86868B]">
-        {navItems.map((item) => (
+  const closeMenu = () => setIsMenuOpen(false);
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 min-h-16 bg-white/88 backdrop-blur-md z-50 border-b border-gray-100 px-5 md:px-8 xl:px-10 py-3">
+      <div className="flex items-center justify-between gap-4">
+        <a href="/" className="flex items-center gap-3 shrink-0" onClick={closeMenu}>
+          <Scale className="text-[#1D1D1F] w-5 h-5" />
+          <span className="font-semibold tracking-tight text-sm uppercase">Pismo w Sprawie</span>
+        </a>
+
+        <div className="hidden xl:flex items-center gap-6 text-[10px] font-medium uppercase tracking-[0.16em] text-[#86868B]">
+          {navItems.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              target={item.href.startsWith('http') ? '_blank' : undefined}
+              rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
+              className="hover:text-[#1D1D1F] transition-colors"
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
           <a
-            key={item.label}
-            href={item.href}
-            target={item.href.startsWith('http') ? '_blank' : undefined}
-            rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
-            className="hover:text-[#1D1D1F] transition-colors"
+            href={mailto()}
+            className="hidden md:inline-flex bg-[#1D1D1F] hover:bg-gray-800 text-white px-5 py-2.5 rounded-full text-xs font-medium uppercase tracking-widest transition-all"
           >
-            {item.label}
+            Napisz maila
           </a>
-        ))}
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen(true)}
+            aria-label="Otwórz menu"
+            aria-expanded={isMenuOpen}
+            className="xl:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-[#1D1D1F] shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
       </div>
 
-      <a
-        href={mailto()}
-        className="hidden md:inline-flex bg-[#1D1D1F] hover:bg-gray-800 text-white px-5 py-2.5 rounded-full text-xs font-medium uppercase tracking-widest transition-all"
+      <div
+        className={`fixed inset-0 z-50 bg-[#1D1D1F]/30 backdrop-blur-sm transition-opacity xl:hidden ${
+          isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+        }`}
+        onClick={closeMenu}
+      />
+      <aside
+        className={`fixed right-0 top-0 z-50 h-dvh w-[min(86vw,360px)] bg-white px-6 py-5 shadow-[-24px_0_80px_rgba(0,0,0,0.16)] transition-transform duration-300 ease-out xl:hidden ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        aria-hidden={!isMenuOpen}
       >
-        Napisz maila
-      </a>
-    </div>
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Scale className="text-[#1D1D1F] w-5 h-5" />
+            <span className="font-semibold tracking-tight text-sm uppercase">Menu</span>
+          </div>
+          <button
+            type="button"
+            onClick={closeMenu}
+            aria-label="Zamknij menu"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-[#1D1D1F]"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
 
-    <div className="xl:hidden mt-3 flex items-center gap-4 overflow-x-auto text-[10px] font-medium uppercase tracking-[0.16em] text-[#86868B] pb-1">
-      {navItems.map((item) => (
+        <div className="mt-10 flex flex-col gap-2">
+          {navItems.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              target={item.href.startsWith('http') ? '_blank' : undefined}
+              rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
+              onClick={closeMenu}
+              className="rounded-lg px-4 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-[#1D1D1F] hover:bg-[#FBFBFD]"
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+
         <a
-          key={item.label}
-          href={item.href}
-          target={item.href.startsWith('http') ? '_blank' : undefined}
-          rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
-          className="whitespace-nowrap hover:text-[#1D1D1F] transition-colors"
+          href={mailto()}
+          onClick={closeMenu}
+          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#1D1D1F] px-7 py-3 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
         >
-          {item.label}
+          <Mail className="h-4 w-4 text-[#D4AF37]" />
+          Napisz maila
         </a>
-      ))}
-    </div>
-  </nav>
-);
+      </aside>
+    </nav>
+  );
+};
 
 const Hero = () => (
   <section id="top" className="min-h-screen flex items-center px-5 md:px-8 pt-28 pb-16 bg-[#FBFBFD]">
