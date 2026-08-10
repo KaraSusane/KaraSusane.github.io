@@ -280,7 +280,7 @@ const renderInline = (text: string) => text.split(/(\*\*.*?\*\*)/g).map((part, i
 const ArticleContent = ({ content }: { content: string }) => {
   const blocks = content.split(/\n\s*\n/).map((block) => block.trim()).filter(Boolean);
   return <div className="space-y-6">{blocks.map((block, index) => {
-    if (/^(Podsumowanie|Najczęstsze|Wzór|Przykładowy|Kiedy|Co |Jak |Po co|Odsetki|Czego|Prosty schemat|\d+\.)/.test(block) && block.length < 100) return <h2 key={index} className="pt-5 text-2xl font-semibold tracking-tight md:text-3xl">{block}</h2>;
+    if (block.startsWith('## ')) return <h2 key={index} className="pt-5 text-2xl font-semibold tracking-tight md:text-3xl">{block.slice(3)}</h2>;
     if (block.startsWith('- ')) return <ul key={index} className="space-y-2 pl-1">{block.split('\n').map((item) => <li key={item} className="flex gap-3"><span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37]" /><span>{renderInline(item.replace(/^- /, ''))}</span></li>)}</ul>;
     return <p key={index} className="text-lg font-light leading-[1.85] text-[#424245]">{renderInline(block)}</p>;
   })}</div>;

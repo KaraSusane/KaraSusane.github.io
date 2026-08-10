@@ -31,16 +31,14 @@ const escapeXml = escapeHtml;
 const renderInline = (value: string) =>
   escapeHtml(value).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
-const headingPattern = /^(Podsumowanie|Najczęstsze|Wzór|Przykładowy|Kiedy|Co |Jak |Po co|Odsetki|Czego|Prosty schemat|\d+\.)/;
-
 const renderArticleContent = (content: string) =>
   content
     .split(/\n\s*\n/)
     .map((block) => block.trim())
     .filter(Boolean)
     .map((block) => {
-      if (headingPattern.test(block) && block.length < 100) {
-        return `<h2>${escapeHtml(block)}</h2>`;
+      if (block.startsWith('## ')) {
+        return `<h2>${escapeHtml(block.slice(3))}</h2>`;
       }
 
       if (block.startsWith('- ')) {
