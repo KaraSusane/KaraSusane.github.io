@@ -17,7 +17,7 @@ export const blogPosts: BlogPost[] = [
     ],
     coverImage: '/prawo-pierwokupu-kowr.jpg',
     coverAlt: 'Pole ze zbożem i belami siana',
-    content: `Masz ziemię rolną? Chcesz ją sprzedać?
+    content: `## Masz ziemię rolną? Chcesz ją sprzedać?
 
 Prawo pierwokupu Krajowego Ośrodka Wsparcia Rolnictwa jest jednym z najważniejszych ograniczeń przy sprzedaży ziemi rolnej. W praktyce oznacza, że właściciel nie zawsze może sprzedać nieruchomość wybranej osobie od razu i bez dodatkowych formalności. Najpierw trzeba sprawdzić, czy ustawa o kształtowaniu ustroju rolnego ma zastosowanie do danej transakcji. Jeżeli tak, sprzedaż zwykle odbywa się przez **warunkową umowę sprzedaży**. Dopiero gdy KOWR nie skorzysta ze swojego uprawnienia, strony mogą podpisać umowę przenoszącą własność.
 

@@ -282,7 +282,7 @@ const ArticleContent = ({ content }: { content: string }) => {
   return <div className="space-y-6">{blocks.map((block, index) => {
     if (block.startsWith('## ')) return <h2 key={index} className="pt-5 text-2xl font-semibold tracking-tight md:text-3xl">{block.slice(3)}</h2>;
     if (block.startsWith('- ')) return <ul key={index} className="space-y-2 pl-1">{block.split('\n').map((item) => <li key={item} className="flex gap-3"><span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37]" /><span>{renderInline(item.replace(/^- /, ''))}</span></li>)}</ul>;
-    return <p key={index} className="text-lg font-light leading-[1.85] text-[#424245]">{renderInline(block)}</p>;
+    return <p key={index} className="text-justify text-lg font-light leading-[1.85] text-[#424245]">{renderInline(block)}</p>;
   })}</div>;
 };
 
@@ -295,12 +295,12 @@ const ArticlePage = ({ slug }: { slug: string }) => {
         <div className="mx-auto max-w-5xl">
           <a href="/blog" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#424245]"><ArrowLeft className="h-4 w-4" />Wróć do bloga</a>
           <img src={post.coverImage || defaultCover} alt={post.coverAlt || post.title} className="max-h-[560px] w-full rounded-lg object-cover object-top" />
-          <header className="mx-auto max-w-4xl py-10 md:py-14">
+          <header className="w-full py-10 md:py-14">
             <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.25em] text-[#86868B]">{post.category}</p>
             <h1 className="text-4xl font-semibold leading-[1.06] tracking-tight md:text-6xl">{post.title}</h1>
             <div className="mt-6 flex gap-4 text-sm text-[#86868B]"><time>{formatDate(post.publishedAt)}</time><span>{post.readTime} czytania</span></div>
           </header>
-          <div className="mx-auto max-w-4xl rounded-lg border border-gray-100 bg-white p-7 md:p-12"><ArticleContent content={post.content} /></div>
+          <div className="w-full rounded-lg border border-gray-100 bg-white p-7 md:p-12"><ArticleContent content={post.content} /></div>
         </div>
       </article>
     </PageShell>
