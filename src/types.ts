@@ -18,4 +18,7 @@ export interface BlogPost {
   category: string;
   readTime: string;
   publishedAt: string;
+  keywords?: string[];
+  coverImage?: string;
+  coverAlt?: string;
 }

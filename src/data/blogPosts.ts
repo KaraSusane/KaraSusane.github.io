@@ -9,6 +9,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Urzędy',
     readTime: '9 min',
     publishedAt: '2026-02-18',
+    keywords: ['odwołanie od decyzji urzędu', 'odwołanie administracyjne', 'pismo do urzędu'],
     content: `Otrzymanie niekorzystnej decyzji z urzędu nie zawsze oznacza koniec sprawy. W wielu przypadkach stronie przysługuje prawo do **odwołania**, czyli ponownego rozpatrzenia sprawy przez **organ wyższego stopnia**. Dobrze przygotowane odwołanie może zwiększyć szanse na zmianę decyzji, uchylenie jej albo przekazanie sprawy do ponownego rozpoznania.
 
 Odwołanie od decyzji administracyjnej warto przygotować spokojnie i rzeczowo. Nie chodzi o emocjonalną polemikę z urzędem, ale o pokazanie, dlaczego decyzja jest **błędna**, niepełna albo niesprawiedliwa w świetle faktów i przepisów.
@@ -80,6 +81,7 @@ Najlepsze odwołania są rzeczowe, uporządkowane i oparte na faktach. Warto uni
     category: 'Windykacja',
     readTime: '8 min',
     publishedAt: '2026-01-30',
+    keywords: ['wezwanie do zapłaty', 'jak napisać wezwanie do zapłaty', 'odzyskanie długu'],
     content: `Wezwanie do zapłaty to jedno z najprostszych narzędzi, które pozwala wierzycielowi oficjalnie zażądać uregulowania długu. Może dotyczyć niezapłaconej faktury, zaległego czynszu, pożyczki, wynagrodzenia za usługę albo innego zobowiązania pieniężnego.
 
 Dobrze napisane wezwanie nie gwarantuje, że dłużnik od razu zapłaci. Może jednak uporządkować sprawę, wyznaczyć termin płatności, wskazać podstawę długu i stać się ważnym dowodem, jeżeli sprawa trafi później do sądu. W praktyce warto już na starcie podkreślić **kwotę główną**, **odsetki** i **termin zapłaty**.
@@ -147,6 +149,7 @@ Najlepsze wezwanie jest krótkie, konkretne i oparte na dokumentach. Nie musi by
     category: 'Umowy',
     readTime: '10 min',
     publishedAt: '2025-12-14',
+    keywords: ['umowa najmu', 'klauzule umowy najmu', 'sprawdzenie umowy najmu'],
     content: `Podpisanie umowy najmu mieszkania wydaje się prostą formalnością. W praktyce to właśnie treść umowy decyduje o tym, ile zapłacisz, kiedy możesz się wyprowadzić, kto odpowiada za naprawy i czy właściciel może potrącić coś z **kaucji**. Dlatego przed podpisaniem dokumentu warto spokojnie przeczytać nie tylko wysokość **czynszu**, ale też wszystkie dodatkowe postanowienia.
 
 Zgodnie z Kodeksem cywilnym przez umowę najmu wynajmujący zobowiązuje się oddać rzecz do używania przez czas oznaczony albo nieoznaczony, a najemca zobowiązuje się płacić umówiony czynsz. Czynsz może być określony w pieniądzach albo w świadczeniach innego rodzaju.
@@ -275,6 +278,7 @@ Dobra umowa powinna być konkretna i zrozumiała. Im mniej niedomówień na pocz
     category: 'Sąd',
     readTime: '11 min',
     publishedAt: '2025-11-08',
+    keywords: ['pismo do sądu', 'błędy formalne pisma', 'jak napisać pismo do sądu'],
     content: `Pismo do sądu powinno być przede wszystkim czytelne, kompletne i konkretne. Nie musi być napisane trudnym językiem prawniczym, ale musi zawierać elementy, które pozwolą sądowi ustalić, kto składa pismo, czego dotyczy sprawa i czego dokładnie domaga się autor. Najczęściej wygrywa tu **porządek**, **dokładność** i **krótka, jasna argumentacja**.
 
 Błędy formalne mogą opóźnić sprawę. Jeżeli pismo nie spełnia wymaganych warunków albo nie zostało prawidłowo opłacone, sąd może wezwać stronę do poprawienia, uzupełnienia albo opłacenia pisma w terminie tygodniowym. Brak reakcji może skutkować **zwrotem pisma**.
