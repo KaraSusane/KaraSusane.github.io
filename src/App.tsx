@@ -21,8 +21,8 @@ const mailto = (subject?: string) =>
 
 const navItems = [
   { label: 'Usługi', href: '/uslugi' },
-  { label: 'Współpraca', href: '/wspolpraca' },
   { label: 'O mnie', href: '/o-mnie' },
+  { label: 'Współpraca', href: '/wspolpraca' },
   { label: 'Blog', href: '/blog' },
   { label: 'Kontakt', href: '/kontakt' },
 ];
@@ -64,7 +64,7 @@ const services = [
     description: 'Pisemne wyjaśnienie sytuacji i możliwych dalszych kroków.',
     details: [
       'Pisemna konsultacja lub opracowanie sprawy: od 199 zł',
-      'Konsultacja online przez Microsoft Teams: już wkrótce',
+      'Konsultacja online przez Microsoft Teams JUŻ WKRÓTCE',
     ],
   },
   {
@@ -84,6 +84,13 @@ const cooperationSteps = [
   'W cenie otrzymujesz jedną turę poprawek w ustalonym zakresie.',
 ];
 
+const aboutParagraphs = [
+  'Nazywam się Karolina Zdrojek. Jestem prawnikiem i założycielką Pismo w Sprawie, miejsca, w którym prawo ma być nie tylko poprawnie zastosowane, ale przede wszystkim zrozumiałe, konkretne i użyteczne.',
+  'W pracy prawniczej szczególną wagę przykładam do słowa. Dobrze napisane pismo, umowa czy odpowiedź nie powinny pozostawiać przestrzeni na domysły. Powinny chronić interes klienta, jasno określać jego stanowisko i prowadzić do konkretnego celu. Dlatego jednym z głównych obszarów mojej praktyki jest analiza, opiniowanie i tworzenie umów oraz dokumentów prawnych, od A do Z.',
+  'Moje zainteresowania zawodowe obejmują przede wszystkim prawo medyczne i beauty, prawo AI i reklamy, prawo rolne oraz mediacje. Ukończyłam studia podyplomowe z zakresu prawa medycznego i farmaceutycznego, a jednocześnie stale rozwijam wiedzę na różnych płaszczyznach oraz drążę interesujące mnie ścieżki. Interesuje mnie także działalność edukacyjna, dlatego rozwijam swoje kompetencje w zakresie dydaktyki i przygotowania pedagogicznego, aby w przyszłości jeszcze lepiej dzielić się wiedzą i przekazywać ją w przystępny, uporządkowany sposób.',
+  'Doświadczenie zdobywałam, pracując w kancelariach adwokackich i prawnych w Warszawie oraz odbywając liczne praktyki zawodowe. Dzięki temu znam prawo nie tylko od strony akademickiej, wiem również, jak wygląda sprawa z perspektywy osoby, która otrzymuje wezwanie, musi odpowiedzieć kontrahentowi, podpisać umowę, uporządkować dokumentację albo podjąć decyzję, od której mogą zależeć jej dalsze działania.',
+];
+
 const SectionHeading = ({ eyebrow, title, children }: { eyebrow: string; title: string; children?: ReactNode }) => (
   <div className="mb-10">
     <div className="mb-5 flex items-center gap-3">
@@ -93,6 +100,21 @@ const SectionHeading = ({ eyebrow, title, children }: { eyebrow: string; title: 
     <h1 className="max-w-4xl text-4xl font-semibold leading-[1.03] tracking-tight md:text-6xl">{title}</h1>
     {children && <div className="mt-6 max-w-3xl text-lg font-light leading-relaxed text-[#424245]">{children}</div>}
   </div>
+);
+
+const TikTokCard = ({ className = '' }: { className?: string }) => (
+  <a
+    href={tiktokUrl}
+    target="_blank"
+    rel="noreferrer"
+    className={`group flex items-center justify-between gap-6 rounded-lg bg-[#1D1D1F] px-6 py-6 text-white transition-transform hover:-translate-y-0.5 ${className}`}
+  >
+    <div>
+      <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50">TikTok</span>
+      <span className="mt-2 block text-xl font-semibold tracking-tight">Znajdziesz mnie na TikToku</span>
+    </div>
+    <ArrowRight className="h-5 w-5 shrink-0 text-[#D4AF37] transition-transform group-hover:translate-x-1" />
+  </a>
 );
 
 const Navigation = () => {
@@ -172,10 +194,10 @@ const Hero = () => (
         <p className="mt-8 max-w-3xl text-lg font-light leading-relaxed text-[#424245] md:text-xl">Pismo w Sprawie to coś więcej niż wirtualna kancelaria prawna. To relacja oparta o wzajemne porozumienie pomiędzy klientem, a prawnikiem, którego implikacją jest zaoszczędzony czas, estetyczny dokument skrojony na miarę oraz ciągły kontakt i pewność.</p>
         <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-2">
           <a href="/uslugi" className="flex items-center justify-between rounded-lg bg-[#1D1D1F] px-6 py-5 text-sm font-medium text-white transition-transform hover:-translate-y-0.5">Sprawdź, jak mogę Ci pomóc<ArrowRight className="h-4 w-4" /></a>
-          <a href={tiktokUrl} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-5 text-sm font-medium transition-transform hover:-translate-y-0.5">Sprawdź sociale<ArrowRight className="h-4 w-4" /></a>
+          <a href="/o-mnie" className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-5 text-sm font-medium transition-transform hover:-translate-y-0.5">Krótko o mnie<ArrowRight className="h-4 w-4" /></a>
         </div>
       </div>
-      <div className="relative lg:order-1 rounded-lg border border-gray-100 bg-white p-7 shadow-[0_24px_80px_rgba(0,0,0,0.06)] md:p-8">
+      <div className="hero-document-card relative rounded-lg border border-gray-100 bg-white p-7 shadow-[0_24px_80px_rgba(0,0,0,0.06)] lg:order-1 md:p-8">
         <div className="mb-10 flex items-center justify-between"><span className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#86868B]">Pismo w Sprawie</span><FileText className="h-6 w-6 text-[#D4AF37]" /></div>
         <div className="space-y-4"><div className="h-2 w-24 rounded-full bg-[#D4AF37]/70" /><div className="h-3 w-4/5 rounded-full bg-[#F0F0F2]" /><div className="h-3 w-2/3 rounded-full bg-[#F0F0F2]" /><div className="space-y-3 pt-8">{['w-full','w-11/12','w-full','w-3/4'].map((width, index) => <div key={index} className={`h-2 ${width} rounded-full bg-[#F5F5F7]`} />)}</div></div>
         <div className="mt-10 flex items-center gap-3 text-sm text-[#424245]"><ShieldCheck className="h-5 w-5 text-[#D4AF37]" />Dokument dopasowany do sprawy, terminu i celu.</div>
@@ -198,7 +220,19 @@ const ServicesPage = () => (
               <h2 className="text-3xl font-semibold tracking-tight">{service.title}</h2>
               <p className="mt-4 text-sm font-light leading-relaxed text-[#424245]">{service.description}</p>
               <ul className="mt-7 space-y-3 border-t border-gray-100 pt-6 text-sm leading-relaxed text-[#424245]">
-                {service.details.map((detail) => <li key={detail} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37]" /><span>{detail}</span></li>)}
+                {service.details.map((detail) => {
+                  const upcomingLabel = 'JUŻ WKRÓTCE';
+                  const isUpcoming = detail.endsWith(upcomingLabel);
+                  return (
+                    <li key={detail} className="flex gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37]" />
+                      <span>
+                        {isUpcoming ? detail.slice(0, -upcomingLabel.length).trim() : detail}
+                        {isUpcoming && <span className="ml-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#86868B]">{upcomingLabel}</span>}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </article>
           ))}
@@ -235,15 +269,18 @@ const AboutPage = () => (
   <PageShell>
     <section className="px-5 pb-24 pt-36 md:px-8">
       <div className="mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[420px_1fr]">
-        <figure className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_24px_80px_rgba(0,0,0,0.06)]"><img src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek" className="block aspect-[4/5] w-full object-cover object-top" /></figure>
+        <figure className="hidden overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_24px_80px_rgba(0,0,0,0.06)] lg:block"><img src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek" className="block aspect-[4/5] w-full object-cover object-top" /></figure>
         <div>
           <SectionHeading eyebrow="O mnie" title="Karolina Zdrojek" />
-          <div className="space-y-5 text-lg font-light leading-relaxed text-[#424245]">
-            <p>Nazywam się Karolina Zdrojek. Jestem prawnikiem i założycielką Pismo w Sprawie, miejsca, w którym prawo ma być nie tylko poprawnie zastosowane, ale przede wszystkim zrozumiałe, konkretne i użyteczne.</p>
-            <p>W pracy prawniczej szczególną wagę przykładam do słowa. Dobrze napisane pismo, umowa czy odpowiedź nie powinny pozostawiać przestrzeni na domysły. Powinny chronić interes klienta, jasno określać jego stanowisko i prowadzić do konkretnego celu. Dlatego jednym z głównych obszarów mojej praktyki jest analiza, opiniowanie i tworzenie umów oraz dokumentów prawnych, od A do Z.</p>
-            <p>Moje zainteresowania zawodowe obejmują przede wszystkim prawo medyczne i beauty, prawo AI i reklamy, prawo rolne oraz mediacje. Ukończyłam studia podyplomowe z zakresu prawa medycznego i farmaceutycznego, a jednocześnie stale rozwijam wiedzę na różnych płaszczyznach oraz drążę interesujące mnie ścieżki. Interesuje mnie także działalność edukacyjna, dlatego rozwijam swoje kompetencje w zakresie dydaktyki i przygotowania pedagogicznego, aby w przyszłości jeszcze lepiej dzielić się wiedzą i przekazywać ją w przystępny, uporządkowany sposób.</p>
-            <p>Doświadczenie zdobywałam, pracując w kancelariach adwokackich i prawnych w Warszawie oraz odbywając liczne praktyki zawodowe. Dzięki temu znam prawo nie tylko od strony akademickiej, wiem również, jak wygląda sprawa z perspektywy osoby, która otrzymuje wezwanie, musi odpowiedzieć kontrahentowi, podpisać umowę, uporządkować dokumentację albo podjąć decyzję, od której mogą zależeć jej dalsze działania.</p>
+          <div className="flow-root text-lg font-light leading-relaxed text-[#424245]">
+            <figure className="float-right mb-4 ml-4 w-[40%] max-w-[160px] overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_12px_36px_rgba(0,0,0,0.08)] lg:hidden">
+              <img src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek" className="block aspect-[4/5] w-full object-cover object-top" />
+            </figure>
+            <div className="space-y-5">
+              {aboutParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            </div>
           </div>
+          <TikTokCard className="mt-8" />
         </div>
       </div>
     </section>
@@ -256,7 +293,8 @@ const BlogPage = () => (
   <PageShell>
     <section className="px-5 pb-24 pt-36 md:px-8">
       <div className="mx-auto max-w-7xl">
-        <SectionHeading eyebrow="Blog" title="Prawo wyjaśnione konkretnie.">Artykuły o pismach, umowach i codziennych sytuacjach prawnych.</SectionHeading>
+        <SectionHeading eyebrow="Blog" title="Prawo w życiu codziennym." />
+        <TikTokCard className="mb-8" />
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {blogPosts.map((post) => (
             <a key={post.slug} href={`/blog/${post.slug}`} className="group overflow-hidden rounded-lg border border-gray-100 bg-white transition-transform hover:-translate-y-1">
@@ -361,7 +399,7 @@ export default function App() {
     '/uslugi': { title: 'Usługi', description: 'Pisma, umowy, analiza sprawy, doradztwo prawne i mediacje.', page: <ServicesPage /> },
     '/wspolpraca': { title: 'Współpraca', description: 'Poznaj jasne zasady współpracy z Pismo w Sprawie.', page: <CooperationPage /> },
     '/o-mnie': { title: 'O mnie', description: 'Karolina Zdrojek, prawnik i założycielka Pismo w Sprawie.', page: <AboutPage /> },
-    '/blog': { title: 'Blog prawny', description: 'Praktyczne artykuły o pismach, umowach i codziennych sytuacjach prawnych.', page: <BlogPage /> },
+    '/blog': { title: 'Blog prawny', description: 'Praktyczne artykuły o prawie w życiu codziennym.', page: <BlogPage /> },
     '/kontakt': { title: 'Kontakt', description: `Kontakt mailowy: ${contactEmail}.`, page: <ContactPage /> },
   };
 
