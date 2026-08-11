@@ -27,6 +27,12 @@ const navItems = [
   { label: 'Kontakt', href: '/kontakt' },
 ];
 
+const topNavItems = [
+  ...navItems.slice(0, 4),
+  { label: 'TikTok', href: tiktokUrl, external: true },
+  navItems[4],
+];
+
 const services = [
   {
     number: '01',
@@ -129,7 +135,7 @@ const Navigation = () => {
         </a>
 
         <div className="hidden items-center gap-6 text-[10px] font-medium uppercase tracking-[0.16em] text-[#86868B] xl:flex">
-          {navItems.map((item) => <a key={item.href} href={item.href} className="transition-colors hover:text-[#1D1D1F]">{item.label}</a>)}
+          {topNavItems.map((item) => <a key={item.href} href={item.href} target={'external' in item ? '_blank' : undefined} rel={'external' in item ? 'noreferrer' : undefined} className="transition-colors hover:text-[#1D1D1F]">{item.label}</a>)}
         </div>
 
         <div className="flex items-center gap-2">
@@ -147,7 +153,7 @@ const Navigation = () => {
           <button type="button" aria-label="Zamknij menu" onClick={() => setIsMenuOpen(false)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200"><X className="h-5 w-5" /></button>
         </div>
         <div className="mt-10 flex flex-col gap-2">
-          {navItems.map((item) => <a key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)} className="rounded-lg px-4 py-4 text-sm font-semibold uppercase tracking-[0.16em] hover:bg-[#FBFBFD]">{item.label}</a>)}
+          {topNavItems.map((item) => <a key={item.href} href={item.href} target={'external' in item ? '_blank' : undefined} rel={'external' in item ? 'noreferrer' : undefined} onClick={() => setIsMenuOpen(false)} className="rounded-lg px-4 py-4 text-sm font-semibold uppercase tracking-[0.16em] hover:bg-[#FBFBFD]">{item.label}</a>)}
         </div>
         <a href={mailto()} className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#1D1D1F] px-7 py-3 text-sm font-medium text-white"><Mail className="h-4 w-4 text-[#D4AF37]" />Napisz maila</a>
       </aside>
@@ -272,7 +278,7 @@ const AboutPage = () => (
         <figure className="hidden overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_24px_80px_rgba(0,0,0,0.06)] lg:block"><img src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek" className="block aspect-[4/5] w-full object-cover object-top" /></figure>
         <div>
           <SectionHeading eyebrow="O mnie" title="Karolina Zdrojek" />
-          <div className="flow-root text-lg font-light leading-relaxed text-[#424245]">
+          <div className="flow-root text-justify text-lg font-light leading-relaxed text-[#424245]">
             <figure className="float-right mb-4 ml-4 w-[40%] max-w-[160px] overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_12px_36px_rgba(0,0,0,0.08)] lg:hidden">
               <img src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek" className="block aspect-[4/5] w-full object-cover object-top" />
             </figure>
@@ -294,7 +300,6 @@ const BlogPage = () => (
     <section className="px-5 pb-24 pt-36 md:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionHeading eyebrow="Blog" title="Prawo w życiu codziennym." />
-        <TikTokCard className="mb-8" />
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {blogPosts.map((post) => (
             <a key={post.slug} href={`/blog/${post.slug}`} className="group overflow-hidden rounded-lg border border-gray-100 bg-white transition-transform hover:-translate-y-1">
@@ -308,6 +313,7 @@ const BlogPage = () => (
             </a>
           ))}
         </div>
+        <TikTokCard className="mt-8" />
       </div>
     </section>
   </PageShell>
