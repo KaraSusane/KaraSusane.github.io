@@ -9,6 +9,8 @@ const defaultImage = `${siteUrl}/karolina-zdrojek.jpg`;
 const distDir = resolve('dist');
 const baseHtml = await readFile(resolve(distDir, 'index.html'), 'utf8');
 
+const pageUrl = (path: string) => `${siteUrl}${path === '/' ? '/' : `${path}/`}`;
+
 type PageDefinition = {
   path: string;
   title: string;
@@ -59,7 +61,7 @@ const staticShell = (content: string) => `
   </div>`;
 
 const buildHead = (page: PageDefinition) => {
-  const canonicalUrl = `${siteUrl}${page.path === '/' ? '/' : page.path}`;
+  const canonicalUrl = pageUrl(page.path);
   const image = page.image || defaultImage;
   const schema = page.schema || {
     '@context': 'https://schema.org',
@@ -128,7 +130,7 @@ const standardPages: PageDefinition[] = [
   { path: '/uslugi', title: 'Usługi', description: 'Pisma, umowy, analiza sprawy, doradztwo prawne i mediacje.', staticContent: staticShell('<h1>Usługi</h1><p>Pisma, umowy, analiza sprawy, doradztwo prawne i mediacje.</p>') },
   { path: '/wspolpraca', title: 'Współpraca', description: 'Poznaj jasne zasady współpracy z Pismo w Sprawie.', staticContent: staticShell('<h1>Współpraca</h1><p>Poznaj jasne zasady współpracy z Pismo w Sprawie.</p>') },
   { path: '/o-mnie', title: 'O mnie', description: 'Karolina Zdrojek, prawnik i założycielka Pismo w Sprawie.', staticContent: staticShell('<h1>Karolina Zdrojek</h1><p>Prawnik i założycielka Pismo w Sprawie.</p>') },
-  { path: '/blog', title: 'Blog prawny', description: 'Praktyczne artykuły o prawie w życiu codziennym.', staticContent: staticShell(`<h1>Prawo w życiu codziennym.</h1>${blogPosts.map((post) => `<h2><a href="/blog/${escapeHtml(post.slug)}">${escapeHtml(post.title)}</a></h2><p>${escapeHtml(post.excerpt)}</p>`).join('')}`) },
+  { path: '/blog', title: 'Blog prawny', description: 'Praktyczne artykuły o prawie w życiu codziennym.', staticContent: staticShell(`<h1>Prawo w życiu codziennym.</h1>${blogPosts.map((post) => `<h2><a href="/blog/${escapeHtml(post.slug)}/">${escapeHtml(post.title)}</a></h2><p>${escapeHtml(post.excerpt)}</p>`).join('')}`) },
   { path: '/kontakt', title: 'Kontakt', description: 'Kontakt z Pismo w Sprawie: pismowsprawie@gmail.com.', staticContent: staticShell('<h1>Kontakt</h1><p>Napisz na adres pismowsprawie@gmail.com.</p>') },
   { path: '/polityka-prywatnosci', title: 'Polityka prywatności', description: 'Polityka prywatności strony Pismo w Sprawie.', staticContent: staticShell('<h1>Polityka prywatności</h1><p>Polityka prywatności strony internetowej Pismo w Sprawie.</p>') },
   { path: '/nota-prawna', title: 'Nota prawna i prawa autorskie', description: 'Informacje dotyczące praw autorskich i wyłączenia odpowiedzialności.', staticContent: staticShell('<h1>Nota prawna i prawa autorskie</h1><p>Informacje dotyczące praw autorskich i wyłączenia odpowiedzialności.</p>') },
@@ -164,12 +166,12 @@ const articlePages: PageDefinition[] = blogPosts.map((post) => {
       keywords: post.keywords?.join(', '),
       mainEntityOfPage: {
         '@type': 'WebPage',
-        '@id': `${siteUrl}${path}`,
+        '@id': pageUrl(path),
       },
       author: {
         '@type': 'Person',
         name: authorName,
-        url: `${siteUrl}/o-mnie`,
+        url: `${siteUrl}/o-mnie/`,
       },
       publisher: {
         '@type': 'Organization',
@@ -192,7 +194,7 @@ const sitemapEntries = allPages
   .map((page) => {
     const article = blogPosts.find((post) => page.path === `/blog/${post.slug}`);
     const lastmod = article ? `\n    <lastmod>${article.publishedAt}</lastmod>` : '';
-    return `  <url>\n    <loc>${escapeXml(`${siteUrl}${page.path === '/' ? '/' : page.path}`)}</loc>${lastmod}\n  </url>`;
+    return `  <url>\n    <loc>${escapeXml(pageUrl(page.path))}</loc>${lastmod}\n  </url>`;
   })
   .join('\n');
 

@@ -20,11 +20,11 @@ const mailto = (subject?: string) =>
   `mailto:${contactEmail}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
 
 const navItems = [
-  { label: 'Usługi', href: '/uslugi' },
-  { label: 'O mnie', href: '/o-mnie' },
-  { label: 'Współpraca', href: '/wspolpraca' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Kontakt', href: '/kontakt' },
+  { label: 'Usługi', href: '/uslugi/' },
+  { label: 'O mnie', href: '/o-mnie/' },
+  { label: 'Współpraca', href: '/wspolpraca/' },
+  { label: 'Blog', href: '/blog/' },
+  { label: 'Kontakt', href: '/kontakt/' },
 ];
 
 const topNavItems = [
@@ -175,9 +175,9 @@ const Footer = () => (
     <div className="mx-auto flex max-w-6xl flex-col gap-3 border-t border-gray-100 py-5 text-xs text-[#86868B] md:flex-row md:items-center md:justify-between">
       <span>© Pismo w Sprawie</span>
       <div className="flex flex-wrap gap-4">
-        <a href="/polityka-prywatnosci" className="hover:text-[#1D1D1F]">Polityka prywatności</a>
-        <a href="/nota-prawna" className="hover:text-[#1D1D1F]">Nota prawna</a>
-        <a href="/wazne-informacje" className="hover:text-[#1D1D1F]">Ważne informacje</a>
+        <a href="/polityka-prywatnosci/" className="hover:text-[#1D1D1F]">Polityka prywatności</a>
+        <a href="/nota-prawna/" className="hover:text-[#1D1D1F]">Nota prawna</a>
+        <a href="/wazne-informacje/" className="hover:text-[#1D1D1F]">Ważne informacje</a>
       </div>
     </div>
   </footer>
@@ -199,8 +199,8 @@ const Hero = () => (
         <h1 className="text-5xl font-semibold leading-[0.96] tracking-tight md:text-7xl xl:text-8xl">Prawne wsparcie<span className="block text-[#86868B]">Precyzyjne pisma</span></h1>
         <p className="mt-8 max-w-3xl text-lg font-light leading-relaxed text-[#424245] md:text-xl">Pismo w Sprawie to coś więcej niż wirtualna kancelaria prawna. To relacja oparta o wzajemne porozumienie pomiędzy klientem, a prawnikiem, którego implikacją jest zaoszczędzony czas, estetyczny dokument skrojony na miarę oraz ciągły kontakt i pewność.</p>
         <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-2">
-          <a href="/uslugi" className="flex items-center justify-between rounded-lg bg-[#1D1D1F] px-6 py-5 text-sm font-medium text-white transition-transform hover:-translate-y-0.5">Sprawdź, jak mogę Ci pomóc<ArrowRight className="h-4 w-4" /></a>
-          <a href="/o-mnie" className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-5 text-sm font-medium transition-transform hover:-translate-y-0.5">Krótko o mnie<ArrowRight className="h-4 w-4" /></a>
+          <a href="/uslugi/" className="flex items-center justify-between rounded-lg bg-[#1D1D1F] px-6 py-5 text-sm font-medium text-white transition-transform hover:-translate-y-0.5">Sprawdź, jak mogę Ci pomóc<ArrowRight className="h-4 w-4" /></a>
+          <a href="/o-mnie/" className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-5 text-sm font-medium transition-transform hover:-translate-y-0.5">Krótko o mnie<ArrowRight className="h-4 w-4" /></a>
         </div>
       </div>
       <div className="hero-document-card relative rounded-lg border border-gray-100 bg-white p-7 shadow-[0_24px_80px_rgba(0,0,0,0.06)] lg:order-1 md:p-8">
@@ -302,7 +302,7 @@ const BlogPage = () => (
         <SectionHeading eyebrow="Blog" title="Prawo w życiu codziennym." />
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {blogPosts.map((post) => (
-            <a key={post.slug} href={`/blog/${post.slug}`} className="group overflow-hidden rounded-lg border border-gray-100 bg-white transition-transform hover:-translate-y-1">
+            <a key={post.slug} href={`/blog/${post.slug}/`} className="group overflow-hidden rounded-lg border border-gray-100 bg-white transition-transform hover:-translate-y-1">
               <img src={post.coverImage || defaultCover} alt={post.coverAlt || post.title} className="aspect-[16/10] w-full object-cover object-top" />
               <div className="p-6">
                 <div className="mb-4 flex items-center justify-between gap-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#86868B]"><span>{post.category}</span><time>{formatDate(post.publishedAt)}</time></div>
@@ -337,7 +337,7 @@ const ArticlePage = ({ slug }: { slug: string }) => {
     <PageShell>
       <article className="px-5 pb-24 pt-32 md:px-8">
         <div className="mx-auto max-w-5xl">
-          <a href="/blog" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#424245]"><ArrowLeft className="h-4 w-4" />Wróć do bloga</a>
+          <a href="/blog/" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#424245]"><ArrowLeft className="h-4 w-4" />Wróć do bloga</a>
           <img src={post.coverImage || defaultCover} alt={post.coverAlt || post.title} className="max-h-[560px] w-full rounded-lg object-cover object-top" />
           <header className="w-full py-10 md:py-14">
             <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.25em] text-[#86868B]">{post.category}</p>

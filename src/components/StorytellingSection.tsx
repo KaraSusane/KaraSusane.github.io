@@ -79,7 +79,7 @@ const StageCopy: React.FC<StageCopyProps> = ({ progress, stage, index }) => {
           {stage.description}
         </p>
         {stage.cta && (
-          <a href="/kontakt" className="px-8 py-4 bg-[#1D1D1F] text-white rounded-full text-sm font-medium hover:scale-105 transition-transform shadow-xl w-fit inline-flex">
+          <a href="/kontakt/" className="px-8 py-4 bg-[#1D1D1F] text-white rounded-full text-sm font-medium hover:scale-105 transition-transform shadow-xl w-fit inline-flex">
             {stage.cta}
           </a>
         )}
@@ -317,7 +317,7 @@ export const StorytellingSection = () => {
                   {stage.description}
                 </p>
                 {stage.cta && (
-                  <a href="/kontakt" className="px-6 py-3 bg-[#1D1D1F] text-white rounded-full text-sm font-medium hover:scale-105 transition-transform shadow-lg w-fit">
+                  <a href="/kontakt/" className="px-6 py-3 bg-[#1D1D1F] text-white rounded-full text-sm font-medium hover:scale-105 transition-transform shadow-lg w-fit">
                     {stage.cta}
                   </a>
                 )}
