@@ -1,13 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import {
-  ArrowLeft,
-  ArrowRight,
-  FileText,
-  Mail,
-  Menu,
-  Scale,
-  ShieldCheck,
-  X,
+  ArrowLeft, ArrowRight, Building2, Handshake, Mail, Menu, Pilcrow,
+  ScrollText, Sparkles, Stethoscope, Wheat, X, type LucideIcon,
 } from 'lucide-react';
 import { blogPosts } from './data/blogPosts';
 import { legalPages, type LegalPageData } from './data/legalPages';
@@ -15,71 +9,22 @@ import { legalPages, type LegalPageData } from './data/legalPages';
 const contactEmail = 'pismowsprawie@gmail.com';
 const tiktokUrl = 'https://www.tiktok.com/@pismowsprawie?_r=1&_t=ZN-97Er7B8gTdW';
 const defaultCover = '/karolina-zdrojek.jpg';
-
-const mailto = (subject?: string) =>
-  `mailto:${contactEmail}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
+const mailto = (subject?: string) => `mailto:${contactEmail}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
 
 const navItems = [
   { label: 'Usługi', href: '/uslugi/' },
   { label: 'O mnie', href: '/o-mnie/' },
-  { label: 'Współpraca', href: '/wspolpraca/' },
+  { label: 'Praktyka', href: '/praktyka/' },
   { label: 'Blog', href: '/blog/' },
   { label: 'Kontakt', href: '/kontakt/' },
 ];
 
-const topNavItems = [
-  ...navItems.slice(0, 4),
-  { label: 'TikTok', href: tiktokUrl, external: true },
-  navItems[4],
-];
-
 const services = [
-  {
-    number: '01',
-    title: 'Analiza i wycena',
-    price: '0 zł',
-    description: 'Wstępne sprawdzenie zgłoszenia, dokumentów i możliwego terminu realizacji.',
-    details: [
-      'Pilna sprawa: cena podstawowa plus 50 procent za tryb szybszej realizacji.',
-      'Tryb pilny jest dostępny po wcześniejszym sprawdzeniu terminu i zakresu dokumentów.',
-    ],
-  },
-  {
-    number: '02',
-    title: 'Pisma',
-    price: 'od 149 zł',
-    description: 'Pisma, wezwania, wnioski, odwołania i odpowiedzi dopasowane do konkretnej sprawy.',
-    details: [
-      'Krótkie pismo do dwóch stron: od 149 zł',
-      'Odpowiedź na pismo: od 299 zł',
-      'Pismo z argumentacją: od 399 zł',
-      'Rozbudowane pismo powyżej 4 stron: od 499 zł',
-    ],
-  },
-  {
-    number: '03',
-    title: 'Umowy',
-    price: 'od 299 zł',
-    description: 'Umowy gospodarcze i cywilne przygotowane od podstaw lub uporządkowane przed podpisaniem.',
-    details: ['Krótka umowa do dwóch stron: od 299 zł', 'Rozbudowana umowa powyżej 4 stron: od 499 zł'],
-  },
-  {
-    number: '04',
-    title: 'Doradztwo prawne',
-    price: 'od 199 zł',
-    description: 'Pisemne wyjaśnienie sytuacji i możliwych dalszych kroków.',
-    details: [
-      'Pisemna konsultacja lub opracowanie sprawy: od 199 zł',
-      'Konsultacja online przez Microsoft Teams JUŻ WKRÓTCE',
-    ],
-  },
-  {
-    number: '05',
-    title: 'Mediacje',
-    price: 'już wkrótce',
-    description: 'Wsparcie w spokojnym wypracowaniu rozwiązania akceptowalnego dla stron.',
-    details: ['Szczegółowy zakres i terminy pojawią się wkrótce.'],
-  },
+  { number: '01', title: 'Analiza i wycena', price: '0 zł', description: 'Wstępne sprawdzenie zgłoszenia, dokumentów i możliwego terminu realizacji.', details: ['Pilna sprawa: cena podstawowa plus 50 procent za tryb szybszej realizacji.', 'Tryb pilny jest dostępny po wcześniejszym sprawdzeniu terminu i zakresu dokumentów.'] },
+  { number: '02', title: 'Pisma', price: 'od 149 zł', description: 'Pisma, wezwania, wnioski, odwołania i odpowiedzi dopasowane do konkretnej sprawy.', details: ['Krótkie pismo do dwóch stron: od 149 zł', 'Odpowiedź na pismo: od 299 zł', 'Pismo z argumentacją: od 399 zł', 'Rozbudowane pismo powyżej 4 stron: od 499 zł'] },
+  { number: '03', title: 'Umowy', price: 'od 299 zł', description: 'Umowy gospodarcze i cywilne przygotowane od podstaw lub uporządkowane przed podpisaniem.', details: ['Krótka umowa do dwóch stron: od 299 zł', 'Rozbudowana umowa powyżej 4 stron: od 499 zł'] },
+  { number: '04', title: 'Doradztwo prawne', price: 'od 199 zł', description: 'Pisemne wyjaśnienie sytuacji i możliwych dalszych kroków.', details: ['Pisemna konsultacja lub opracowanie sprawy: od 199 zł', 'Konsultacja online przez Microsoft Teams JUŻ WKRÓTCE'] },
+  { number: '05', title: 'Mediacje', price: 'już wkrótce', description: 'Wsparcie w spokojnym wypracowaniu rozwiązania akceptowalnego dla stron.', details: ['Szczegółowy zakres i terminy pojawią się wkrótce.'] },
 ];
 
 const cooperationSteps = [
@@ -91,326 +36,71 @@ const cooperationSteps = [
 ];
 
 const aboutParagraphs = [
-  'Nazywam się Karolina Zdrojek. Jestem prawnikiem i założycielką Pismo w Sprawie, miejsca, w którym prawo ma być nie tylko poprawnie zastosowane, ale przede wszystkim zrozumiałe, konkretne i użyteczne.',
-  'W pracy prawniczej szczególną wagę przykładam do słowa. Dobrze napisane pismo, umowa czy odpowiedź nie powinny pozostawiać przestrzeni na domysły. Powinny chronić interes klienta, jasno określać jego stanowisko i prowadzić do konkretnego celu. Dlatego jednym z głównych obszarów mojej praktyki jest analiza, opiniowanie i tworzenie umów oraz dokumentów prawnych, od A do Z.',
-  'Moje zainteresowania zawodowe obejmują przede wszystkim prawo medyczne i beauty, prawo AI i reklamy, prawo rolne oraz mediacje. Ukończyłam studia podyplomowe z zakresu prawa medycznego i farmaceutycznego, a jednocześnie stale rozwijam wiedzę na różnych płaszczyznach oraz drążę interesujące mnie ścieżki. Interesuje mnie także działalność edukacyjna, dlatego rozwijam swoje kompetencje w zakresie dydaktyki i przygotowania pedagogicznego, aby w przyszłości jeszcze lepiej dzielić się wiedzą i przekazywać ją w przystępny, uporządkowany sposób.',
-  'Doświadczenie zdobywałam, pracując w kancelariach adwokackich i prawnych w Warszawie oraz odbywając liczne praktyki zawodowe. Dzięki temu znam prawo nie tylko od strony akademickiej, wiem również, jak wygląda sprawa z perspektywy osoby, która otrzymuje wezwanie, musi odpowiedzieć kontrahentowi, podpisać umowę, uporządkować dokumentację albo podjąć decyzję, od której mogą zależeć jej dalsze działania.',
+  'Nazywam się Karolina Zdrojek. Jestem prawnikiem oraz założycielką Pismo w Sprawie, marki prawniczej stworzonej z myślą o osobach i podmiotach, które oczekują od prawa nie tylko poprawności formalnej, ale przede wszystkim precyzji, przejrzystości i realnej użyteczności.',
+  'Specjalizuję się w szeroko rozumianym prawie medycznym, a swoje kompetencje w tym obszarze rozwijałam również w ramach ukończonych studiów podyplomowych. W pracy prawniczej szczególne znaczenie ma dla mnie słowo. To właśnie sposób sformułowania stanowiska, konstrukcja zapisów umownych czy precyzja argumentacji często decydują o tym, czy dokument rzeczywiście zabezpiecza interes klienta i spełnia swoją funkcję.',
+  'Dlatego jednym z głównych obszarów mojej praktyki jest kompleksowa obsługa dokumentacji prawnej, analiza i opiniowanie umów, identyfikowanie ryzyk prawnych, przygotowywanie projektów dokumentów oraz tworzenie pism i stanowisk od podstaw. Każdy dokument traktuję jako narzędzie, które powinno być nie tylko zgodne z prawem, ale również celowe, przemyślane i dostosowane do konkretnej sytuacji klienta.',
+  'Doświadczenie zawodowe zdobywałam, pracując w kancelariach adwokackich i prawnych w Warszawie oraz odbywając liczne praktyki zawodowe. Pozwoliło mi to poznać prawo zarówno od strony merytorycznej, jak i praktycznej z perspektywy realnych spraw, decyzji i konsekwencji, z którymi mierzą się klienci.',
+  'Mam świadomość, że sprawa prawna rzadko sprowadza się wyłącznie do interpretacji przepisów. Często oznacza konieczność podjęcia decyzji, odpowiedzi na wezwanie, zabezpieczenia relacji z kontrahentem, oceny ryzyka przed podpisaniem umowy czy uporządkowania dokumentacji w sposób, który pozwoli uniknąć problemów w przyszłości.',
+  'W Pismo w Sprawie łączę wiedzę prawniczą z dbałością o język, strukturę i strategię działania. Moim celem jest tworzenie rozwiązań, które dają klientowi jasność sytuacji, poczucie kontroli i solidną podstawę do podejmowania dalszych decyzji.',
 ];
 
-const SectionHeading = ({ eyebrow, title, children }: { eyebrow: string; title: string; children?: ReactNode }) => (
-  <div className="mb-10">
-    <div className="mb-5 flex items-center gap-3">
-      <span className="h-px w-8 bg-[#D4AF37]" />
-      <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#86868B]">{eyebrow}</span>
-    </div>
-    <h1 className="max-w-4xl text-4xl font-semibold leading-[1.03] tracking-tight md:text-6xl">{title}</h1>
-    {children && <div className="mt-6 max-w-3xl text-lg font-light leading-relaxed text-[#424245]">{children}</div>}
-  </div>
-);
+const practiceAreas: Array<{ title: string; icon: LucideIcon }> = [
+  { title: 'Prawo medyczne', icon: Stethoscope }, { title: 'Prawo beauty', icon: Sparkles },
+  { title: 'Prawo nieruchomości', icon: Building2 }, { title: 'Prawo spadkowe', icon: ScrollText },
+  { title: 'Prawo rolne', icon: Wheat }, { title: 'Mediacje', icon: Handshake },
+];
 
-const TikTokCard = ({ className = '' }: { className?: string }) => (
-  <a
-    href={tiktokUrl}
-    target="_blank"
-    rel="noreferrer"
-    className={`group flex items-center justify-between gap-6 rounded-lg bg-[#1D1D1F] px-6 py-6 text-white transition-transform hover:-translate-y-0.5 ${className}`}
-  >
-    <div>
-      <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50">TikTok</span>
-      <span className="mt-2 block text-xl font-semibold tracking-tight">Znajdziesz mnie na TikToku</span>
-    </div>
-    <ArrowRight className="h-5 w-5 shrink-0 text-[#D4AF37] transition-transform group-hover:translate-x-1" />
-  </a>
-);
+const Brand = () => <span className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center bg-[#ebc256] text-[#111113]"><Pilcrow className="h-6 w-6" strokeWidth={2.5} /></span><span className="text-sm font-black uppercase text-white">Pismo w Sprawie</span></span>;
+
+const SectionHeading = ({ eyebrow, title, children }: { eyebrow: string; title: string; children?: ReactNode }) => <div className="mb-12 border-l-4 border-[#ebc256] pl-5 md:pl-7"><p className="mb-4 text-xs font-black uppercase text-[#ebc256]">{eyebrow}</p><h1 className="max-w-5xl text-4xl font-black uppercase leading-[1.02] text-white md:text-6xl">{title}</h1>{children && <div className="mt-6 max-w-3xl text-lg leading-relaxed text-[#c9c9cf]">{children}</div>}</div>;
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  return (
-    <nav className="fixed inset-x-0 top-0 z-50 min-h-16 border-b border-gray-100 bg-white/90 px-5 py-3 backdrop-blur-md md:px-8 xl:px-10">
-      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4">
-        <a href="/" className="flex shrink-0 items-center gap-3" onClick={() => setIsMenuOpen(false)}>
-          <Scale className="h-5 w-5 text-[#1D1D1F]" />
-          <span className="text-sm font-semibold uppercase tracking-tight">Pismo w Sprawie</span>
-        </a>
-
-        <div className="hidden items-center gap-6 text-[10px] font-medium uppercase tracking-[0.16em] text-[#86868B] xl:flex">
-          {topNavItems.map((item) => <a key={item.href} href={item.href} target={'external' in item ? '_blank' : undefined} rel={'external' in item ? 'noreferrer' : undefined} className="transition-colors hover:text-[#1D1D1F]">{item.label}</a>)}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <a href={mailto()} className="hidden rounded-full bg-[#1D1D1F] px-5 py-2.5 text-xs font-medium uppercase tracking-widest text-white transition-colors hover:bg-gray-800 md:inline-flex">Napisz maila</a>
-          <button type="button" aria-label="Otwórz menu" aria-expanded={isMenuOpen} onClick={() => setIsMenuOpen(true)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white xl:hidden">
-            <Menu className="h-5 w-5" />
-          </button>
-        </div>
-      </div>
-
-      <button type="button" aria-label="Zamknij menu" onClick={() => setIsMenuOpen(false)} className={`fixed inset-0 z-50 bg-[#1D1D1F]/30 backdrop-blur-sm transition-opacity xl:hidden ${isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'}`} />
-      <aside aria-hidden={!isMenuOpen} className={`fixed right-0 top-0 z-50 h-dvh w-[min(86vw,360px)] bg-white px-6 py-5 shadow-[-24px_0_80px_rgba(0,0,0,0.16)] transition-transform duration-300 xl:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-semibold uppercase">Menu</span>
-          <button type="button" aria-label="Zamknij menu" onClick={() => setIsMenuOpen(false)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200"><X className="h-5 w-5" /></button>
-        </div>
-        <div className="mt-10 flex flex-col gap-2">
-          {topNavItems.map((item) => <a key={item.href} href={item.href} target={'external' in item ? '_blank' : undefined} rel={'external' in item ? 'noreferrer' : undefined} onClick={() => setIsMenuOpen(false)} className="rounded-lg px-4 py-4 text-sm font-semibold uppercase tracking-[0.16em] hover:bg-[#FBFBFD]">{item.label}</a>)}
-        </div>
-        <a href={mailto()} className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#1D1D1F] px-7 py-3 text-sm font-medium text-white"><Mail className="h-4 w-4 text-[#D4AF37]" />Napisz maila</a>
-      </aside>
-    </nav>
-  );
+  return <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#111113]/95 px-5 py-3 backdrop-blur-md md:px-8"><div className="mx-auto flex max-w-[1500px] items-center justify-between gap-5"><a href="/" onClick={() => setIsMenuOpen(false)}><Brand /></a><div className="hidden items-center gap-7 text-xs font-bold uppercase text-[#b7b7bd] lg:flex">{navItems.map((item) => <a key={item.href} href={item.href} className="transition-colors hover:text-[#ebc256]">{item.label}</a>)}</div><div className="flex items-center gap-2"><a href={mailto()} className="hidden items-center gap-2 bg-[#ebc256] px-5 py-3 text-xs font-black uppercase text-[#111113] transition-colors hover:bg-white md:inline-flex"><Mail className="h-4 w-4" />Napisz maila</a><button type="button" aria-label="Otwórz menu" aria-expanded={isMenuOpen} onClick={() => setIsMenuOpen(true)} className="flex h-11 w-11 items-center justify-center border border-white/20 text-white lg:hidden"><Menu className="h-5 w-5" /></button></div></div><button type="button" aria-label="Zamknij menu" onClick={() => setIsMenuOpen(false)} className={`fixed inset-0 z-40 bg-black/70 transition-opacity lg:hidden ${isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'}`} /><aside aria-hidden={!isMenuOpen} className={`fixed right-0 top-0 z-50 h-dvh w-[min(86vw,360px)] border-l border-white/10 bg-[#17171a] p-6 text-white transition-transform duration-300 lg:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}><div className="flex items-center justify-between"><Brand /><button type="button" aria-label="Zamknij menu" onClick={() => setIsMenuOpen(false)} className="flex h-11 w-11 items-center justify-center border border-white/20"><X className="h-5 w-5" /></button></div><div className="mt-10 flex flex-col border-t border-white/10">{navItems.map((item) => <a key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)} className="border-b border-white/10 px-2 py-5 text-sm font-bold uppercase hover:text-[#ebc256]">{item.label}</a>)}</div><a href={mailto()} className="mt-8 flex w-full items-center justify-center gap-2 bg-[#ebc256] px-6 py-4 text-sm font-black uppercase text-[#111113]"><Mail className="h-4 w-4" />Napisz maila</a></aside></nav>;
 };
 
-const Footer = () => (
-  <footer className="border-t border-gray-100 bg-white px-5 text-[#1D1D1F] md:px-8">
-    <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 py-12 md:flex-row">
-      <div>
-        <div className="mb-3 flex items-center gap-3"><Scale className="h-5 w-5" /><span className="text-sm font-semibold uppercase">Pismo w Sprawie</span></div>
-        <p className="max-w-md font-light text-[#86868B]">Prawne wsparcie, precyzyjne pisma i spokojny proces współpracy.</p>
-      </div>
-      <div className="flex flex-wrap gap-5 text-sm text-[#424245]">
-        {navItems.map((item) => <a key={item.href} href={item.href} className="hover:text-[#1D1D1F]">{item.label}</a>)}
-      </div>
-    </div>
-    <div className="mx-auto flex max-w-6xl flex-col gap-3 border-t border-gray-100 py-5 text-xs text-[#86868B] md:flex-row md:items-center md:justify-between">
-      <span>© Pismo w Sprawie</span>
-      <div className="flex flex-wrap gap-4">
-        <a href="/polityka-prywatnosci/" className="hover:text-[#1D1D1F]">Polityka prywatności</a>
-        <a href="/nota-prawna/" className="hover:text-[#1D1D1F]">Nota prawna</a>
-        <a href="/wazne-informacje/" className="hover:text-[#1D1D1F]">Ważne informacje</a>
-      </div>
-    </div>
-  </footer>
-);
+const Footer = () => <footer className="border-t border-white/10 bg-[#0b0b0d] px-5 text-white md:px-8"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-10 py-12 md:flex-row"><div><Brand /><p className="mt-4 max-w-md text-sm leading-relaxed text-[#9d9da4]">Precyzyjne pisma. Skuteczne rozwiązania. Profesjonalne wsparcie.</p></div><div className="flex flex-wrap gap-5 text-sm text-[#c9c9cf]">{navItems.map((item) => <a key={item.href} href={item.href} className="hover:text-[#ebc256]">{item.label}</a>)}</div></div><div className="mx-auto flex max-w-7xl flex-col gap-3 border-t border-white/10 py-5 text-xs text-[#7f7f86] md:flex-row md:items-center md:justify-between"><span>© Pismo w Sprawie</span><div className="flex flex-wrap gap-4"><a href="/polityka-prywatnosci/" className="hover:text-white">Polityka prywatności</a><a href="/nota-prawna/" className="hover:text-white">Nota prawna</a><a href="/wazne-informacje/" className="hover:text-white">Ważne informacje</a></div></div></footer>;
+const PageShell = ({ children }: { children: ReactNode }) => <main className="relative min-h-screen overflow-x-hidden bg-[#111113] font-sans text-white selection:bg-[#ebc256] selection:text-[#111113]"><Navigation />{children}<Footer /></main>;
 
-const PageShell = ({ children }: { children: ReactNode }) => (
-  <main className="relative min-h-screen overflow-x-hidden bg-[#FBFBFD] font-sans text-[#1D1D1F] selection:bg-[#D4AF37] selection:text-white">
-    <Navigation />
-    {children}
-    <Footer />
-  </main>
-);
-
-const Hero = () => (
-  <section className="flex min-h-screen items-center bg-[#FBFBFD] px-5 pb-16 pt-28 md:px-8">
-    <div className="mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[420px_1fr]">
-      <div className="lg:order-2">
-        <p className="mb-6 text-[11px] font-bold uppercase tracking-[0.32em] text-[#86868B]">WWW.PISMOWSPRAWIE.PL</p>
-        <h1 className="text-5xl font-semibold leading-[0.96] tracking-tight md:text-7xl xl:text-8xl">Prawne wsparcie<span className="block text-[#86868B]">Precyzyjne pisma</span></h1>
-        <p className="mt-8 max-w-3xl text-lg font-light leading-relaxed text-[#424245] md:text-xl">Pismo w Sprawie to coś więcej niż wirtualna kancelaria prawna. To relacja oparta o wzajemne porozumienie pomiędzy klientem, a prawnikiem, którego implikacją jest zaoszczędzony czas, estetyczny dokument skrojony na miarę oraz ciągły kontakt i pewność.</p>
-        <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-2">
-          <a href="/uslugi/" className="flex items-center justify-between rounded-lg bg-[#1D1D1F] px-6 py-5 text-sm font-medium text-white transition-transform hover:-translate-y-0.5">Sprawdź, jak mogę Ci pomóc<ArrowRight className="h-4 w-4" /></a>
-          <a href="/o-mnie/" className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-5 text-sm font-medium transition-transform hover:-translate-y-0.5">Krótko o mnie<ArrowRight className="h-4 w-4" /></a>
-        </div>
-      </div>
-      <div className="hero-document-card relative rounded-lg border border-gray-100 bg-white p-7 shadow-[0_24px_80px_rgba(0,0,0,0.06)] lg:order-1 md:p-8">
-        <div className="mb-10 flex items-center justify-between"><span className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#86868B]">Pismo w Sprawie</span><FileText className="h-6 w-6 text-[#D4AF37]" /></div>
-        <div className="space-y-4"><div className="h-2 w-24 rounded-full bg-[#D4AF37]/70" /><div className="h-3 w-4/5 rounded-full bg-[#F0F0F2]" /><div className="h-3 w-2/3 rounded-full bg-[#F0F0F2]" /><div className="space-y-3 pt-8">{['w-full','w-11/12','w-full','w-3/4'].map((width, index) => <div key={index} className={`h-2 ${width} rounded-full bg-[#F5F5F7]`} />)}</div></div>
-        <div className="mt-10 flex items-center gap-3 text-sm text-[#424245]"><ShieldCheck className="h-5 w-5 text-[#D4AF37]" />Dokument dopasowany do sprawy, terminu i celu.</div>
-      </div>
-    </div>
-  </section>
-);
-
+const Hero = () => <section className="relative flex min-h-[92vh] items-center overflow-hidden border-b border-white/10 bg-[#111113] px-5 pb-16 pt-28 md:px-8"><div className="poster-slash pointer-events-none absolute right-[-15%] top-0 hidden h-full w-[48%] bg-[#ebc256] lg:block" /><div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[1.45fr_0.55fr]"><div><p className="mb-8 inline-block bg-[#ebc256] px-4 py-2 text-xs font-black uppercase text-[#111113]">Precyzyjne pisma | Skuteczne rozwiązania</p><h1 className="max-w-5xl text-5xl font-black uppercase leading-[0.92] text-white md:text-7xl xl:text-8xl">Pismo<br />w Sprawie</h1><p className="mt-6 max-w-3xl border-y-4 border-[#ebc256] py-4 text-2xl font-black uppercase text-white md:text-4xl">Prawo po Twojej stronie</p><p className="mt-7 max-w-3xl text-lg leading-relaxed text-[#c9c9cf]">Prawne wsparcie, precyzyjna argumentacja i dokumenty przygotowane z myślą o realnym celu Twojej sprawy.</p><div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-2"><a href="/praktyka/" className="group flex min-h-24 items-center justify-between bg-[#ebc256] px-6 py-5 text-sm font-black uppercase text-[#111113]">Praktyka<ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" /></a><a href="/uslugi/" className="group flex min-h-24 items-center justify-between border-2 border-white bg-white px-6 py-5 text-sm font-black uppercase text-[#111113]">Usługi<ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" /></a></div></div><div className="relative hidden min-h-[520px] items-center justify-center lg:flex"><Pilcrow className="relative z-10 h-72 w-72 text-[#111113]" strokeWidth={1.2} /></div></div></section>;
 const HomePage = () => <PageShell><Hero /></PageShell>;
 
-const ServicesPage = () => (
-  <PageShell>
-    <section className="px-5 pb-24 pt-36 md:px-8">
-      <div className="mx-auto max-w-7xl">
-        <SectionHeading eyebrow="Usługi" title="Czego potrzebujesz?">Kafelki pokazują pełny zakres i ceny minimalne. Ostateczna wycena zależy od rodzaju sprawy, objętości dokumentów i terminu.</SectionHeading>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {services.map((service) => (
-            <article key={service.number} className="flex min-h-[350px] flex-col rounded-lg border border-gray-100 bg-white p-7 shadow-[0_16px_48px_rgba(0,0,0,0.04)]">
-              <div className="mb-7 flex items-start justify-between"><span className="text-sm font-semibold text-[#D4AF37]">{service.number}</span><span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#86868B]">{service.price}</span></div>
-              <h2 className="text-3xl font-semibold tracking-tight">{service.title}</h2>
-              <p className="mt-4 text-sm font-light leading-relaxed text-[#424245]">{service.description}</p>
-              <ul className="mt-7 space-y-3 border-t border-gray-100 pt-6 text-sm leading-relaxed text-[#424245]">
-                {service.details.map((detail) => {
-                  const upcomingLabel = 'JUŻ WKRÓTCE';
-                  const isUpcoming = detail.endsWith(upcomingLabel);
-                  return (
-                    <li key={detail} className="flex gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37]" />
-                      <span>
-                        {isUpcoming ? detail.slice(0, -upcomingLabel.length).trim() : detail}
-                        {isUpcoming && <span className="ml-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#86868B]">{upcomingLabel}</span>}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  </PageShell>
-);
+const CooperationSection = () => <section className="mt-24 border-t-4 border-[#ebc256] pt-16"><SectionHeading eyebrow="Współpraca" title="Jak będzie wyglądała nasza współpraca?" /><div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]"><ol className="divide-y divide-white/10 border border-white/10 bg-[#17171a]">{cooperationSteps.map((step, index) => <li key={step} className="flex gap-5 p-6 md:p-8"><span className="flex h-10 w-10 shrink-0 items-center justify-center bg-[#ebc256] font-black text-[#111113]">{index + 1}</span><span className="leading-relaxed text-[#d8d8dc]">{step}</span></li>)}</ol><div className="border-l-4 border-[#ebc256] bg-white p-7 text-[#111113] md:p-9"><h2 className="mb-6 text-2xl font-black uppercase">Czego nie obejmuje usługa?</h2><div className="space-y-5 leading-relaxed text-[#333338]"><p>Pismo w Sprawie nie jest kancelarią adwokacką ani radcowską. Nie prowadzimy zastępstwa procesowego, nie występujemy przed sądami, urzędami ani innymi instytucjami jako pełnomocnik klienta oraz nie podpisujemy pism w imieniu klienta.</p><p>Przygotowane materiały pomagają uporządkować sprawę, przedstawić stanowisko i stworzyć dokument dopasowany do opisanej sytuacji. Klient samodzielnie decyduje o jego wykorzystaniu.</p><p>Realizacja usługi nie oznacza gwarancji konkretnego wyniku sprawy.</p></div></div></div></section>;
 
-const CooperationPage = () => (
-  <PageShell>
-    <section className="px-5 pb-24 pt-36 md:px-8">
-      <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow="Współpraca" title="Jak będzie wyglądała nasza współpraca?" />
-        <div className="grid items-start gap-8 lg:grid-cols-[1fr_0.9fr]">
-          <ol className="space-y-5 rounded-lg border border-gray-100 bg-white p-7 md:p-10">
-            {cooperationSteps.map((step, index) => <li key={step} className="flex gap-4"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1D1D1F] text-sm text-white">{index + 1}</span><span className="font-light leading-relaxed text-[#424245]">{step}</span></li>)}
-          </ol>
-          <div className="rounded-lg bg-[#1D1D1F] p-7 text-white md:p-8">
-            <h2 className="mb-5 text-2xl font-semibold tracking-tight">Czego nie obejmuje usługa?</h2>
-            <div className="space-y-4 font-light leading-relaxed text-white/75">
-              <p>Pismo w Sprawie nie jest kancelarią adwokacką ani radcowską. W ramach projektu nie prowadzimy zastępstwa procesowego, nie występujemy przed sądami, urzędami ani innymi instytucjami jako pełnomocnik klienta oraz nie podpisujemy pism w imieniu klienta.</p>
-              <p>Przygotowane materiały mają pomóc klientowi w uporządkowaniu sprawy, przedstawieniu stanowiska oraz stworzeniu dokumentu dopasowanego do opisanej sytuacji. Klient samodzielnie decyduje o wykorzystaniu przygotowanego pisma.</p>
-              <p>Realizacja usługi nie oznacza gwarancji konkretnego wyniku sprawy.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </PageShell>
-);
+const ServicesPage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-7xl"><SectionHeading eyebrow="Usługi" title="Czego potrzebujesz?">Ceny są minimalne. Ostateczna wycena zależy od rodzaju sprawy, objętości dokumentów i terminu realizacji.</SectionHeading><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{services.map((service) => <article key={service.number} className="flex min-h-[350px] flex-col border border-white/10 bg-[#1a1a1e] p-7 transition-colors hover:border-[#ebc256]"><div className="mb-8 flex items-start justify-between border-b border-white/10 pb-5"><span className="text-2xl font-black text-[#ebc256]">{service.number}</span><span className="bg-[#ebc256] px-3 py-2 text-xs font-black uppercase text-[#111113]">{service.price}</span></div><h2 className="text-3xl font-black uppercase">{service.title}</h2><p className="mt-4 text-sm leading-relaxed text-[#b7b7bd]">{service.description}</p><ul className="mt-7 space-y-3 border-t border-white/10 pt-6 text-sm leading-relaxed text-[#d1d1d5]">{service.details.map((detail) => { const label = 'JUŻ WKRÓTCE'; const upcoming = detail.endsWith(label); return <li key={detail} className="flex gap-3"><span className="mt-2 h-2 w-2 shrink-0 bg-[#ebc256]" /><span>{upcoming ? detail.slice(0, -label.length).trim() : detail}{upcoming && <span className="ml-2 text-xs font-black uppercase text-[#ebc256]">{label}</span>}</span></li>; })}</ul></article>)}</div><CooperationSection /></div></section></PageShell>;
 
-const AboutPage = () => (
-  <PageShell>
-    <section className="px-5 pb-24 pt-36 md:px-8">
-      <div className="mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[420px_1fr]">
-        <figure className="hidden overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_24px_80px_rgba(0,0,0,0.06)] lg:block"><img src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek" className="block aspect-[4/5] w-full object-cover object-top" /></figure>
-        <div>
-          <SectionHeading eyebrow="O mnie" title="Karolina Zdrojek" />
-          <div className="flow-root text-justify text-lg font-light leading-relaxed text-[#424245]">
-            <figure className="float-right mb-4 ml-4 w-[40%] max-w-[160px] overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_12px_36px_rgba(0,0,0,0.08)] lg:hidden">
-              <img src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek" className="block aspect-[4/5] w-full object-cover object-top" />
-            </figure>
-            <div className="space-y-5">
-              {aboutParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-            </div>
-          </div>
-          <TikTokCard className="mt-8" />
-        </div>
-      </div>
-    </section>
-  </PageShell>
-);
+const PracticePage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-7xl"><SectionHeading eyebrow="Praktyka" title="Obszary, w których działam">Każda sprawa jest analizowana indywidualnie, z uwzględnieniem jej celu, ryzyka i dokumentów.</SectionHeading><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{practiceAreas.map((area, index) => { const Icon = area.icon; return <article key={area.title} className={`flex min-h-60 flex-col justify-between border p-7 ${index === 0 ? 'border-[#ebc256] bg-[#ebc256] text-[#111113]' : 'border-white/10 bg-[#1a1a1e] text-white'}`}><Icon className="h-9 w-9" strokeWidth={1.7} /><div><p className={`mb-3 text-xs font-black uppercase ${index === 0 ? 'text-[#111113]/60' : 'text-[#ebc256]'}`}>0{index + 1}</p><h2 className="text-3xl font-black uppercase leading-tight">{area.title}</h2></div></article>; })}</div></div></section></PageShell>;
+
+const AboutPage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto grid max-w-7xl items-start gap-12 lg:grid-cols-[390px_1fr]"><figure className="order-2 border-b-8 border-[#ebc256] bg-[#1a1a1e] lg:order-1 lg:sticky lg:top-28"><img src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek" className="block aspect-[4/5] w-full object-cover object-top" /></figure><div className="order-1 lg:order-2"><SectionHeading eyebrow="O mnie" title="Karolina Zdrojek" /><div className="space-y-6 text-justify text-lg leading-[1.8] text-[#c9c9cf]">{aboutParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></div></div></section></PageShell>;
 
 const formatDate = (date: string) => new Intl.DateTimeFormat('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${date}T12:00:00`));
+const BlogPage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-7xl"><SectionHeading eyebrow="Blog" title="Prawo w życiu codziennym" /><div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{blogPosts.map((post) => <a key={post.slug} href={`/blog/${post.slug}/`} className="group overflow-hidden border border-white/10 bg-[#1a1a1e] transition-colors hover:border-[#ebc256]"><img src={post.coverImage || defaultCover} alt={post.coverAlt || post.title} className="aspect-[16/10] w-full object-cover object-top" /><div className="border-t-4 border-[#ebc256] p-6"><div className="mb-4 flex items-center justify-between gap-3 text-xs font-bold uppercase text-[#ebc256]"><span>{post.category}</span><time>{formatDate(post.publishedAt)}</time></div><h2 className="text-2xl font-black uppercase leading-tight">{post.title}</h2><p className="mt-4 line-clamp-5 text-sm leading-relaxed text-[#b7b7bd]">{post.excerpt}</p><span className="mt-6 inline-flex items-center gap-2 text-sm font-black uppercase">Czytaj dalej<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span></div></a>)}</div></div></section></PageShell>;
 
-const BlogPage = () => (
-  <PageShell>
-    <section className="px-5 pb-24 pt-36 md:px-8">
-      <div className="mx-auto max-w-7xl">
-        <SectionHeading eyebrow="Blog" title="Prawo w życiu codziennym." />
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {blogPosts.map((post) => (
-            <a key={post.slug} href={`/blog/${post.slug}/`} className="group overflow-hidden rounded-lg border border-gray-100 bg-white transition-transform hover:-translate-y-1">
-              <img src={post.coverImage || defaultCover} alt={post.coverAlt || post.title} className="aspect-[16/10] w-full object-cover object-top" />
-              <div className="p-6">
-                <div className="mb-4 flex items-center justify-between gap-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#86868B]"><span>{post.category}</span><time>{formatDate(post.publishedAt)}</time></div>
-                <h2 className="text-2xl font-semibold leading-tight tracking-tight">{post.title}</h2>
-                <p className="mt-4 line-clamp-5 text-sm font-light leading-relaxed text-[#424245]">{post.excerpt}</p>
-                <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium">Czytaj dalej<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
-              </div>
-            </a>
-          ))}
-        </div>
-        <TikTokCard className="mt-8" />
-      </div>
-    </section>
-  </PageShell>
-);
+const renderInline = (text: string) => text.split(/(\*\*.*?\*\*)/g).map((part, index) => part.startsWith('**') && part.endsWith('**') ? <strong key={index} className="font-black text-white">{part.slice(2, -2)}</strong> : part);
+const ArticleContent = ({ content }: { content: string }) => { const blocks = content.split(/\n\s*\n/).map((block) => block.trim()).filter(Boolean); return <div className="space-y-6">{blocks.map((block, index) => { if (block.startsWith('## ')) return <h2 key={index} className="border-l-4 border-[#ebc256] pl-4 pt-1 text-2xl font-black uppercase md:text-3xl">{block.slice(3)}</h2>; if (block.startsWith('- ')) return <ul key={index} className="space-y-2">{block.split('\n').map((item) => <li key={item} className="flex gap-3"><span className="mt-3 h-2 w-2 shrink-0 bg-[#ebc256]" /><span>{renderInline(item.replace(/^- /, ''))}</span></li>)}</ul>; return <p key={index} className="text-justify text-lg leading-[1.85] text-[#c9c9cf]">{renderInline(block)}</p>; })}</div>; };
+const ArticlePage = ({ slug }: { slug: string }) => { const post = blogPosts.find((item) => item.slug === slug); if (!post) return <NotFoundPage />; return <PageShell><article className="px-5 pb-24 pt-32 md:px-8"><div className="mx-auto max-w-5xl"><a href="/blog/" className="mb-8 inline-flex items-center gap-2 text-sm font-bold uppercase text-[#b7b7bd] hover:text-[#ebc256]"><ArrowLeft className="h-4 w-4" />Wróć do bloga</a><img src={post.coverImage || defaultCover} alt={post.coverAlt || post.title} className="max-h-[560px] w-full border-b-8 border-[#ebc256] object-cover object-top" /><header className="border-b border-white/10 py-10 md:py-14"><p className="mb-4 text-xs font-black uppercase text-[#ebc256]">{post.category}</p><h1 className="text-4xl font-black uppercase leading-[1.03] md:text-6xl">{post.title}</h1><div className="mt-6 flex gap-4 text-sm text-[#8f8f96]"><time>{formatDate(post.publishedAt)}</time><span>{post.readTime} czytania</span></div></header><div className="border-x border-b border-white/10 bg-[#17171a] p-7 md:p-12"><ArticleContent content={post.content} /></div></div></article></PageShell>; };
 
-const renderInline = (text: string) => text.split(/(\*\*.*?\*\*)/g).map((part, index) => part.startsWith('**') && part.endsWith('**') ? <strong key={index} className="font-semibold text-[#1D1D1F]">{part.slice(2, -2)}</strong> : part);
+const ContactPage = () => <PageShell><section className="flex min-h-[85vh] items-center px-5 pb-24 pt-36 md:px-8"><div className="mx-auto w-full max-w-6xl"><SectionHeading eyebrow="Kontakt" title="Porozmawiajmy o Twojej sprawie">Napisz bezpośrednio na adres: <strong className="font-black text-white">{contactEmail}</strong></SectionHeading><div className="grid max-w-3xl gap-4 md:grid-cols-2"><a href={mailto('Zapytanie o współpracę')} className="group flex min-h-40 flex-col justify-between bg-[#ebc256] p-6 text-[#111113]"><Mail className="h-7 w-7" /><span className="flex items-end justify-between text-xl font-black uppercase">Napisz maila<ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" /></span></a><a href={tiktokUrl} target="_blank" rel="noreferrer" className="group flex min-h-40 flex-col justify-between border border-white/20 bg-[#1a1a1e] p-6 text-white"><span className="text-xs font-black uppercase text-[#ebc256]">Social media</span><span className="flex items-end justify-between text-xl font-black uppercase">TikTok<ArrowRight className="h-5 w-5 text-[#ebc256] transition-transform group-hover:translate-x-1" /></span></a></div></div></section></PageShell>;
 
-const ArticleContent = ({ content }: { content: string }) => {
-  const blocks = content.split(/\n\s*\n/).map((block) => block.trim()).filter(Boolean);
-  return <div className="space-y-6">{blocks.map((block, index) => {
-    if (block.startsWith('## ')) return <h2 key={index} className="pt-5 text-2xl font-semibold tracking-tight md:text-3xl">{block.slice(3)}</h2>;
-    if (block.startsWith('- ')) return <ul key={index} className="space-y-2 pl-1">{block.split('\n').map((item) => <li key={item} className="flex gap-3"><span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37]" /><span>{renderInline(item.replace(/^- /, ''))}</span></li>)}</ul>;
-    return <p key={index} className="text-justify text-lg font-light leading-[1.85] text-[#424245]">{renderInline(block)}</p>;
-  })}</div>;
-};
+const LegalPage = ({ page }: { page: LegalPageData }) => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-4xl"><a href="/" className="mb-10 inline-flex items-center gap-2 text-sm font-bold uppercase text-[#b7b7bd]"><ArrowLeft className="h-4 w-4" />Wróć na stronę główną</a><SectionHeading eyebrow="Informacje" title={page.title}>{page.intro}</SectionHeading><article className="space-y-10 border border-white/10 bg-[#17171a] p-7 md:p-10">{page.sections.map((section) => <section key={section.title}><h2 className="mb-4 border-l-4 border-[#ebc256] pl-4 text-2xl font-black uppercase">{section.title}</h2><div className="space-y-4">{section.paragraphs.map((paragraph) => <p key={paragraph} className="leading-relaxed text-[#c9c9cf]">{paragraph}</p>)}</div></section>)}</article></div></section></PageShell>;
+const NotFoundPage = () => <PageShell><section className="flex min-h-[75vh] items-center px-5 pt-28"><div className="mx-auto max-w-3xl text-center"><p className="text-2xl font-black text-[#ebc256]">404</p><h1 className="mt-4 text-5xl font-black uppercase">Nie znaleziono strony</h1><a href="/" className="mt-8 inline-flex bg-[#ebc256] px-7 py-4 text-sm font-black uppercase text-[#111113]">Wróć na stronę główną</a></div></section></PageShell>;
 
-const ArticlePage = ({ slug }: { slug: string }) => {
-  const post = blogPosts.find((item) => item.slug === slug);
-  if (!post) return <NotFoundPage />;
-  return (
-    <PageShell>
-      <article className="px-5 pb-24 pt-32 md:px-8">
-        <div className="mx-auto max-w-5xl">
-          <a href="/blog/" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#424245]"><ArrowLeft className="h-4 w-4" />Wróć do bloga</a>
-          <img src={post.coverImage || defaultCover} alt={post.coverAlt || post.title} className="max-h-[560px] w-full rounded-lg object-cover object-top" />
-          <header className="w-full py-10 md:py-14">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.25em] text-[#86868B]">{post.category}</p>
-            <h1 className="text-4xl font-semibold leading-[1.06] tracking-tight md:text-6xl">{post.title}</h1>
-            <div className="mt-6 flex gap-4 text-sm text-[#86868B]"><time>{formatDate(post.publishedAt)}</time><span>{post.readTime} czytania</span></div>
-          </header>
-          <div className="w-full rounded-lg border border-gray-100 bg-white p-7 md:p-12"><ArticleContent content={post.content} /></div>
-        </div>
-      </article>
-    </PageShell>
-  );
-};
-
-const ContactPage = () => (
-  <PageShell>
-    <section className="flex min-h-[80vh] items-center px-5 pb-24 pt-36 md:px-8">
-      <div className="mx-auto w-full max-w-6xl">
-        <SectionHeading eyebrow="Kontakt" title="Porozmawiajmy o Twojej sprawie.">Możesz się ze mną skontaktować, pisząc bezpośrednio na adres mailowy: <strong className="font-semibold">{contactEmail}</strong></SectionHeading>
-        <a href={mailto('Zapytanie o współpracę')} className="inline-flex items-center gap-3 rounded-full bg-[#1D1D1F] px-7 py-3 text-sm font-medium text-white hover:bg-gray-800"><Mail className="h-5 w-5 text-[#D4AF37]" />Napisz maila</a>
-      </div>
-    </section>
-  </PageShell>
-);
-
-const LegalPage = ({ page }: { page: LegalPageData }) => (
-  <PageShell>
-    <section className="px-5 pb-24 pt-36 md:px-8">
-      <div className="mx-auto max-w-4xl">
-        <a href="/" className="mb-10 inline-flex items-center gap-2 text-sm font-medium text-[#424245]"><ArrowLeft className="h-4 w-4" />Wróć na stronę główną</a>
-        <SectionHeading eyebrow="Informacje" title={page.title}>{page.intro}</SectionHeading>
-        <article className="space-y-9 rounded-lg border border-gray-100 bg-white p-7 md:p-10">
-          {page.sections.map((section) => <section key={section.title}><h2 className="mb-4 text-2xl font-semibold tracking-tight">{section.title}</h2><div className="space-y-4">{section.paragraphs.map((paragraph) => <p key={paragraph} className="font-light leading-relaxed text-[#424245]">{paragraph}</p>)}</div></section>)}
-        </article>
-      </div>
-    </section>
-  </PageShell>
-);
-
-const NotFoundPage = () => <PageShell><section className="flex min-h-[75vh] items-center px-5 pt-28"><div className="mx-auto max-w-3xl text-center"><p className="text-sm font-semibold text-[#D4AF37]">404</p><h1 className="mt-4 text-5xl font-semibold tracking-tight">Nie znaleziono strony</h1><a href="/" className="mt-8 inline-flex rounded-full bg-[#1D1D1F] px-7 py-3 text-sm text-white">Wróć na stronę główną</a></div></section></PageShell>;
-
-const updateMeta = (title: string, description: string) => {
-  document.title = `${title} | Pismo w Sprawie`;
-  const descriptionMeta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-  if (descriptionMeta) descriptionMeta.content = description;
-};
+const updateMeta = (title: string, description: string) => { document.title = `${title} | Pismo w Sprawie`; const descriptionMeta = document.querySelector<HTMLMetaElement>('meta[name="description"]'); if (descriptionMeta) descriptionMeta.content = description; };
 
 export default function App() {
   const path = window.location.pathname.replace(/\/$/, '') || '/';
   const articleMatch = path.match(/^\/blog\/([^/]+)$/);
   const article = articleMatch ? blogPosts.find((post) => post.slug === articleMatch[1]) : undefined;
-
-  if (article) {
-    updateMeta(article.title, article.excerpt);
-    return <ArticlePage slug={article.slug} />;
-  }
-
+  if (article) { updateMeta(article.title, article.excerpt); return <ArticlePage slug={article.slug} />; }
   const legalPage = legalPages[path];
-  if (legalPage) {
-    updateMeta(legalPage.title, legalPage.intro);
-    return <LegalPage page={legalPage} />;
-  }
-
+  if (legalPage) { updateMeta(legalPage.title, legalPage.intro); return <LegalPage page={legalPage} />; }
   const routes: Record<string, { title: string; description: string; page: ReactNode }> = {
     '/': { title: 'Prawne wsparcie. Precyzyjne pisma', description: 'Pisma prawne, umowy i doradztwo przygotowane jasno, konkretnie i z myślą o Twojej sprawie.', page: <HomePage /> },
     '/uslugi': { title: 'Usługi', description: 'Pisma, umowy, analiza sprawy, doradztwo prawne i mediacje.', page: <ServicesPage /> },
-    '/wspolpraca': { title: 'Współpraca', description: 'Poznaj jasne zasady współpracy z Pismo w Sprawie.', page: <CooperationPage /> },
+    '/praktyka': { title: 'Praktyka', description: 'Obszary praktyki Pismo w Sprawie: prawo medyczne, beauty, nieruchomości, spadki, prawo rolne i mediacje.', page: <PracticePage /> },
     '/o-mnie': { title: 'O mnie', description: 'Karolina Zdrojek, prawnik i założycielka Pismo w Sprawie.', page: <AboutPage /> },
     '/blog': { title: 'Blog prawny', description: 'Praktyczne artykuły o prawie w życiu codziennym.', page: <BlogPage /> },
     '/kontakt': { title: 'Kontakt', description: `Kontakt mailowy: ${contactEmail}.`, page: <ContactPage /> },
   };
-
-  const route = routes[path];
-  if (!route) return <NotFoundPage />;
-  updateMeta(route.title, route.description);
-  return route.page;
+  const route = routes[path]; if (!route) return <NotFoundPage />; updateMeta(route.title, route.description); return route.page;
 }

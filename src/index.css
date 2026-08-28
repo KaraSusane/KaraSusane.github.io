@@ -5,27 +5,9 @@ body {
   position: relative;
   margin: 0;
   min-width: 320px;
+  background: #111113;
 }
 
-@keyframes document-float {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) rotate(-0.35deg);
-  }
-
-  50% {
-    transform: translate3d(0, -10px, 0) rotate(0.35deg);
-  }
-}
-
-.hero-document-card {
-  animation: document-float 7s ease-in-out infinite;
-  transform-origin: center;
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-document-card {
-    animation: none;
-  }
+.poster-slash {
+  clip-path: polygon(42% 0, 100% 0, 100% 100%, 0 100%);
 }
