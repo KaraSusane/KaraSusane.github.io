@@ -1,6 +1,8 @@
 import type { BlogPost } from '../types';
+import { najtaniejJestWyrwac } from './najtaniejJestWyrwac';
 
 export const blogPosts: BlogPost[] = [
+  najtaniejJestWyrwac,
   {
     slug: 'klauzula-sumienia-lekarza-kiedy-mozna-odmowic-wykonania-swiadczenia',
     title: 'Klauzula sumienia lekarza. Kiedy można odmówić wykonania świadczenia?',
