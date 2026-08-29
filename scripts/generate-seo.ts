@@ -129,7 +129,7 @@ const standardPages: PageDefinition[] = [
   },
   { path: '/uslugi', title: 'Usługi', description: 'Pisma, umowy, analiza sprawy, doradztwo prawne i mediacje.', staticContent: staticShell('<h1>Usługi</h1><p>Pisma, umowy, analiza sprawy, doradztwo prawne i mediacje.</p>') },
   { path: '/o-mnie', title: 'O mnie', description: 'Karolina Zdrojek, prawnik i założycielka Pismo w Sprawie.', staticContent: staticShell('<h1>Karolina Zdrojek</h1><p>Prawnik i założycielka Pismo w Sprawie.</p>') },
-  { path: '/praktyka', title: 'Praktyka', description: 'Prawo medyczne, beauty, nieruchomości, spadki, prawo rolne i mediacje.', staticContent: staticShell('<h1>Praktyka</h1><p>Obszary praktyki Pismo w Sprawie.</p>') },
+  { path: '/praktyka', title: 'Praktyka', description: 'Prawo medyczne, beauty, nieruchomości, spadki, prawo rolne, karne i mediacje.', staticContent: staticShell('<h1>Praktyka</h1><p>Obszary praktyki Pismo w Sprawie.</p>') },
   { path: '/blog', title: 'Blog prawny', description: 'Praktyczne artykuły o prawie w życiu codziennym.', staticContent: staticShell(`<h1>Prawo w życiu codziennym.</h1>${blogPosts.map((post) => `<h2><a href="/blog/${escapeHtml(post.slug)}/">${escapeHtml(post.title)}</a></h2><p>${escapeHtml(post.excerpt)}</p>`).join('')}`) },
   { path: '/kontakt', title: 'Kontakt', description: 'Kontakt z Pismo w Sprawie: pismowsprawie@gmail.com.', staticContent: staticShell('<h1>Kontakt</h1><p>Napisz na adres pismowsprawie@gmail.com.</p>') },
   { path: '/polityka-prywatnosci', title: 'Polityka prywatności', description: 'Polityka prywatności strony Pismo w Sprawie.', staticContent: staticShell('<h1>Polityka prywatności</h1><p>Polityka prywatności strony internetowej Pismo w Sprawie.</p>') },
