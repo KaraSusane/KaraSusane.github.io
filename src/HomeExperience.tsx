@@ -31,7 +31,7 @@ function DocumentAssembly() {
   const rotate = useTransform(scrollYProgress, [0, 1], [-7, 0]);
   const rotateRight = useTransform(scrollYProgress, [0, 1], [6, 0]);
   return <div ref={target} className="document-scene" aria-label="Przykładowe pismo: fakty, argumenty i wniosek">
-    <div className="document-sheet">
+    <motion.div className="document-sheet" initial={reduced ? false : { opacity: 0, x: 52, y: 24, scale: 0.96 }} whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.75, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}>
       <div className="document-top"><span>PISMO W SPRAWIE</span><span>01 / 01</span></div>
       <h3>Twoje stanowisko.<br />Jasno sformułowane.</h3>
       <p className="document-caption">Schemat pisma</p>
@@ -39,7 +39,7 @@ function DocumentAssembly() {
       <motion.div className="document-block" style={reduced ? undefined : { x: right, rotate: rotateRight }}><span>02 — Argumenty</span><p>Stanowisko oparte na okolicznościach Twojej sprawy.</p></motion.div>
       <motion.div className="document-block document-conclusion" style={reduced ? undefined : { x, rotate }}><span>03 — Wniosek</span><p>Precyzyjnie określony cel pisma.</p></motion.div>
       <div className="document-bottom">Precyzja ma znaczenie.<span>Pismo w Sprawie</span></div>
-    </div>
+    </motion.div>
   </div>;
 }
 
@@ -47,7 +47,7 @@ export function HomeSections() {
   const reduced = useReducedMotion();
   return <>
     <section id="od-sprawy-do-pisma" className="home-process home-band">
-      <div className="home-section-copy"><p className="home-eyebrow">Od sprawy do pisma</p><h2>Trudna sprawa.<br /><span>Jasne stanowisko.</span></h2><p>Wezwanie, umowa, odpowiedź. Zaczynam od zrozumienia Twojej sytuacji. Porządkuję fakty, analizuję dokumenty i dobieram argumenty, które mają znaczenie.</p><p>Efektem jest pismo dopasowane do Twojej sprawy, z czytelną strukturą i konkretnym celem.</p><a href="/uslugi/" className="home-text-link">Sprawdź, jak mogę Ci pomóc <ArrowRight size={20} /></a></div>
+      <motion.div className="home-section-copy" initial={reduced ? false : { opacity: 0, y: 38 }} whileInView={reveal} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}><p className="home-eyebrow">Od sprawy do pisma</p><h2>Trudna sprawa.<br /><span>Jasne stanowisko.</span></h2><p>Wezwanie, umowa, odpowiedź. Zaczynam od zrozumienia Twojej sytuacji. Porządkuję fakty, analizuję dokumenty i dobieram argumenty, które mają znaczenie.</p><p>Efektem jest pismo dopasowane do Twojej sprawy, z czytelną strukturą i konkretnym celem.</p><a href="/uslugi/" className="home-text-link">Sprawdź, jak mogę Ci pomóc <ArrowRight size={20} /></a></motion.div>
       <DocumentAssembly />
     </section>
     <section className="home-about home-band">
