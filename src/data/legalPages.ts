@@ -20,7 +20,7 @@ export const legalPages: Record<string, LegalPageData> = {
         title: '§ 2. Zakres i cel przetwarzania danych',
         paragraphs: [
           'Strona ma charakter informacyjny (tzw. wizytówka). Nie posiadamy formularzy kontaktowych, kont użytkowników ani nie wysyłamy newsletterów. Twoje dane przetwarzamy w minimalnym zakresie w dwóch przypadkach:',
-          'Kontakt mailowy lub telefoniczny: gdy dobrowolnie do nas napiszesz lub zadzwonisz, korzystając z danych podanych na stronie, przetwarzamy Twoje dane (np. adres e-mail, imię, treść wiadomości) w celu udzielenia odpowiedzi na Twoje zapytanie lub przygotowania wyceny usług graficznych.',
+          'Kontakt mailowy: gdy dobrowolnie do nas napiszesz, korzystając z adresu podanego na stronie, przetwarzamy Twoje dane (np. adres e-mail, imię i treść wiadomości) w celu udzielenia odpowiedzi na zapytanie lub przygotowania wyceny usług prawnych.',
           'Podstawa prawna: Art. 6 ust. 1 lit. f RODO (prawnie uzasadniony interes Administratora polegający na komunikacji z potencjalnymi klientami).',
           'Logi serwera (dane techniczne): korzystanie ze strony wiąże się z przesyłaniem zapytań do serwera, na którym strona jest przechowywana. Każde zapytanie jest zapisywane w logach serwera (m.in. adres IP, data i czas serwera, informacje o przeglądarce internetowej i systemie operacyjnym).',
           'Dane te nie są kojarzone z konkretnymi osobami i są usuwane po upływie określonego czasu. Służą wyłącznie do celów administracyjnych i zapewnienia bezpieczeństwa działania strony.',
