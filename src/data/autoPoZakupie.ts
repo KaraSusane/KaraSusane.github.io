@@ -110,15 +110,15 @@ Tego typu sprawy polegają na pokazaniu, że wada była istotna, ukryta, niezgod
 
 ## Bibliografia
 
-- Art. 43a ustawy o prawach konsumenta, brak zgodności towaru z umową. (Lexlege)
-- Art. 43b ustawy o prawach konsumenta, kryteria zgodności towaru z umową oraz obowiązek wyraźnego poinformowania konsumenta o konkretnej cesze odbiegającej od zgodności. (Lexlege)
-- Art. 43c ustawy o prawach konsumenta, odpowiedzialność przedsiębiorcy i domniemanie istnienia braku zgodności. (Lexlege)
-- Art. 43d ustawy o prawach konsumenta, naprawa albo wymiana towaru. (Lexlege)
-- Art. 43e ustawy o prawach konsumenta, obniżenie ceny albo odstąpienie od umowy. (Lexlege)
-- Art. 556 Kodeksu cywilnego, odpowiedzialność sprzedawcy z tytułu rękojmi. (Lexlege)
-- Art. 558 Kodeksu cywilnego, wyłączenie lub ograniczenie rękojmi i podstępne zatajenie wady. (Lexlege)
-- Art. 559 Kodeksu cywilnego, odpowiedzialność za wady istniejące w chwili przejścia niebezpieczeństwa albo wynikłe z przyczyny tkwiącej w rzeczy w tej samej chwili. (pb.pl)
-- Art. 560 Kodeksu cywilnego, obniżenie ceny albo odstąpienie od umowy. (Lexlege)
-- Art. 561 Kodeksu cywilnego, żądanie usunięcia wady albo wymiany rzeczy. (Lexlege)
-- zdjęcie https://www.magnific.com`,
+- Art. 43a ustawy o prawach konsumenta, brak zgodności towaru z umową. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43a/?utm_source=chatgpt.com))
+- Art. 43b ustawy o prawach konsumenta, kryteria zgodności towaru z umową oraz obowiązek wyraźnego poinformowania konsumenta o konkretnej cesze odbiegającej od zgodności. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43b/?utm_source=chatgpt.com))
+- Art. 43c ustawy o prawach konsumenta, odpowiedzialność przedsiębiorcy i domniemanie istnienia braku zgodności. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43c/?utm_source=chatgpt.com))
+- Art. 43d ustawy o prawach konsumenta, naprawa albo wymiana towaru. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43d/?utm_source=chatgpt.com))
+- Art. 43e ustawy o prawach konsumenta, obniżenie ceny albo odstąpienie od umowy. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43e/?utm_source=chatgpt.com))
+- Art. 556 Kodeksu cywilnego, odpowiedzialność sprzedawcy z tytułu rękojmi. ([Lexlege](https://lexlege.pl/kc/art-556/?utm_source=chatgpt.com))
+- Art. 558 Kodeksu cywilnego, wyłączenie lub ograniczenie rękojmi i podstępne zatajenie wady. ([Lexlege](https://lexlege.pl/kc/art-558/?utm_source=chatgpt.com))
+- Art. 559 Kodeksu cywilnego, odpowiedzialność za wady istniejące w chwili przejścia niebezpieczeństwa albo wynikłe z przyczyny tkwiącej w rzeczy w tej samej chwili. ([pb.pl](https://lexlege.pb.pl/kodeks-cywilny/dzial-ii-rekojmia-za-wady/2006?utm_source=chatgpt.com))
+- Art. 560 Kodeksu cywilnego, obniżenie ceny albo odstąpienie od umowy. ([Lexlege](https://lexlege.pl/kc/art-560/?utm_source=chatgpt.com))
+- Art. 561 Kodeksu cywilnego, żądanie usunięcia wady albo wymiany rzeczy. ([Lexlege](https://lexlege.pl/kc/rozdzial-ii-zastaw-na-prawach/1983/?utm_source=chatgpt.com))
+- Zdjęcie: [magnific.com](https://www.magnific.com)`,
 };
