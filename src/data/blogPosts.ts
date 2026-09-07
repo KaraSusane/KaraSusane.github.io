@@ -1,7 +1,9 @@
 import type { BlogPost } from '../types';
+import { autoPoZakupie } from './autoPoZakupie';
 import { najtaniejJestWyrwac } from './najtaniejJestWyrwac';
 
 export const blogPosts: BlogPost[] = [
+  autoPoZakupie,
   najtaniejJestWyrwac,
   {
     slug: 'klauzula-sumienia-lekarza-kiedy-mozna-odmowic-wykonania-swiadczenia',
