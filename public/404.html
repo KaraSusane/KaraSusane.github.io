@@ -2,13 +2,20 @@
 <html lang="pl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex, follow" />
-    <title>Nie znaleziono strony | Pismo w Sprawie</title>
+    <title>Pismo w Sprawie</title>
+    <script>
+      (function () {
+        var keepPathSegments = window.location.hostname.endsWith('.github.io') ? 1 : 0;
+        var pathSegments = window.location.pathname.split('/');
+        var basePath = pathSegments.slice(0, keepPathSegments + 1).join('/');
+        var routePath = pathSegments.slice(keepPathSegments + 1).join('/').replace(/&/g, '~and~');
+        var search = window.location.search ? '&' + window.location.search.slice(1).replace(/&/g, '~and~') : '';
+        var redirectUrl =
+          window.location.origin + basePath + '/?/' + routePath + search + window.location.hash;
+
+        window.location.replace(redirectUrl);
+      })();
+    </script>
   </head>
-  <body style="background:#111113;color:white;font-family:Arial,sans-serif;padding:80px 24px">
-    <h1>Nie znaleziono strony</h1>
-    <p>Adres jest nieprawidłowy lub strona została usunięta.</p>
-    <a href="/" style="color:#ebc256">Wróć na stronę główną</a>
-  </body>
+  <body></body>
 </html>
