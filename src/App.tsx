@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { useEffect, useState, type ReactNode } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import {
   ArrowLeft, ArrowRight, Building2, Gavel, Handshake, Mail, Menu,
   ScrollText, Sparkles, Stethoscope, Wheat, X, type LucideIcon,
 } from 'lucide-react';
+import { Entrance } from './Entrance';
 import { SiteImage } from './SiteImage';
 import { services } from './data/serviceOffers';
 import { normalizePath, updateMetadata } from './seo';
@@ -55,16 +56,8 @@ const categoryPracticeIds: Record<string, string> = {
 
 const Brand = () => <span className="flex items-center gap-3"><span className="flex h-10 w-8 items-center justify-center bg-[#ebc256] px-1.5 py-1"><img src="/logo-pismo-w-sprawie.svg" alt="" width="32" height="40" className="h-full w-full object-contain" /></span><span className="text-sm font-black uppercase text-white">Pismo w Sprawie</span></span>;
 
-const Reveal = ({ children, className = '', delay = 0, x = 0, y = 24, id }: { children: ReactNode; className?: string; delay?: number; x?: number; y?: number; id?: string }) => {
-  const reduceMotion = useReducedMotion();
-  const animated = useRef(false);
-  return <motion.div id={id} className={className} initial={false} viewport={{ once: true, amount: 0.14 }} onViewportEnter={(entry) => {
-    if (animated.current || reduceMotion || !entry) return;
-    animated.current = true;
-    // Content stays visible before hydration and when JavaScript is unavailable.
-    entry.target.animate([{ opacity: 0.65, transform: `translate(${x}px, ${y}px)` }, { opacity: 1, transform: 'none' }], { duration: 550, delay: delay * 1000, easing: 'ease-out' });
-  }}>{children}</motion.div>;
-};
+const Reveal = ({ children, className = '', delay = 0, x = 0, y = 24, id }: { children: ReactNode; className?: string; delay?: number; x?: number; y?: number; id?: string }) =>
+  <Entrance id={id} className={className} from={{ opacity: 0, x, y }} to={{ opacity: 1, x: 0, y: 0 }} amount={0.14} transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}>{children}</Entrance>;
 
 const SectionHeading = ({ eyebrow, title, children, as: Heading = 'h1' }: { eyebrow: string; title: string; children?: ReactNode; as?: 'h1' | 'h2' }) => <Reveal className="mb-12 border-l-4 border-[#ebc256] pl-5 md:pl-7"><p className="mb-4 text-xs font-black uppercase text-[#ebc256]">{eyebrow}</p><Heading className="max-w-5xl text-4xl font-black uppercase leading-[1.02] text-white md:text-6xl">{title}</Heading>{children && <div className="mt-6 max-w-3xl text-lg leading-relaxed text-[#c9c9cf]">{children}</div>}</Reveal>;
 
@@ -105,7 +98,7 @@ const BlogPage = () => {
   }, []);
   const visiblePosts = activeCategory === 'Wszystkie' ? blogPosts : blogPosts.filter((post) => post.category === activeCategory);
   const selectCategory = (category: string) => { setActiveCategory(category); window.history.replaceState(null, '', category === 'Wszystkie' ? '/blog/' : `/blog/?kategoria=${encodeURIComponent(category)}`); };
-  return <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-7xl"><SectionHeading eyebrow="Blog" title="Prawo w życiu codziennym" /><div className="mb-12 border-y border-white/10 py-5"><p className="mb-4 text-[10px] font-black uppercase text-[#77777f]">Wybierz obszar</p><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-label="Kategorie artykułów">{blogCategories.map((category, index) => { const count = category === 'Wszystkie' ? blogPosts.length : blogPosts.filter((post) => post.category === category).length; const active = category === activeCategory; return <button key={category} type="button" aria-pressed={active} onClick={() => selectCategory(category)} className={`group grid min-h-14 w-full grid-cols-[2rem_1fr_2rem] items-center gap-3 border px-4 py-3 text-left transition-colors ${active ? 'border-[#ebc256] bg-[#ebc256] text-[#111113]' : 'border-white/10 bg-[#17171a] text-white hover:border-[#ebc256]'}`}><span className={`text-[10px] font-black ${active ? 'text-[#111113]/55' : 'text-[#ebc256]'}`}>{String(index + 1).padStart(2, '0')}</span><span className="text-xs font-black uppercase leading-snug">{category}</span><span className={`flex h-7 w-7 items-center justify-center text-[10px] font-black ${active ? 'bg-[#111113] text-white' : 'bg-white/10 text-[#b7b7bd]'}`}>{count}</span></button>; })}</div></div><motion.p layout className="mb-5 text-sm text-[#8f8f96]">{visiblePosts.length} {visiblePosts.length === 1 ? 'artykuł' : visiblePosts.length < 5 ? 'artykuły' : 'artykułów'} w kategorii <strong className="text-white">{activeCategory.toLowerCase()}</strong></motion.p><motion.div layout className="grid gap-5 md:grid-cols-2 xl:grid-cols-3"><AnimatePresence mode="popLayout" initial={false}>{visiblePosts.map((post) => <motion.article layout key={post.slug} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97 }} transition={{ duration: 0.28 }}><BlogCard post={post} /></motion.article>)}</AnimatePresence></motion.div></div></section></PageShell>;
+  return <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-7xl"><SectionHeading eyebrow="Blog" title="Prawo w życiu codziennym" /><div className="mb-12 border-y border-white/10 py-5"><p className="mb-4 text-[10px] font-black uppercase text-[#77777f]">Wybierz obszar</p><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-label="Kategorie artykułów">{blogCategories.map((category, index) => { const count = category === 'Wszystkie' ? blogPosts.length : blogPosts.filter((post) => post.category === category).length; const active = category === activeCategory; return <button key={category} type="button" aria-pressed={active} onClick={() => selectCategory(category)} className={`group grid min-h-14 w-full grid-cols-[2rem_1fr_2rem] items-center gap-3 border px-4 py-3 text-left transition-colors ${active ? 'border-[#ebc256] bg-[#ebc256] text-[#111113]' : 'border-white/10 bg-[#17171a] text-white hover:border-[#ebc256]'}`}><span className={`text-[10px] font-black ${active ? 'text-[#111113]/55' : 'text-[#ebc256]'}`}>{String(index + 1).padStart(2, '0')}</span><span className="text-xs font-black uppercase leading-snug">{category}</span><span className={`flex h-7 w-7 items-center justify-center text-[10px] font-black ${active ? 'bg-[#111113] text-white' : 'bg-white/10 text-[#b7b7bd]'}`}>{count}</span></button>; })}</div></div><motion.p layout className="mb-5 text-sm text-[#8f8f96]">{visiblePosts.length} {visiblePosts.length === 1 ? 'artykuł' : visiblePosts.length < 5 ? 'artykuły' : 'artykułów'} w kategorii <strong className="text-white">{activeCategory.toLowerCase()}</strong></motion.p><motion.div layout className="grid gap-5 md:grid-cols-2 xl:grid-cols-3"><AnimatePresence mode="popLayout" initial={false}>{visiblePosts.map((post) => <motion.article layout key={post.slug} initial={false} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97 }} transition={{ duration: 0.28 }}><Entrance className="h-full" when="mount" from={{ opacity: 0, y: 18 }} to={{ opacity: 1, y: 0 }} transition={{ duration: 0.28 }}><BlogCard post={post} /></Entrance></motion.article>)}</AnimatePresence></motion.div></div></section></PageShell>;
 };
 
 const renderInline = (text: string) => text.split(/(\*\*.*?\*\*|\[[^\]]+\]\(https?:\/\/[^)]+\))/g).map((part, index) => {
