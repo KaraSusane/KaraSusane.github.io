@@ -1,5 +1,8 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { createElement } from 'react';
+import { renderToString } from 'react-dom/server';
+import App from '../src/App.tsx';
 import { blogPosts } from '../src/data/blogPosts.ts';
 
 const siteUrl = 'https://pismowsprawie.pl';
@@ -77,7 +80,6 @@ const buildHead = (page: PageDefinition) => {
   };
 
   return `
-    <style>#root[data-static-seo]{visibility:hidden}</style>
     <link rel="canonical" href="${escapeHtml(canonicalUrl)}" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta property="og:locale" content="pl_PL" />
@@ -97,6 +99,7 @@ const buildHead = (page: PageDefinition) => {
 const renderPage = (page: PageDefinition) => {
   const completeTitle = `${page.title} | ${siteName}`;
   const head = buildHead(page);
+  const content = renderToString(createElement(App, { pathname: page.path }));
 
   return baseHtml
     .replace(/<title>.*?<\/title>/s, `<title>${escapeHtml(completeTitle)}</title>`)
@@ -105,7 +108,7 @@ const renderPage = (page: PageDefinition) => {
       `<meta name="description" content="${escapeHtml(page.description)}" />`,
     )
     .replace('</head>', `${head}\n  </head>`)
-    .replace('<div id="root"></div>', `<div id="root" data-static-seo>${page.staticContent}</div>`);
+    .replace('<div id="root"></div>', `<div id="root" data-prerendered>${content}</div>`);
 };
 
 const writePage = async (page: PageDefinition) => {

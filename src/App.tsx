@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   ArrowLeft, ArrowRight, Building2, Gavel, Handshake, Mail, Menu,
@@ -62,7 +62,7 @@ const Brand = () => <span className="flex items-center gap-3"><span className="f
 
 const Reveal = ({ children, className = '', delay = 0, x = 0, y = 24, id }: { children: ReactNode; className?: string; delay?: number; x?: number; y?: number; id?: string }) => {
   const reduceMotion = useReducedMotion();
-  return <motion.div id={id} className={className} initial={reduceMotion ? false : { opacity: 0, x, y }} whileInView={reduceMotion ? undefined : { opacity: 1, x: 0, y: 0 }} viewport={{ once: true, amount: 0.14 }} transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}>{children}</motion.div>;
+  return <motion.div id={id} className={className} initial={{ opacity: 0, x, y }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: true, amount: 0.14 }} transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] }}>{children}</motion.div>;
 };
 
 const SectionHeading = ({ eyebrow, title, children }: { eyebrow: string; title: string; children?: ReactNode }) => <Reveal className="mb-12 border-l-4 border-[#ebc256] pl-5 md:pl-7"><p className="mb-4 text-xs font-black uppercase text-[#ebc256]">{eyebrow}</p><h1 className="max-w-5xl text-4xl font-black uppercase leading-[1.02] text-white md:text-6xl">{title}</h1>{children && <div className="mt-6 max-w-3xl text-lg leading-relaxed text-[#c9c9cf]">{children}</div>}</Reveal>;
@@ -97,11 +97,15 @@ const formatDate = (date: string) => new Intl.DateTimeFormat('pl-PL', { day: 'nu
 const blogCategories = ['Wszystkie', ...Array.from(new Set(blogPosts.map((post) => post.category)))];
 const BlogCard = ({ post }: { post: (typeof blogPosts)[number] }) => <a href={`/blog/${post.slug}/`} className="group block h-full overflow-hidden border border-white/10 bg-[#1a1a1e] transition-colors hover:border-[#ebc256]"><img src={post.coverImage || defaultCover} alt={post.coverAlt || post.title} className="aspect-[16/10] w-full object-cover object-top" /><div className="border-t-4 border-[#ebc256] p-6"><div className="mb-4 flex items-center justify-between gap-3 text-xs font-bold uppercase text-[#ebc256]"><span>{post.category}</span><time>{formatDate(post.publishedAt)}</time></div><h2 className="text-2xl font-black leading-tight">{post.title}</h2><p className="mt-4 line-clamp-5 text-sm leading-relaxed text-[#b7b7bd]">{post.excerpt}</p><span className="mt-6 inline-flex items-center gap-2 text-sm font-black uppercase">Czytaj dalej<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span></div></a>;
 const BlogPage = () => {
-  const requestedCategory = new URLSearchParams(window.location.search).get('kategoria');
-  const [activeCategory, setActiveCategory] = useState(blogCategories.includes(requestedCategory || '') ? requestedCategory! : 'Wszystkie');
+  const reduceMotion = useReducedMotion();
+  const [activeCategory, setActiveCategory] = useState('Wszystkie');
+  useEffect(() => {
+    const requestedCategory = new URLSearchParams(window.location.search).get('kategoria');
+    if (requestedCategory && blogCategories.includes(requestedCategory)) setActiveCategory(requestedCategory);
+  }, []);
   const visiblePosts = activeCategory === 'Wszystkie' ? blogPosts : blogPosts.filter((post) => post.category === activeCategory);
   const selectCategory = (category: string) => { setActiveCategory(category); window.history.replaceState(null, '', category === 'Wszystkie' ? '/blog/' : `/blog/?kategoria=${encodeURIComponent(category)}`); };
-  return <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-7xl"><SectionHeading eyebrow="Blog" title="Prawo w życiu codziennym" /><div className="mb-12 border-y border-white/10 py-5"><p className="mb-4 text-[10px] font-black uppercase text-[#77777f]">Wybierz obszar</p><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-label="Kategorie artykułów">{blogCategories.map((category, index) => { const count = category === 'Wszystkie' ? blogPosts.length : blogPosts.filter((post) => post.category === category).length; const active = category === activeCategory; return <button key={category} type="button" aria-pressed={active} onClick={() => selectCategory(category)} className={`group grid min-h-14 w-full grid-cols-[2rem_1fr_2rem] items-center gap-3 border px-4 py-3 text-left transition-colors ${active ? 'border-[#ebc256] bg-[#ebc256] text-[#111113]' : 'border-white/10 bg-[#17171a] text-white hover:border-[#ebc256]'}`}><span className={`text-[10px] font-black ${active ? 'text-[#111113]/55' : 'text-[#ebc256]'}`}>{String(index + 1).padStart(2, '0')}</span><span className="text-xs font-black uppercase leading-snug">{category}</span><span className={`flex h-7 w-7 items-center justify-center text-[10px] font-black ${active ? 'bg-[#111113] text-white' : 'bg-white/10 text-[#b7b7bd]'}`}>{count}</span></button>; })}</div></div><motion.p layout className="mb-5 text-sm text-[#8f8f96]">{visiblePosts.length} {visiblePosts.length === 1 ? 'artykuł' : visiblePosts.length < 5 ? 'artykuły' : 'artykułów'} w kategorii <strong className="text-white">{activeCategory.toLowerCase()}</strong></motion.p><motion.div layout className="grid gap-5 md:grid-cols-2 xl:grid-cols-3"><AnimatePresence mode="popLayout">{visiblePosts.map((post) => <motion.article layout key={post.slug} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97 }} transition={{ duration: 0.28 }}><BlogCard post={post} /></motion.article>)}</AnimatePresence></motion.div></div></section></PageShell>;
+  return <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-7xl"><SectionHeading eyebrow="Blog" title="Prawo w życiu codziennym" /><div className="mb-12 border-y border-white/10 py-5"><p className="mb-4 text-[10px] font-black uppercase text-[#77777f]">Wybierz obszar</p><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-label="Kategorie artykułów">{blogCategories.map((category, index) => { const count = category === 'Wszystkie' ? blogPosts.length : blogPosts.filter((post) => post.category === category).length; const active = category === activeCategory; return <button key={category} type="button" aria-pressed={active} onClick={() => selectCategory(category)} className={`group grid min-h-14 w-full grid-cols-[2rem_1fr_2rem] items-center gap-3 border px-4 py-3 text-left transition-colors ${active ? 'border-[#ebc256] bg-[#ebc256] text-[#111113]' : 'border-white/10 bg-[#17171a] text-white hover:border-[#ebc256]'}`}><span className={`text-[10px] font-black ${active ? 'text-[#111113]/55' : 'text-[#ebc256]'}`}>{String(index + 1).padStart(2, '0')}</span><span className="text-xs font-black uppercase leading-snug">{category}</span><span className={`flex h-7 w-7 items-center justify-center text-[10px] font-black ${active ? 'bg-[#111113] text-white' : 'bg-white/10 text-[#b7b7bd]'}`}>{count}</span></button>; })}</div></div><motion.p layout className="mb-5 text-sm text-[#8f8f96]">{visiblePosts.length} {visiblePosts.length === 1 ? 'artykuł' : visiblePosts.length < 5 ? 'artykuły' : 'artykułów'} w kategorii <strong className="text-white">{activeCategory.toLowerCase()}</strong></motion.p><motion.div layout className="grid gap-5 md:grid-cols-2 xl:grid-cols-3"><AnimatePresence mode="popLayout">{visiblePosts.map((post) => <motion.article layout key={post.slug} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97 }} transition={{ duration: reduceMotion ? 0 : 0.28 }}><BlogCard post={post} /></motion.article>)}</AnimatePresence></motion.div></div></section></PageShell>;
 };
 
 const renderInline = (text: string) => text.split(/(\*\*.*?\*\*|\[[^\]]+\]\(https?:\/\/[^)]+\))/g).map((part, index) => {
@@ -120,17 +124,11 @@ const NotFoundPage = () => <PageShell><section className="flex min-h-[75vh] item
 
 const updateMeta = (title: string, description: string) => { document.title = `${title} | Pismo w Sprawie`; const descriptionMeta = document.querySelector<HTMLMetaElement>('meta[name="description"]'); if (descriptionMeta) descriptionMeta.content = description; };
 
-export default function App() {
-  useLayoutEffect(() => {
-    document.getElementById('root')?.removeAttribute('data-static-seo');
-  }, []);
-
-  const path = window.location.pathname.replace(/\/$/, '') || '/';
+export default function App({ pathname = '/' }: { pathname?: string }) {
+  const path = pathname.replace(/\/$/, '') || '/';
   const articleMatch = path.match(/^\/blog\/([^/]+)$/);
   const article = articleMatch ? blogPosts.find((post) => post.slug === articleMatch[1]) : undefined;
-  if (article) { updateMeta(article.title, article.excerpt); return <ArticlePage slug={article.slug} />; }
   const legalPage = legalPages[path];
-  if (legalPage) { updateMeta(legalPage.title, legalPage.intro); return <LegalPage page={legalPage} />; }
   const routes: Record<string, { title: string; description: string; page: ReactNode }> = {
     '/': { title: 'Prawne wsparcie. Precyzyjne pisma', description: 'Pisma prawne, umowy i doradztwo przygotowane jasno, konkretnie i z myślą o Twojej sprawie.', page: <HomePage /> },
     '/uslugi': { title: 'Usługi', description: 'Pisma, umowy, analiza sprawy, doradztwo prawne i mediacje.', page: <ServicesPage /> },
@@ -139,5 +137,13 @@ export default function App() {
     '/blog': { title: 'Blog prawny', description: 'Praktyczne artykuły o prawie w życiu codziennym.', page: <BlogPage /> },
     '/kontakt': { title: 'Kontakt', description: `Kontakt mailowy: ${contactEmail}.`, page: <ContactPage /> },
   };
-  const route = routes[path]; if (!route) return <NotFoundPage />; updateMeta(route.title, route.description); return route.page;
+  const route = routes[path];
+  useEffect(() => {
+    if (article) updateMeta(article.title, article.excerpt);
+    else if (legalPage) updateMeta(legalPage.title, legalPage.intro);
+    else if (route) updateMeta(route.title, route.description);
+  }, [article, legalPage, route]);
+  if (article) return <ArticlePage slug={article.slug} />;
+  if (legalPage) return <LegalPage page={legalPage} />;
+  return route?.page || <NotFoundPage />;
 }
