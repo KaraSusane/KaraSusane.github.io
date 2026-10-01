@@ -1,0 +1,7 @@
+export const services = [
+  { number: '01', title: 'Analiza i wycena', minimumPrice: 0, price: '0 zł', description: 'Wstępne sprawdzenie zgłoszenia, dokumentów i możliwego terminu realizacji.', details: ['Pilna sprawa: cena podstawowa plus 50 procent za tryb szybszej realizacji.', 'Tryb pilny jest dostępny po wcześniejszym sprawdzeniu terminu i zakresu dokumentów.'] },
+  { number: '02', title: 'Pisma', minimumPrice: 149, price: 'od 149 zł', description: 'Pisma, wezwania, wnioski, odwołania i odpowiedzi dopasowane do konkretnej sprawy.', details: ['Krótkie pismo do dwóch stron: od 149 zł', 'Odpowiedź na pismo: od 299 zł', 'Pismo z argumentacją: od 399 zł', 'Rozbudowane pismo powyżej 4 stron: od 499 zł'] },
+  { number: '03', title: 'Umowy', minimumPrice: 299, price: 'od 299 zł', description: 'Umowy gospodarcze i cywilne przygotowane od podstaw lub uporządkowane przed podpisaniem.', details: ['Krótka umowa do dwóch stron: od 299 zł', 'Rozbudowana umowa powyżej 4 stron: od 499 zł'] },
+  { number: '04', title: 'Doradztwo prawne', minimumPrice: 199, price: 'od 199 zł', description: 'Pisemne wyjaśnienie sytuacji i możliwych dalszych kroków.', details: ['Pisemna konsultacja lub opracowanie sprawy: od 199 zł', 'Konsultacja online przez Microsoft Teams JUŻ WKRÓTCE'] },
+  { number: '05', title: 'Mediacje', price: 'już wkrótce', description: 'Wsparcie w spokojnym wypracowaniu rozwiązania akceptowalnego dla stron.', details: ['Szczegółowy zakres i terminy pojawią się wkrótce.'] },
+];

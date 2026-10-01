@@ -13,6 +13,7 @@ body {
 }
 
 html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; }
 .home-hero { position: relative; overflow: hidden; padding: 140px 32px 38px; background: #111113; }
 .home-hero-inner { position: relative; max-width: 1280px; margin: auto; }
 .home-slash { position: absolute; inset: 0 0 0 auto; width: 29%; background: #ebc256; clip-path: polygon(75% 0,100% 0,100% 100%,0 100%); }
@@ -20,6 +21,13 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 .home-title { font-size: 104px; font-weight: 900; line-height: .98; text-transform: uppercase; }
 .home-title-mask { display: block; overflow: hidden; }
 .home-title-mask > span { display: block; }
+.home-specialty { display: block; max-width: 670px; margin-top: 24px; font-size: 22px; font-weight: 700; line-height: 1.5; text-transform: none; }
+@keyframes hero-arrive {
+  from { transform: translateY(18px); }
+  to { transform: translateY(0); }
+}
+.home-title-mask > span { animation: hero-arrive .75s ease-out; }
+.home-title-mask:nth-child(2) > span { animation-delay: .1s; }
 .home-rule { height: 3px; background: #ebc256; max-width: 670px; margin: 28px 0 22px; transform-origin: left; }
 .home-tagline { font-size: 32px; font-weight: 700; line-height: 1.2; }
 .home-intro { max-width: 570px; margin-top: 18px; color: #bcbcc3; font-size: 18px; line-height: 1.7; }
@@ -66,6 +74,11 @@ article h2 { text-transform: none; }
     animation-timeline: view();
     animation-range: entry 0% entry 90%;
   }
+  .home-section-copy, .document-sheet, .home-about > figure {
+    animation: card-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
 }
 @media (max-width: 1023px) {
   .home-title { font-size: 80px; }
@@ -77,8 +90,10 @@ article h2 { text-transform: none; }
   .document-sheet { padding: 22px; box-shadow: 8px 12px 0 #ebc256; }
 }
 @media (max-width: 639px) {
+  h1:not(.home-title) { font-size: 32px; }
   .home-hero { padding: 112px 20px 28px; }
   .home-title { font-size: 54px; }
+  .home-specialty { max-width: 290px; font-size: 18px; }
   .home-slash { width: 12%; clip-path: polygon(100% 0,100% 0,100% 100%,0 100%); }
   .home-eyebrow { max-width: 260px; font-size: 10px; line-height: 1.7; margin-bottom: 22px; }
   .home-tagline { font-size: 25px; max-width: 290px; }
@@ -94,7 +109,11 @@ article h2 { text-transform: none; }
   .home-contact { padding: 40px 20px; align-items: flex-start; flex-direction: column; }
   .home-contact h2 { font-size: 32px; }
 }
+@media (max-width: 359px) {
+  h1:not(.home-title) { font-size: 28px; }
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
+  .document-block { transform: none !important; }
 }
