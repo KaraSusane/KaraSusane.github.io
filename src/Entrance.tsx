@@ -23,9 +23,13 @@ export function Entrance({ as = 'div', children, className, id, 'aria-hidden': a
 
   // Arm the entrance after hydration, leaving the server-rendered content visible.
   useLayoutEffect(() => {
-    const { from, to, transition } = animation.current;
+    const { from, to } = animation.current;
+    if (when === 'mount') {
+      controls.set(to);
+      return () => controls.stop();
+    }
     controls.set(reduced ? to : from);
-    if (reduced || when === 'mount') void controls.start(to, reduced ? { duration: 0 } : transition);
+    if (reduced) void controls.start(to, { duration: 0 });
     return () => controls.stop();
   }, [controls, reduced, when]);
 

@@ -79,18 +79,6 @@ article h2 { text-transform: none; }
 .home-title-mask:nth-child(2) > span { animation-delay: .13s; }
 .home-rule { animation: hero-rule-in .8s ease .25s both; }
 .home-hero-copy { animation: fade-up-in .6s ease .35s both; }
-.page-heading { animation: fade-up-in .55s cubic-bezier(.22,1,.36,1) both; }
-@keyframes card-reveal {
-  from { opacity: .3; translate: 0 18px; }
-  to { opacity: 1; translate: 0 0; }
-}
-@supports (animation-timeline: view()) {
-  section .grid > article, section .grid > a.group {
-    animation: card-reveal linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 90%;
-  }
-}
 @media (max-width: 1023px) {
   .home-title { font-size: 80px; }
   .home-slash { width: 18%; opacity: .85; }
