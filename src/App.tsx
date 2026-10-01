@@ -59,7 +59,7 @@ const Brand = () => <span className="flex items-center gap-3"><span className="f
 const Reveal = ({ children, className = '', delay = 0, x = 0, y = 24, id }: { children: ReactNode; className?: string; delay?: number; x?: number; y?: number; id?: string }) =>
   <Entrance id={id} className={className} from={{ opacity: 0, x, y }} to={{ opacity: 1, x: 0, y: 0 }} amount={0.14} transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}>{children}</Entrance>;
 
-const SectionHeading = ({ eyebrow, title, children, as: Heading = 'h1' }: { eyebrow: string; title: string; children?: ReactNode; as?: 'h1' | 'h2' }) => <Reveal className="mb-12 border-l-4 border-[#ebc256] pl-5 md:pl-7"><p className="mb-4 text-xs font-black uppercase text-[#ebc256]">{eyebrow}</p><Heading className="max-w-5xl text-4xl font-black uppercase leading-[1.02] text-white md:text-6xl">{title}</Heading>{children && <div className="mt-6 max-w-3xl text-lg leading-relaxed text-[#c9c9cf]">{children}</div>}</Reveal>;
+const SectionHeading = ({ eyebrow, title, children, as: Heading = 'h1' }: { eyebrow: string; title: string; children?: ReactNode; as?: 'h1' | 'h2' }) => <div className="page-heading mb-12 border-l-4 border-[#ebc256] pl-5 md:pl-7"><p className="mb-4 text-xs font-black uppercase text-[#ebc256]">{eyebrow}</p><Heading className="max-w-5xl text-4xl font-black uppercase leading-[1.02] text-white md:text-6xl">{title}</Heading>{children && <div className="mt-6 max-w-3xl text-lg leading-relaxed text-[#c9c9cf]">{children}</div>}</div>;
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -8,16 +8,16 @@ const reveal = { opacity: 1, y: 0 };
 
 export function AnimatedHero() {
   return <section className="home-hero">
-    <Entrance className="home-slash" aria-hidden from={{ x: 180, opacity: 0 }} to={{ x: 0, opacity: 1 }} when="mount" transition={{ duration: 0.85, ease: 'easeOut' }} />
+    <div className="home-slash" aria-hidden="true" />
     <div className="home-hero-inner">
       <p className="home-eyebrow">Precyzyjne pisma / Skuteczne rozwiązania</p>
-      <h1 className="home-title">{['Pismo ', 'w Sprawie '].map((line, index) => <span key={line} className="home-title-mask"><Entrance as="span" from={{ y: '110%' }} to={{ y: 0 }} when="mount" transition={{ duration: 0.75, delay: index * 0.13, ease: [0.22, 1, 0.36, 1] }}>{line}</Entrance></span>)}<span className="home-specialty">Prawnik · pisma prawne i analiza umów</span></h1>
-      <Entrance className="home-rule" aria-hidden from={{ scaleX: 0 }} to={{ scaleX: 1 }} when="mount" transition={{ duration: 0.8, delay: 0.25 }} />
-      <Entrance from={{ opacity: 0, y: 12 }} to={reveal} when="mount" transition={{ duration: 0.6, delay: 0.35 }}>
+      <h1 className="home-title">{['Pismo ', 'w Sprawie '].map((line) => <span key={line} className="home-title-mask"><span>{line}</span></span>)}<span className="home-specialty">Prawnik · pisma prawne i analiza umów</span></h1>
+      <div className="home-rule" aria-hidden="true" />
+      <div className="home-hero-copy">
         <h2 className="home-tagline">Prawo po Twojej stronie.</h2>
         <p className="home-intro">Prawne wsparcie, precyzyjna argumentacja i dokumenty przygotowane z myślą o realnym celu Twojej sprawy.</p>
         <div className="home-actions"><a className="home-button" href="/praktyka/">Poznaj obszary praktyki <ArrowRight size={20} /></a><a className="home-text-link" href="/uslugi/">Zobacz usługi <ArrowRight size={20} /></a></div>
-      </Entrance>
+      </div>
       <a href="#od-sprawy-do-pisma" className="home-scroll">Od sprawy do pisma <ArrowDown size={17} /></a>
     </div>
   </section>;
