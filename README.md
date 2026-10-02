@@ -17,6 +17,15 @@ Zbuduj projekt poleceniem:
 
 Gotowe pliki trafiaja do katalogu `dist/`.
 
+## Sprawdzenie zmian
+
+Po zbudowaniu projektu uruchom `npm run lint` i `npm test`.
+Testy sprawdzaja m.in. linki wewnetrzne, naglowki, metadane i zachowanie strony 404.
+GitHub Actions wykonuje te kontrole przed publikacja strony.
+
+Dane kontaktowe, nawigacja i metadane podstron maja jedno zrodlo w `src/data/site.ts`.
+Aktualna oferta znajduje sie w `src/data/services.ts`.
+
 ## Deployment na GitHub Pages
 
 Projekt ma juz przygotowany workflow w `.github/workflows/deploy-pages.yml`.

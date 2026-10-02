@@ -38,6 +38,11 @@ jobs:
       - name: Build site
         run: npm run build
 
+      - name: Check types and site regressions
+        run: |
+          npm run lint
+          npm test
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

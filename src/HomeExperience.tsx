@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, ArrowDown } from 'lucide-react';
+import { mailto } from './data/site';
 
 const reveal = { opacity: 1, y: 0 };
 
@@ -54,6 +55,6 @@ export function HomeSections() {
       <motion.figure initial={{ opacity: 0, y: 24 }} whileInView={reveal} viewport={{ once: true, amount: 0.2 }} transition={{ duration: reduced ? 0 : 0.6 }}><img src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek, założycielka Pismo w Sprawie" width="600" height="750" loading="lazy" /></motion.figure>
       <div className="home-section-copy"><p className="home-eyebrow">Za każdym pismem stoi człowiek</p><h2>Karolina Zdrojek</h2><p className="home-about-lead">Wiedza prawnicza.<br />Uważność na Twoją sprawę.</p><p>Jestem prawnikiem i założycielką Pismo w Sprawie. Łączę analizę prawną z dbałością o język, strukturę dokumentów i ich praktyczne zastosowanie.</p><a href="/o-mnie/" className="home-button">Poznaj mnie <ArrowRight size={20} /></a></div>
     </section>
-    <section className="home-contact"><div><p className="home-eyebrow">Zacznijmy od rozmowy</p><h2>Opisz swoją sprawę.</h2><p>Otrzymasz indywidualną wycenę i proponowany termin realizacji.</p></div><a className="home-button" href="mailto:pismowsprawie@gmail.com">Napisz maila <ArrowRight size={20} /></a></section>
+    <section className="home-contact"><div><p className="home-eyebrow">Zacznijmy od rozmowy</p><h2>Opisz swoją sprawę.</h2><p>Otrzymasz indywidualną wycenę i proponowany termin realizacji.</p></div><a className="home-button" href={mailto()}>Napisz maila <ArrowRight size={20} /></a></section>
   </>;
 }

@@ -11,23 +11,6 @@
     />
     <title>Pismo w Sprawie</title>
     <noscript><style>#root [style]{opacity:1!important;transform:none!important}</style></noscript>
-    <script>
-      (function () {
-        if (!window.location.search.startsWith('?/')) {
-          return;
-        }
-
-        const decodedPath = window.location.search
-          .slice(2)
-          .split('&')
-          .map((segment, index) => (index === 0 ? segment : `?${segment}`))
-          .join('')
-          .replace(/~and~/g, '&');
-        const nextUrl = `${window.location.pathname.replace(/\/$/, '')}/${decodedPath}${window.location.hash}`;
-
-        window.history.replaceState(null, '', nextUrl);
-      })();
-    </script>
   </head>
   <body style="background:#111113">
     <div id="root"></div>
