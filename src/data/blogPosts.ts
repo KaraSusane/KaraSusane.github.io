@@ -1,8 +1,10 @@
 import type { BlogPost } from '../types';
 import { autoPoZakupie } from './autoPoZakupie';
 import { najtaniejJestWyrwac } from './najtaniejJestWyrwac';
+import { rodoWPraktyce } from './rodoWPraktyce';
 
 export const blogPosts: BlogPost[] = [
+  rodoWPraktyce,
   autoPoZakupie,
   najtaniejJestWyrwac,
   {

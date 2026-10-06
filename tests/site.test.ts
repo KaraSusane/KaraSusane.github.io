@@ -6,6 +6,7 @@ import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import App from '../src/App';
 import { blogPosts } from '../src/data/blogPosts';
+import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
 import { standardPages, getPageMetadata, pageUrl, navItems, siteName } from '../src/data/site';
 
 const paths = [...Object.keys(standardPages), ...blogPosts.map(post => `/blog/${post.slug}`)];
@@ -58,4 +59,19 @@ test('Practice headings and cards use the same CSS entrance, without hidden Moti
   const html = renderToString(createElement(App, { pathname: '/praktyka/' }));
   assert.equal((html.match(/class="page-enter /g) || []).length, 8);
   assert.equal(html.includes('opacity:0'), false);
+});
+
+test('RODO article preserves publication date, cover, headings and Word formatting', async () => {
+  const html = await readFile(resolve('dist', 'blog', rodoWPraktyce.slug, 'index.html'), 'utf8');
+  assert.ok(html.includes('dateTime="2026-10-05"'));
+  assert.ok(html.includes('src="/rodo-w-praktyce.jpeg"'));
+  assert.ok(html.includes('Ochrona danych osobowych'));
+  const headings = [...rodoWPraktyce.content.matchAll(/^## (.+)$/gm)];
+  assert.equal(headings.length, 16);
+  for (const [, heading] of headings) assert.ok(html.includes(escape(heading)));
+  assert.ok(html.includes('<em>Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.</em>'));
+  assert.ok(html.includes('<em>Autor: mgr. prawa Karolina Zdrojek</em>'));
+  assert.ok(html.includes('href="https://www.magnific.com"'));
+  assert.ok(html.includes('text-justify'));
+  assert.equal(html.includes('**po co firma'), false);
 });
