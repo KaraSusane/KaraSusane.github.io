@@ -17,6 +17,8 @@ export const autoPoZakupie: BlogPost = {
     'prawa kupującego samochód',
   ],
   coverImage: '/auto-po-zakupie-okazalo-sie-mina.jpeg',
+  coverWidth: 1280,
+  coverHeight: 853,
   coverAlt: 'Spalony samochód stojący na skraju lasu',
   content: `## Używany samochód może być zużyty, ale nie może być prawną pułapką.
 

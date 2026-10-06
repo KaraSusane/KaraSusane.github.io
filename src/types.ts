@@ -8,5 +8,7 @@ export interface BlogPost {
   publishedAt: string;
   keywords?: string[];
   coverImage?: string;
+  coverWidth: number;
+  coverHeight: number;
   coverAlt?: string;
 }

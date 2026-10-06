@@ -7,7 +7,8 @@ import { renderToString } from 'react-dom/server';
 import App from '../src/App';
 import { blogPosts } from '../src/data/blogPosts';
 import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
-import { standardPages, getPageMetadata, pageUrl, navItems, siteName } from '../src/data/site';
+import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl } from '../src/data/site';
+import { services } from '../src/data/services';
 
 const paths = [...Object.keys(standardPages), ...blogPosts.map(post => `/blog/${post.slug}`)];
 const escape = (value: string) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll("'", '&#039;');
@@ -57,6 +58,8 @@ for (const path of paths) {
     const metadata = getPageMetadata(`${path}/`);
     assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1);
     assert.ok(html.includes(`<title>${escape(metadata.title)} | ${siteName}</title>`));
+    assert.ok(html.includes(`property="og:title" content="${escape(metadata.title)} | ${siteName}"`));
+    assert.ok(html.includes(`name="twitter:title" content="${escape(metadata.title)} | ${siteName}"`));
     assert.ok(html.includes(`name="description" content="${escape(metadata.description)}"`));
     assert.ok(html.includes(`rel="canonical" href="${pageUrl(path)}"`));
     assert.ok(html.includes('data-prerendered'));
@@ -76,6 +79,8 @@ test('404 renders without redirecting to a 200 homepage', async () => {
   assert.ok(html.includes('Nie znaleziono strony'));
   assert.equal(html.includes('window.location.replace'), false);
   assert.equal(html.includes('rel="canonical"'), false);
+  assert.equal(html.includes('property="og:url"'), false);
+  assert.equal(html.includes('id="structured-data"'), false);
   assert.equal(getPageMetadata('/not-a-route/').noindex, true);
 });
 
@@ -103,8 +108,89 @@ test('RODO article preserves publication date, cover, headings and Word formatti
   assert.equal(headings.length, 16);
   for (const [, heading] of headings) assert.ok(html.includes(escape(heading)));
   assert.ok(html.includes('<em>Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.</em>'));
-  assert.ok(html.includes('<em>Autor: mgr. prawa Karolina Zdrojek</em>'));
+  assert.ok(html.includes('<em>Autor: mgr prawa Karolina Zdrojek</em>'));
+  assert.ok(html.includes('<strong class="font-black text-white">Nadmiar zgód nie wzmacnia firmy.</strong>'));
   assert.ok(html.includes('href="https://www.magnific.com"'));
   assert.ok(html.includes('text-justify'));
   assert.equal(html.includes('**po co firma'), false);
+});
+
+const readSchema = async (path: string) => {
+  const html = await readFile(resolve('dist', `.${path === '/' ? '' : path}/index.html`), 'utf8');
+  const match = html.match(/<script id="structured-data" type="application\/ld\+json">(.+?)<\/script>/s);
+  assert.ok(match, `Missing structured data on ${path}`);
+  const schema = JSON.parse(match[1]);
+  assert.equal(schema['@context'], 'https://schema.org');
+  return schema['@graph'] as Array<Record<string, any>>;
+};
+
+test('Structured data describes the actual legal service and author profile', async () => {
+  for (const path of ['/', '/uslugi']) {
+    const schema = await readSchema(path);
+    const service = schema.find(node => node['@type'] === 'LegalService');
+    assert.ok(service);
+    assert.equal(service.name, siteName);
+    assert.equal(service.email, contactEmail);
+    assert.equal(service.priceRange, services.find(service => service.number === '02')?.price);
+    assert.equal(service.founder.name, authorName);
+    assert.equal(service.founder.url, pageUrl('/o-mnie'));
+    assert.equal(service.areaServed.name, 'Polska');
+    assert.equal(service.logo.url, `${siteUrl}/apple-touch-icon.png`);
+    assert.equal(service.address, undefined, 'Do not invent an office address');
+  }
+  const about = await readSchema('/o-mnie');
+  const profile = about.find(node => node['@type'] === 'ProfilePage');
+  assert.ok(profile);
+  assert.equal(profile.mainEntity['@type'], 'Person');
+  assert.equal(profile.mainEntity.name, authorName);
+  assert.equal(profile.mainEntity.jobTitle, 'Prawnik');
+  assert.equal(profile.mainEntity.url, pageUrl('/o-mnie'));
+});
+
+test('Breadcrumbs and article schemas have canonical URLs, category and publisher logo', async () => {
+  for (const path of paths.filter(path => path !== '/')) {
+    const schema = await readSchema(path);
+    const breadcrumb = schema.find(node => node['@type'] === 'BreadcrumbList');
+    assert.ok(breadcrumb, path);
+    const items = breadcrumb.itemListElement;
+    assert.equal(items[0].item, pageUrl('/'));
+    assert.equal(items.at(-1).item, pageUrl(path));
+    items.forEach((item: Record<string, any>, index: number) => {
+      assert.equal(item['@type'], 'ListItem');
+      assert.equal(item.position, index + 1);
+      assert.ok(item.name);
+    });
+    const post = blogPosts.find(post => path === `/blog/${post.slug}`);
+    if (post) {
+      const article = schema.find(node => node['@type'] === 'BlogPosting');
+      assert.ok(article);
+      assert.equal(article.articleSection, post.category);
+      assert.equal(article.headline, post.title);
+      assert.equal(article.author.name, authorName);
+      assert.equal(article.datePublished, post.publishedAt);
+      assert.equal(article.publisher.logo['@type'], 'ImageObject');
+      assert.equal(article.publisher.logo.url, `${siteUrl}/apple-touch-icon.png`);
+      assert.equal(items[1].item, pageUrl('/blog'));
+    }
+  }
+});
+
+test('Blog sitemap date follows the newest article, regardless of array order', async () => {
+  const sitemap = await readFile('dist/sitemap.xml', 'utf8');
+  const blogEntry = [...sitemap.matchAll(/<url>(.*?)<\/url>/gs)].find(([, entry]) => entry.includes(`<loc>${pageUrl('/blog')}</loc>`));
+  assert.ok(blogEntry);
+  const latest = blogPosts.map(post => post.publishedAt).sort().at(-1);
+  assert.ok(blogEntry[1].includes(`<lastmod>${latest}</lastmod>`));
+});
+
+test('Article covers reserve their real proportions and have appropriate loading priorities', async () => {
+  const blogHtml = await readFile('dist/blog/index.html', 'utf8');
+  for (const post of blogPosts) {
+    assert.ok(post.coverWidth > 0 && post.coverHeight > 0);
+    const cover = `src="${post.coverImage}" alt="${escape(post.coverAlt || post.title)}" width="${post.coverWidth}" height="${post.coverHeight}"`;
+    assert.ok(blogHtml.includes(`${cover} loading="lazy" decoding="async"`));
+    const articleHtml = await readFile(resolve('dist', 'blog', post.slug, 'index.html'), 'utf8');
+    assert.ok(articleHtml.includes(`${cover} fetchPriority="high" decoding="async"`));
+    assert.equal(articleHtml.includes(`${cover} loading="lazy"`), false);
+  }
 });

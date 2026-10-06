@@ -23,6 +23,8 @@ export const blogPosts: BlogPost[] = [
       'art. 39 ustawy o zawodach lekarza',
     ],
     coverImage: '/klauzula-sumienia-lekarza.jpg',
+    coverWidth: 1280,
+    coverHeight: 889,
     coverAlt: 'Lekarki w białych fartuchach ze stetoskopami',
     content: `## Prawo lekarza, a nie kaprys
 
@@ -72,6 +74,8 @@ Autor: mgr prawa Karolina Zdrojek`,
       'podział spadku',
     ],
     coverImage: '/dziedziczenie-ustawowe.jpg',
+    coverWidth: 1800,
+    coverHeight: 1200,
     coverAlt: 'Dwie osoby obejmujące się podczas żałoby na cmentarzu',
     content: `## Kiedy wchodzi dziedziczenie ustawowe
 
@@ -153,6 +157,8 @@ Autor: mgr prawa Karolina Zdrojek`,
       'rozwiązywanie sporów',
     ],
     coverImage: '/mediacja-a-sprawa-w-sadzie.jpg',
+    coverWidth: 1800,
+    coverHeight: 1200,
     coverAlt: 'Dłoń dopasowująca biały element układanki na drewnianym stole',
     content: `## Mediacja jako rozmowa z zasadami
 
@@ -197,6 +203,8 @@ Autor: mgr Karolina Zdrojek`,
       'warunkowa umowa sprzedaży',
     ],
     coverImage: '/prawo-pierwokupu-kowr.jpg',
+    coverWidth: 1280,
+    coverHeight: 851,
     coverAlt: 'Pole ze zbożem i belami siana',
     content: `## Masz ziemię rolną? Chcesz ją sprzedać?
 

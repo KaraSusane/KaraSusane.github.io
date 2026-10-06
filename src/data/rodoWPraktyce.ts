@@ -18,6 +18,8 @@ export const rodoWPraktyce: BlogPost = {
     'marketing bezpośredni',
   ],
   coverImage: '/rodo-w-praktyce.jpeg',
+  coverWidth: 1280,
+  coverHeight: 853,
   coverAlt: 'Stanowisko komputerowe z monitorami wyświetlającymi dane i mapę świata',
   content: `## Zgoda klienta nie jest magicznym zaklęciem.
 
@@ -31,7 +33,7 @@ Najbardziej klasyczny przykład to sklep internetowy. Klient kupuje produkt i po
 
 Jeżeli w takiej sytuacji firma pyta klienta o zgodę na przetwarzanie danych „w celu realizacji zamówienia”, tworzy się problem. Klient może pomyśleć, że gdy cofnie zgodę, sklep musi usunąć wszystkie dane, nawet te, które musi przechowywać ze względu na przepisy księgowe, podatkowe albo dowodowe? UODO wskazuje, że pozyskiwanie zgody w sytuacji, gdy administrator ma inną podstawę przetwarzania, może prowadzić do naruszenia zasady przejrzystości i rzetelności z art. 5 ust. 1 lit. a RODO.
 
-N**admiar zgód nie wzmacnia firmy.** Jeżeli firma sama komunikuje klientowi, że podstawą przetwarzania jest zgoda, musi potem liczyć się z konsekwencjami tej konstrukcji, w tym z prawem do jej cofnięcia.
+**Nadmiar zgód nie wzmacnia firmy.** Jeżeli firma sama komunikuje klientowi, że podstawą przetwarzania jest zgoda, musi potem liczyć się z konsekwencjami tej konstrukcji, w tym z prawem do jej cofnięcia.
 
 ## Drugi błąd: zgoda nie jest dobrowolna.
 
@@ -135,7 +137,7 @@ Dane osobowe są dziś częścią relacji z klientem. Klient powierza firmie sw�
 
 *Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.*
 
-*Autor: mgr. prawa Karolina Zdrojek*
+*Autor: mgr prawa Karolina Zdrojek*
 
 ## Bibliografia i podstawy prawne
 

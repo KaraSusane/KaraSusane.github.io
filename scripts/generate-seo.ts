@@ -4,7 +4,8 @@ import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import App from '../src/App.tsx';
 import { blogPosts } from '../src/data/blogPosts.ts';
-import { siteUrl, siteName, authorName, defaultCover, pageUrl, standardPages as pageMetadata, type PageMetadata } from '../src/data/site.ts';
+import { siteUrl, siteName, authorName, contactEmail, defaultCover, pageUrl, navItems, normalizePath, standardPages as pageMetadata, type PageMetadata } from '../src/data/site.ts';
+import { services } from '../src/data/services.ts';
 
 const defaultImage = `${siteUrl}${defaultCover}`;
 const distDir = resolve('dist');
@@ -25,20 +26,71 @@ const escapeHtml = (value: string) =>
 
 const escapeXml = escapeHtml;
 
+const websiteSchema = {
+  '@type': 'WebSite',
+  '@id': `${pageUrl('/')}#website`,
+  name: siteName,
+  url: pageUrl('/'),
+  inLanguage: 'pl-PL',
+};
+
+const publisherLogo = {
+  '@type': 'ImageObject',
+  url: `${siteUrl}/apple-touch-icon.png`,
+  width: 180,
+  height: 180,
+};
+
+const authorSchema = {
+  '@type': 'Person',
+  '@id': `${pageUrl('/o-mnie')}#person`,
+  name: authorName,
+  jobTitle: 'Prawnik',
+  url: pageUrl('/o-mnie'),
+  image: defaultImage,
+  knowsAbout: ['Prawo medyczne', 'Dokumentacja prawna', 'Analiza umów'],
+};
+
+const legalServiceSchema = {
+  '@type': 'LegalService',
+  '@id': `${pageUrl('/')}#organization`,
+  name: siteName,
+  url: pageUrl('/'),
+  image: defaultImage,
+  logo: publisherLogo,
+  email: contactEmail,
+  priceRange: services.find(service => service.number === '02')?.price,
+  founder: authorSchema,
+  areaServed: { '@type': 'Country', name: 'Polska' },
+};
+
+const webPageSchema = (page: PageDefinition) => ({
+  '@type': 'WebPage',
+  '@id': `${pageUrl(page.path)}#webpage`,
+  name: `${page.title} | ${siteName}`,
+  description: page.description,
+  url: pageUrl(page.path),
+  inLanguage: 'pl-PL',
+  isPartOf: { '@id': websiteSchema['@id'] },
+});
+
+const breadcrumbSchema = (items: Array<{ name: string; path: string }>) => ({
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: pageUrl(item.path),
+  })),
+});
+
 const buildHead = (page: PageDefinition) => {
   const canonicalUrl = pageUrl(page.path);
+  const completeTitle = `${page.title} | ${siteName}`;
   const image = page.image || defaultImage;
   const schema = page.schema || {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: page.title,
-    description: page.description,
-    url: canonicalUrl,
-    isPartOf: {
-      '@type': 'WebSite',
-      name: siteName,
-      url: siteUrl,
-    },
+    ...webPageSchema(page),
   };
 
   return `
@@ -46,15 +98,15 @@ const buildHead = (page: PageDefinition) => {
     <meta property="og:locale" content="pl_PL" />
     <meta property="og:type" content="${page.path.startsWith('/blog/') ? 'article' : 'website'}" />
     <meta property="og:site_name" content="${siteName}" />
-    <meta property="og:title" content="${escapeHtml(page.title)}" />
+    <meta property="og:title" content="${escapeHtml(completeTitle)}" />
     <meta property="og:description" content="${escapeHtml(page.description)}" />
-    <meta property="og:url" content="${escapeHtml(canonicalUrl)}" />
+    ${page.noindex ? '' : `<meta property="og:url" content="${escapeHtml(canonicalUrl)}" />`}
     <meta property="og:image" content="${escapeHtml(image)}" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${escapeHtml(page.title)}" />
+    <meta name="twitter:title" content="${escapeHtml(completeTitle)}" />
     <meta name="twitter:description" content="${escapeHtml(page.description)}" />
     <meta name="twitter:image" content="${escapeHtml(image)}" />
-    <script id="structured-data" type="application/ld+json">${JSON.stringify(schema).replaceAll('<', '\\u003c')}</script>`;
+    ${page.noindex ? '' : `<script id="structured-data" type="application/ld+json">${JSON.stringify(schema).replaceAll('<', '\\u003c')}</script>`}`;
 };
 
 const renderPage = (page: PageDefinition) => {
@@ -78,17 +130,24 @@ const writePage = async (page: PageDefinition) => {
   await writeFile(resolve(outputDir, 'index.html'), renderPage(page), 'utf8');
 };
 
-const standardPages: PageDefinition[] = Object.entries(pageMetadata).map(([path, metadata]) => ({
-  path,
-  ...metadata,
-  ...(path === '/' ? { schema: {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: siteName,
-    url: siteUrl,
-    inLanguage: 'pl-PL',
-  } } : {}),
-}));
+const standardPages: PageDefinition[] = Object.entries(pageMetadata).map(([path, metadata]) => {
+  const page = { path, ...metadata };
+  const graph: Record<string, unknown>[] = [websiteSchema];
+  if (path === '/') {
+    graph.push(webPageSchema(page), legalServiceSchema);
+  } else {
+    const webpage = webPageSchema(page);
+    graph.push(path === '/o-mnie'
+      ? { ...webpage, '@type': 'ProfilePage', mainEntity: authorSchema }
+      : webpage);
+    graph.push(breadcrumbSchema([
+      { name: siteName, path: '/' },
+      { name: navItems.find(item => normalizePath(item.href) === path)?.label || metadata.title, path },
+    ]));
+    if (path === '/uslugi') graph.push(legalServiceSchema);
+  }
+  return { ...page, schema: { '@context': 'https://schema.org', '@graph': graph } };
+});
 
 const articlePages: PageDefinition[] = blogPosts.map((post) => {
   const path = `/blog/${post.slug}`;
@@ -100,28 +159,34 @@ const articlePages: PageDefinition[] = blogPosts.map((post) => {
     image,
     schema: {
       '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
-      headline: post.title,
-      description: post.excerpt,
-      image: [image],
-      datePublished: post.publishedAt,
-      dateModified: post.publishedAt,
-      inLanguage: 'pl-PL',
-      keywords: post.keywords?.join(', '),
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': pageUrl(path),
-      },
-      author: {
-        '@type': 'Person',
-        name: authorName,
-        url: `${siteUrl}/o-mnie/`,
-      },
-      publisher: {
-        '@type': 'Organization',
-        name: siteName,
-        url: siteUrl,
-      },
+      '@graph': [{
+        '@type': 'BlogPosting',
+        '@id': `${pageUrl(path)}#article`,
+        headline: post.title,
+        description: post.excerpt,
+        image: [image],
+        datePublished: post.publishedAt,
+        dateModified: post.publishedAt,
+        inLanguage: 'pl-PL',
+        keywords: post.keywords?.join(', '),
+        articleSection: post.category,
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': pageUrl(path),
+        },
+        author: authorSchema,
+        publisher: {
+          '@type': 'Organization',
+          '@id': legalServiceSchema['@id'],
+          name: siteName,
+          url: pageUrl('/'),
+          logo: publisherLogo,
+        },
+      }, breadcrumbSchema([
+        { name: siteName, path: '/' },
+        { name: 'Blog', path: '/blog' },
+        { name: post.title, path },
+      ])],
     },
   };
 });
@@ -140,10 +205,12 @@ await writeFile(resolve(distDir, '404.html'), renderPage({
   noindex: true,
 }), 'utf8');
 
+const latestArticleDate = blogPosts.map(post => post.publishedAt).sort().at(-1);
 const sitemapEntries = allPages
   .map((page) => {
     const article = blogPosts.find((post) => page.path === `/blog/${post.slug}`);
-    const lastmod = article ? `\n    <lastmod>${article.publishedAt}</lastmod>` : '';
+    const modifiedAt = article?.publishedAt || (page.path === '/blog' ? latestArticleDate : undefined);
+    const lastmod = modifiedAt ? `\n    <lastmod>${modifiedAt}</lastmod>` : '';
     return `  <url>\n    <loc>${escapeXml(pageUrl(page.path))}</loc>${lastmod}\n  </url>`;
   })
   .join('\n');

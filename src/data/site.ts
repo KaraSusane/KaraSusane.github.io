@@ -27,12 +27,12 @@ export type PageMetadata = {
 };
 
 export const standardPages: Record<string, PageMetadata> = {
-  '/': { title: 'Prawne wsparcie. Precyzyjne pisma', description: 'Pisma prawne, umowy i doradztwo przygotowane jasno, konkretnie i z myślą o Twojej sprawie.' },
-  '/uslugi': { title: 'Usługi', description: 'Pisma, umowy, analiza sprawy, doradztwo prawne i mediacje.' },
-  '/o-mnie': { title: 'O mnie', description: 'Karolina Zdrojek, prawnik i założycielka Pismo w Sprawie.' },
-  '/praktyka': { title: 'Praktyka', description: 'Obszary praktyki Pismo w Sprawie: prawo medyczne, beauty, nieruchomości, spadki, prawo rolne, karne i mediacje.' },
-  '/blog': { title: 'Blog prawny', description: 'Praktyczne artykuły o prawie w życiu codziennym.' },
-  '/kontakt': { title: 'Kontakt', description: `Kontakt z Pismo w Sprawie: ${contactEmail}.` },
+  '/': { title: 'Prawne wsparcie i precyzyjne pisma prawne', description: 'Pisma prawne, wezwania, odwołania, analiza umów i doradztwo prawne przygotowane jasno, konkretnie i z myślą o realnym celu Twojej sprawy.' },
+  '/uslugi': { title: 'Usługi prawne i cennik - pisma, umowy, doradztwo', description: 'Sprawdź zakres usług i cennik Pismo w Sprawie: sporządzanie pism prawnych, wezwań, odwołań, opiniowanie i tworzenie umów oraz doradztwo prawne.' },
+  '/o-mnie': { title: 'O mnie - Karolina Zdrojek, prawnik', description: 'Karolina Zdrojek - prawnik i założycielka Pismo w Sprawie. Specjalizacja w prawie medycznym, obsłudze dokumentacji prawnej i analizie umów.' },
+  '/praktyka': { title: 'Obszary praktyki - prawo medyczne, spadkowe, umowy', description: 'Obszary praktyki Pismo w Sprawie: prawo medyczne, prawo beauty, nieruchomości, prawo spadkowe, prawo rolne, prawo karne oraz mediacje.' },
+  '/blog': { title: 'Blog prawny - prawo w życiu codziennym', description: 'Praktyczne artykuły i analizy prawne: prawo medyczne, prawa pacjenta, RODO, rękojmia przy zakupie auta, dziedziczenie ustawowe i mediacje.' },
+  '/kontakt': { title: 'Kontakt - bezpłatna analiza i wycena sprawy', description: `Opisz swoją sprawę i otrzymaj bezpłatną wycenę oraz termin realizacji. Skontaktuj się mailowo z Pismo w Sprawie: ${contactEmail}.` },
   ...Object.fromEntries(Object.entries(legalPages).map(([path, page]) => [path, { title: page.title, description: page.intro }])),
 };
 

@@ -17,6 +17,8 @@ export const najtaniejJestWyrwac: BlogPost = {
     'błąd informacyjny lekarza',
   ],
   coverImage: '/najtaniej-jest-wyrwac.jpg',
+  coverWidth: 1280,
+  coverHeight: 717,
   coverAlt: 'Lupa z czerwonym krzyżem medycznym',
   content: `**Dane pacjenta, personelu oraz placówek zostały zanonimizowane. Tekst ma charakter informacyjny i analityczny.**
 
