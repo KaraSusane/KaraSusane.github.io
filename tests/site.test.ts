@@ -18,6 +18,39 @@ test('Routes, navigation and blog slugs are unique', () => {
   for (const item of navItems) assert.ok(standardPages[item.href.replace(/\/$/, '')]);
 });
 
+test('Every published page provides versioned browser icons and an iPhone touch icon', async () => {
+  for (const path of [...paths, '/404.html']) {
+    const file = path === '/404.html' ? 'dist/404.html' : resolve('dist', `.${path === '/' ? '' : path}/index.html`);
+    const html = await readFile(file, 'utf8');
+    assert.ok(html.includes('rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" sizes="180x180"'));
+    assert.ok(html.includes('href="/favicon.ico?v=2" sizes="16x16 32x32 48x48"'));
+    assert.ok(html.includes('href="/favicon-32x32.png?v=2" type="image/png" sizes="32x32"'));
+    assert.ok(html.includes('href="/favicon-48x48.png?v=2" type="image/png" sizes="48x48"'));
+    assert.ok(html.includes('href="/favicon.svg?v=2" type="image/svg+xml" sizes="any"'));
+  }
+  for (const [name, size] of [['apple-touch-icon.png', 180], ['favicon-32x32.png', 32], ['favicon-48x48.png', 48]] as const) {
+    const png = await readFile(resolve('dist', name));
+    assert.deepEqual([...png.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+    assert.equal(png.readUInt32BE(16), size);
+    assert.equal(png.readUInt32BE(20), size);
+    assert.equal(png[25], 2, 'Icons must have an opaque RGB background');
+  }
+  const ico = await readFile('dist/favicon.ico');
+  assert.equal(ico.readUInt16LE(0), 0);
+  assert.equal(ico.readUInt16LE(2), 1);
+  assert.equal(ico.readUInt16LE(4), 3);
+  for (const [index, size] of [16, 32, 48].entries()) {
+    const entry = 6 + index * 16;
+    assert.equal(ico[entry], size);
+    assert.equal(ico[entry + 1], size);
+    const length = ico.readUInt32LE(entry + 8);
+    const offset = ico.readUInt32LE(entry + 12);
+    assert.ok(offset + length <= ico.length);
+    assert.equal(ico.readUInt32BE(offset + 16), size);
+    assert.equal(ico.readUInt32BE(offset + 20), size);
+  }
+});
+
 for (const path of paths) {
   test(`Prerendered ${path}: one H1, shared metadata, working internal links`, async () => {
     const html = await readFile(resolve('dist', `.${path === '/' ? '' : path}/index.html`), 'utf8');
