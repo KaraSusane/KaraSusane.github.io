@@ -103,6 +103,20 @@ test('Practice headings and cards use the same CSS entrance, without hidden Moti
   assert.equal(html.includes('opacity:0'), false);
 });
 
+test('Reading columns contain WebKit selection painting without changing justification', () => {
+  for (const post of blogPosts) {
+    const html = renderToString(createElement(App, { pathname: `/blog/${post.slug}/` }));
+    assert.ok(html.includes('class="relative space-y-6"'));
+    assert.ok(html.includes('class="text-justify text-lg leading-[1.85]'));
+  }
+  const about = renderToString(createElement(App, { pathname: '/o-mnie/' }));
+  assert.ok(about.includes('class="relative space-y-6 text-justify'));
+  for (const path of ['/polityka-prywatnosci/', '/nota-prawna/', '/wazne-informacje/']) {
+    const html = renderToString(createElement(App, { pathname: path }));
+    assert.ok(html.includes('<article class="relative space-y-10'));
+  }
+});
+
 test('RODO article preserves publication date, cover, headings and Word formatting', async () => {
   const html = await readFile(resolve('dist', 'blog', rodoWPraktyce.slug, 'index.html'), 'utf8');
   assert.ok(html.includes('dateTime="2026-10-05"'));
