@@ -8,6 +8,7 @@ export const autoPoZakupie: BlogPost = {
   category: 'Prawo cywilne i konsumenckie',
   readTime: '16 min',
   publishedAt: '2026-09-07',
+  updatedAt: '2026-10-11',
   keywords: [
     'wada ukryta samochodu',
     'rękojmia za używany samochód',
@@ -121,6 +122,7 @@ Tego typu sprawy polegają na pokazaniu, że wada była istotna, ukryta, niezgod
 - Art. 558 Kodeksu cywilnego, wyłączenie lub ograniczenie rękojmi i podstępne zatajenie wady. ([Lexlege](https://lexlege.pl/kc/art-558/?utm_source=chatgpt.com))
 - Art. 559 Kodeksu cywilnego, odpowiedzialność za wady istniejące w chwili przejścia niebezpieczeństwa albo wynikłe z przyczyny tkwiącej w rzeczy w tej samej chwili. ([pb.pl](https://lexlege.pb.pl/kodeks-cywilny/dzial-ii-rekojmia-za-wady/2006?utm_source=chatgpt.com))
 - Art. 560 Kodeksu cywilnego, obniżenie ceny albo odstąpienie od umowy. ([Lexlege](https://lexlege.pl/kc/art-560/?utm_source=chatgpt.com))
-- Art. 561 Kodeksu cywilnego, żądanie usunięcia wady albo wymiany rzeczy. ([Lexlege](https://lexlege.pl/kc/rozdzial-ii-zastaw-na-prawach/1983/?utm_source=chatgpt.com))
+- Art. 561 Kodeksu cywilnego, żądanie usunięcia wady albo wymiany rzeczy. ([Kodeks cywilny - źródło urzędowe ELI](https://eli.gov.pl/eli/DU/1964/93/ogl))
+- [Ustawa o prawach konsumenta - źródło urzędowe ELI](https://eli.gov.pl/eli/DU/2014/827/ogl).
 - Zdjęcie: [magnific.com](https://www.magnific.com)`,
 };

@@ -3,11 +3,13 @@ import type { BlogPost } from '../types';
 export const najtaniejJestWyrwac: BlogPost = {
   slug: 'najtaniej-jest-wyrwac',
   title: 'Najtaniej jest wyrwać.',
+  seoTitle: 'Usunięcie zęba a zgoda pacjenta - analiza sprawy medycznej',
   excerpt:
     'Case study z zakresu prawa medycznego o infekcji zębopochodnej, trzech placówkach, zgodzie poinformowanej i granicach nieodwracalnej ekstrakcji.',
   category: 'Prawo medyczne',
   readTime: '20 min',
   publishedAt: '2026-08-28',
+  updatedAt: '2026-10-11',
   keywords: [
     'prawo medyczne',
     'zgoda poinformowana pacjenta',
@@ -160,10 +162,10 @@ Autor: mgr prawa Karolina Zuzanna Zdrojek
 
 ## bibliografia:
 
-- Art. 6, 7, 8, 9, 16, 20, od 23 do 30a ustawy o prawach pacjenta i Rzeczniku Praw Pacjenta
-- Art. 4, 31, 32 ustawy o zawodach lekarza i lekarza dentysty
-- Art. 15 ustawy o działalności leczniczej
-- Art. 162 Kodeksu karnego
+- Art. 6, 7, 8, 9, 16, 20, od 23 do 30a [ustawy o prawach pacjenta i Rzeczniku Praw Pacjenta](https://eli.gov.pl/eli/DU/2009/417/ogl)
+- Art. 4, 31, 32 [ustawy o zawodach lekarza i lekarza dentysty](https://eli.gov.pl/eli/DU/1997/152/ogl)
+- Art. 15 [ustawy o działalności leczniczej](https://eli.gov.pl/eli/DU/2011/654/ogl)
+- Art. 162 [Kodeksu karnego](https://eli.gov.pl/eli/DU/1997/553/ogl)
 - Wyrok Sądu Najwyższego z 16 maja 2012 r., III CSK 227/11
 - Wyrok Sądu Najwyższego z 24 września 2015 r., V CSK 738/14
 - zdjęcie https://www.magnific.com

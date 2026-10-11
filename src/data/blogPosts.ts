@@ -15,6 +15,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Prawo medyczne',
     readTime: '5 min',
     publishedAt: '2026-08-24',
+    updatedAt: '2026-10-11',
     keywords: [
       'klauzula sumienia lekarza',
       'odmowa wykonania świadczenia',
@@ -52,7 +53,7 @@ Powinien też pamiętać, że klauzula sumienia nie zastępuje obowiązku dział
 
 ## Bibliografia
 
-Art. 30 i art. 39 ustawy o zawodach lekarza i lekarza dentysty, art. 53 Konstytucji RP oraz wyrok Trybunału Konstytucyjnego z 7 października 2015 r., K 12/14.
+Art. 30 i art. 39 [ustawy o zawodach lekarza i lekarza dentysty](https://eli.gov.pl/eli/DU/1997/152/ogl), art. 53 [Konstytucji RP](https://eli.gov.pl/eli/DU/1997/483/ogl) oraz [wyrok Trybunału Konstytucyjnego z 7 października 2015 r., K 12/14](https://ipo.trybunal.gov.pl/ipo/view/sprawa.xhtml?dokument=13021&sprawa=13434).
 
 **Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.**
 
@@ -66,6 +67,7 @@ Autor: mgr prawa Karolina Zdrojek`,
     category: 'Prawo spadkowe',
     readTime: '8 min',
     publishedAt: '2026-08-16',
+    updatedAt: '2026-10-11',
     keywords: [
       'dziedziczenie ustawowe',
       'kto dziedziczy bez testamentu',
@@ -135,7 +137,7 @@ Nie dziedziczy automatycznie partnerka, nawet jeżeli mieszkała z nim przez wie
 
 ## Bibliografia
 
-Art. 926, art. 927, art. 931, art. 932, art. 933, art. 934 i art. 935 Kodeksu cywilnego oraz art. 31 Kodeksu rodzinnego i opiekuńczego.
+Art. 926, art. 927, art. 931, art. 932, art. 933, art. 934 i art. 935 [Kodeksu cywilnego](https://eli.gov.pl/eli/DU/1964/93/ogl) oraz art. 31 [Kodeksu rodzinnego i opiekuńczego](https://eli.gov.pl/eli/DU/1964/59/ogl).
 
 **Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.**
 
@@ -149,6 +151,7 @@ Autor: mgr prawa Karolina Zdrojek`,
     category: 'Mediacje',
     readTime: '6 min',
     publishedAt: '2026-08-13',
+    updatedAt: '2026-10-11',
     keywords: [
       'mediacja a sprawa w sądzie',
       'mediacja cywilna',
@@ -186,7 +189,12 @@ Sąd nie zatwierdzi jednak ugody, jeżeli jest sprzeczna z prawem, zasadami wsp�
 
 **Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.**
 
-Autor: mgr Karolina Zdrojek`,
+Autor: mgr Karolina Zdrojek
+
+## Bibliografia
+
+- [Kodeks postępowania cywilnego - przepisy o mediacji](https://eli.gov.pl/eli/DU/1964/296/ogl).
+- [Ministerstwo Sprawiedliwości: postępowanie mediacyjne w sprawach cywilnych](https://www.gov.pl/web/sprawiedliwosc/postepowanie-mediacyjne-w-sprawach-cywilnych).`,
   },
   {
     slug: 'prawo-pierwokupu-kowr-przy-sprzedazy-nieruchomosci-rolnej',
@@ -196,6 +204,7 @@ Autor: mgr Karolina Zdrojek`,
     category: 'Prawo rolne',
     readTime: '5 min',
     publishedAt: '2026-08-10',
+    updatedAt: '2026-10-11',
     keywords: [
       'prawo pierwokupu KOWR',
       'sprzedaż nieruchomości rolnej',
@@ -236,6 +245,11 @@ Dlatego przed podpisaniem umowy warto sprawdzić przeznaczenie nieruchomości, j
 
 **Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.**
 
-Autor: mgr Karolina Zdrojek`,
+Autor: mgr Karolina Zdrojek
+
+## Bibliografia
+
+- [Ustawa o kształtowaniu ustroju rolnego - źródło urzędowe ELI](https://eli.gov.pl/eli/DU/2003/592/ogl).
+- [Kodeks cywilny - przepisy o prawie pierwokupu](https://eli.gov.pl/eli/DU/1964/93/ogl).`,
   },
 ];

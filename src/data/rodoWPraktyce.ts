@@ -8,6 +8,7 @@ export const rodoWPraktyce: BlogPost = {
   category: 'Ochrona danych osobowych',
   readTime: '13 min',
   publishedAt: '2026-10-05',
+  updatedAt: '2026-10-11',
   keywords: [
     'RODO w praktyce',
     'błędy stosowania RODO',
@@ -141,7 +142,7 @@ Dane osobowe są dziś częścią relacji z klientem. Klient powierza firmie sw�
 
 ## Bibliografia i podstawy prawne
 
-- Rozporządzenie Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE, ogólne rozporządzenie o ochronie danych, Dz.Urz. UE L 119 z 4.05.2016, s. 1, ze sprost
-- Ustawa z dnia 12 lipca 2024 r. Prawo komunikacji elektronicznej (Dz.U. z 2024 r. poz. 1221 ze zm.).
+- [Rozporządzenie Parlamentu Europejskiego i Rady (UE) 2016/679 - RODO, tekst urzędowy EUR-Lex](https://eur-lex.europa.eu/eli/reg/2016/679/oj?locale=pl), z dnia 27 kwietnia 2016 r., Dz.Urz. UE L 119 z 4.05.2016, s. 1, ze sprostowaniami.
+- [Ustawa z dnia 12 lipca 2024 r. Prawo komunikacji elektronicznej](https://eli.gov.pl/eli/DU/2024/1221/ogl) (Dz.U. z 2024 r. poz. 1221 ze zm.).
 - [magnific.com](https://www.magnific.com)`,
 };

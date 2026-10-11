@@ -1,5 +1,6 @@
 import { blogPosts } from './blogPosts';
 import { legalPages } from './legalPages';
+import { findBlogCategory } from './blogCategories';
 
 export const siteUrl = 'https://pismowsprawie.pl';
 export const siteName = 'Pismo w Sprawie';
@@ -40,7 +41,9 @@ export function getPageMetadata(pathname: string): PageMetadata {
   const path = normalizePath(pathname);
   const standard = standardPages[path];
   if (standard) return standard;
+  const category = findBlogCategory(path);
+  if (category) return { title: `${category.name} - artykuły i praktyczne wyjaśnienia`, description: category.description };
   const post = blogPosts.find(post => path === `/blog/${post.slug}`);
-  if (post) return { title: post.title, description: post.excerpt, image: post.coverImage };
+  if (post) return { title: post.seoTitle || post.title, description: post.excerpt, image: post.coverImage };
   return { title: 'Nie znaleziono strony', description: 'Ten adres nie istnieje. Przejdź na stronę główną Pismo w Sprawie.', noindex: true };
 }

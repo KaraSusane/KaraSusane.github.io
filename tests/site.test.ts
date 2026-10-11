@@ -9,8 +9,12 @@ import { blogPosts } from '../src/data/blogPosts';
 import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
 import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl } from '../src/data/site';
 import { services } from '../src/data/services';
+import { blogCategoryPages, categoryPath } from '../src/data/blogCategories';
+import { practiceContent } from '../src/data/practiceAreas';
+import { responsiveImages } from '../src/data/responsiveImages';
+import { getPageSchema, latestPostDate, pageModifiedAt, postModifiedAt } from '../src/data/seo';
 
-const paths = [...Object.keys(standardPages), ...blogPosts.map(post => `/blog/${post.slug}`)];
+const paths = [...Object.keys(standardPages), ...blogCategoryPages.map(category => categoryPath(category).replace(/\/$/, '')), ...blogPosts.map(post => `/blog/${post.slug}`)];
 const escape = (value: string) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll("'", '&#039;');
 
 test('Routes, navigation and blog slugs are unique', () => {
@@ -168,9 +172,11 @@ test('Breadcrumbs and article schemas have canonical URLs, category and publishe
       assert.equal(article.headline, post.title);
       assert.equal(article.author.name, authorName);
       assert.equal(article.datePublished, post.publishedAt);
+      assert.equal(article.dateModified, postModifiedAt(post));
       assert.equal(article.publisher.logo['@type'], 'ImageObject');
       assert.equal(article.publisher.logo.url, `${siteUrl}/apple-touch-icon.png`);
       assert.equal(items[1].item, pageUrl('/blog'));
+      assert.equal(items[2].item, pageUrl(categoryPath(blogCategoryPages.find(category => category.name === post.category)!)));
     }
   }
 });
@@ -179,8 +185,90 @@ test('Blog sitemap date follows the newest article, regardless of array order', 
   const sitemap = await readFile('dist/sitemap.xml', 'utf8');
   const blogEntry = [...sitemap.matchAll(/<url>(.*?)<\/url>/gs)].find(([, entry]) => entry.includes(`<loc>${pageUrl('/blog')}</loc>`));
   assert.ok(blogEntry);
-  const latest = blogPosts.map(post => post.publishedAt).sort().at(-1);
+  const latest = latestPostDate(blogPosts);
   assert.ok(blogEntry[1].includes(`<lastmod>${latest}</lastmod>`));
+});
+
+test('Category pages contain only matching articles and expose crawlable filters', async () => {
+  for (const category of blogCategoryPages) {
+    const path = categoryPath(category);
+    const html = await readFile(resolve('dist', `.${path}index.html`), 'utf8');
+    for (const paragraph of category.paragraphs) assert.ok(html.includes(escape(paragraph)));
+    for (const other of blogCategoryPages) assert.ok(html.includes(`href="${categoryPath(other)}"`));
+    for (const post of blogPosts) {
+      const card = `href="/blog/${post.slug}/" class="group block h-full`;
+      assert.equal(html.includes(card), post.category === category.name, `${category.name}: ${post.slug}`);
+    }
+    assert.ok(html.includes(`data-blog-category="${category.name}" href="${path}" aria-current="page"`));
+    const graph = await readSchema(path);
+    const collection = graph.find(node => node['@type'] === 'CollectionPage');
+    assert.ok(collection);
+    assert.deepEqual(collection.mainEntity.itemListElement.map((item: Record<string, any>) => item.url), blogPosts.filter(post => post.category === category.name).map(post => pageUrl(`/blog/${post.slug}`)));
+    assert.equal(collection.dateModified, pageModifiedAt(path));
+  }
+  assert.equal(getPageMetadata('/blog/kategoria/unknown/').noindex, true);
+  assert.equal(getPageSchema('/blog/kategoria/unknown/'), undefined);
+});
+
+test('Sitemap lists all canonical pages exactly once and uses actual modification dates', async () => {
+  const sitemap = await readFile('dist/sitemap.xml', 'utf8');
+  const entries = [...sitemap.matchAll(/<url>(.*?)<\/url>/gs)].map(([, entry]) => entry);
+  assert.equal(entries.length, paths.length);
+  for (const path of paths) {
+    const matches = entries.filter(entry => entry.includes(`<loc>${pageUrl(path)}</loc>`));
+    assert.equal(matches.length, 1, path);
+    const modified = pageModifiedAt(path);
+    assert.equal(matches[0].includes('<lastmod>'), Boolean(modified));
+    if (modified) assert.ok(matches[0].includes(`<lastmod>${modified}</lastmod>`));
+  }
+  const unchanged = { ...blogPosts[0], updatedAt: undefined };
+  assert.equal(postModifiedAt(unchanged), unchanged.publishedAt);
+  assert.equal(latestPostDate([unchanged, blogPosts[0]]), latestPostDate([blogPosts[0], unchanged]));
+  assert.equal(latestPostDate([]), undefined);
+});
+
+test('SEO titles can be descriptive without replacing original article headlines', async () => {
+  const post = blogPosts.find(post => post.seoTitle)!;
+  assert.ok(post);
+  const html = await readFile(resolve('dist', 'blog', post.slug, 'index.html'), 'utf8');
+  assert.ok(html.includes(`<title>${escape(post.seoTitle!)} | ${siteName}</title>`));
+  assert.ok(html.includes(`>${escape(post.title)}</h1>`));
+  assert.ok(html.includes(`dateTime="${post.updatedAt}"`));
+  assert.ok(html.includes('href="/o-mnie/" rel="author"'));
+  assert.equal(new Set(paths.map(path => getPageMetadata(path).title)).size, paths.length);
+  assert.equal(new Set(paths.map(path => getPageMetadata(path).description)).size, paths.length);
+});
+
+test('Every practice area includes useful descriptions and a service link', async () => {
+  const html = await readFile('dist/praktyka/index.html', 'utf8');
+  for (const [id, content] of Object.entries(practiceContent)) {
+    assert.ok(html.includes(`id="${id}"`));
+    assert.ok(html.includes(escape(content.description)));
+    assert.ok(html.includes(escape(content.examples)));
+    assert.ok(content.description.split(/\s+/).length >= 25);
+  }
+  assert.equal((html.match(/href="\/uslugi\/" class="underline underline-offset-4"/g) || []).length, 7);
+});
+
+test('Responsive images use valid WebP files and retain original image fallbacks', async () => {
+  const html = await readFile('dist/blog/index.html', 'utf8');
+  for (const [original, image] of Object.entries(responsiveImages)) {
+    await access(resolve('dist', `.${original}`));
+    for (const candidate of image.srcSet.split(', ')) {
+      const [path] = candidate.split(' ');
+      const bytes = await readFile(resolve('dist', `.${path}`));
+      assert.equal(bytes.subarray(0, 4).toString(), 'RIFF');
+      assert.equal(bytes.subarray(8, 12).toString(), 'WEBP');
+    }
+    if (original !== '/karolina-zdrojek.jpg') assert.ok(html.includes(`type="image/webp" srcSet="${image.srcSet}"`));
+  }
+});
+
+test('Article 561 reference points to the civil code, not the unrelated pledge chapter', () => {
+  const post = blogPosts.find(post => post.slug.startsWith('auto-po-zakupie'))!;
+  const reference = post.content.split('\n').find(line => line.startsWith('- Art. 561'))!;
+  assert.ok(reference.includes('https://eli.gov.pl/eli/DU/1964/93/ogl'));
+  assert.equal(post.content.includes('rozdzial-ii-zastaw-na-prawach'), false);
 });
 
 test('Article covers reserve their real proportions and have appropriate loading priorities', async () => {
