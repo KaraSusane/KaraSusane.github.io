@@ -13,7 +13,7 @@ export const pageModifiedAt = (pathname: string) => {
   const category = findBlogCategory(path);
   if (category) return [category.updatedAt, latestPostDate(blogPosts.filter(post => post.category === category.name))].filter(Boolean).sort().at(-1);
   if (path === '/blog') return latestPostDate(blogPosts);
-  if (path === '/praktyka') return '2026-10-11';
+  if (path === '/praktyka') return '2026-10-12';
 };
 
 const websiteSchema = {

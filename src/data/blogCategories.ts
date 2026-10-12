@@ -9,7 +9,7 @@ export type BlogCategory = {
 
 export const blogCategoryPages: BlogCategory[] = [
   {
-    name: 'Ochrona danych osobowych', slug: 'ochrona-danych-osobowych', updatedAt: '2026-10-11',
+    name: 'Ochrona danych osobowych', slug: 'ochrona-danych-osobowych', practiceId: 'prawo-sztucznej-inteligencji', updatedAt: '2026-10-11',
     description: 'RODO w praktyce: zgody klientów, obowiązek informacyjny, dane wrażliwe i bezpieczeństwo dokumentacji. Artykuły o ochronie danych osobowych.',
     paragraphs: [
       'Ochrona danych osobowych dotyczy codziennych decyzji: jakie informacje zbierać od klienta, do czego je wykorzystywać i komu udostępniać. Ważne są nie tylko formularze zgód, ale też rzeczywisty sposób pracy z dokumentami i bazą klientów.',
@@ -33,7 +33,7 @@ export const blogCategoryPages: BlogCategory[] = [
     ],
   },
   {
-    name: 'Prawo spadkowe', slug: 'prawo-spadkowe', practiceId: 'prawo-spadkowe', updatedAt: '2026-10-11',
+    name: 'Prawo spadkowe', slug: 'prawo-spadkowe', updatedAt: '2026-10-11',
     description: 'Prawo spadkowe przystępnie: dziedziczenie bez testamentu, kolejność spadkobierców i udziały w majątku. Przykłady dotyczące małżonka i dzieci.',
     paragraphs: [
       'Sprawy spadkowe często wymagają ustalenia dwóch rzeczy: kto należy do kręgu spadkobierców oraz jaki majątek rzeczywiście wchodzi do spadku. Sam opis rodzinnej sytuacji nie zawsze wystarcza do obliczenia udziałów.',
@@ -49,7 +49,7 @@ export const blogCategoryPages: BlogCategory[] = [
     ],
   },
   {
-    name: 'Prawo rolne', slug: 'prawo-rolne', practiceId: 'prawo-rolne', updatedAt: '2026-10-11',
+    name: 'Prawo rolne', slug: 'prawo-rolne', practiceId: 'prawo-nieruchomosci', updatedAt: '2026-10-11',
     description: 'Prawo rolne i sprzedaż ziemi: prawo pierwokupu KOWR, dzierżawa, umowa warunkowa i formalności. Praktyczne wyjaśnienia dotyczące nieruchomości rolnych.',
     paragraphs: [
       'Sprzedaż nieruchomości rolnej wymaga spojrzenia nie tylko na cenę i treść umowy. Znaczenie mogą mieć powierzchnia gruntu, jego przeznaczenie, dzierżawa i status osoby, która chce go kupić.',

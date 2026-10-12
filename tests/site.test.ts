@@ -99,7 +99,7 @@ test('Article source links survive the shared SSR renderer', () => {
 
 test('Practice headings and cards use the same CSS entrance, without hidden Motion initial states', () => {
   const html = renderToString(createElement(App, { pathname: '/praktyka/' }));
-  assert.equal((html.match(/class="page-enter /g) || []).length, 8);
+  assert.equal((html.match(/class="page-enter /g) || []).length, Object.keys(practiceContent).length + 1);
   assert.equal(html.includes('opacity:0'), false);
 });
 
@@ -261,7 +261,26 @@ test('Every practice area includes useful descriptions and a service link', asyn
     assert.ok(html.includes(escape(content.examples)));
     assert.ok(content.description.split(/\s+/).length >= 25);
   }
-  assert.equal((html.match(/href="\/uslugi\/" class="underline underline-offset-4"/g) || []).length, 7);
+  assert.equal((html.match(/href="\/uslugi\/" class="underline underline-offset-4"/g) || []).length, Object.keys(practiceContent).length);
+});
+
+test('Practice lists the five requested areas in order and keeps blog practice links valid', async () => {
+  const html = await readFile('dist/praktyka/index.html', 'utf8');
+  const headings = [...html.matchAll(/<h2[^>]*>(.*?)<\/h2>/g)].map(([, title]) => title);
+  assert.deepEqual(headings, [
+    'Prawo administracyjne', 'Prawo medyczne', 'Prawo nieruchomości',
+    'Prawo sztucznej inteligencji, AI Act, RODO', 'Mediacje',
+  ]);
+  assert.equal(Object.keys(practiceContent).length, 5);
+  for (const category of blogCategoryPages) {
+    if (!category.practiceId) continue;
+    assert.ok(html.includes(`id="${category.practiceId}"`), category.name);
+    for (const post of blogPosts.filter(post => post.category === category.name)) {
+      const article = await readFile(resolve('dist', `blog/${post.slug}/index.html`), 'utf8');
+      assert.ok(article.includes(`href="/praktyka/#${category.practiceId}"`));
+    }
+  }
+  assert.equal(pageModifiedAt('/praktyka/'), '2026-10-12');
 });
 
 test('Responsive images use valid WebP files and retain original image fallbacks', async () => {

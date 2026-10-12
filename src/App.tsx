@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
-  ArrowLeft, ArrowRight, Building2, Gavel, Handshake, Mail, Menu,
-  ScrollText, Sparkles, Stethoscope, Wheat, X, type LucideIcon,
+  ArrowLeft, ArrowRight, Building2, Cpu, Handshake, Landmark, Mail, Menu,
+  Stethoscope, X, type LucideIcon,
 } from 'lucide-react';
 import { blogPosts } from './data/blogPosts';
 import { AnimatedHero, HomeSections } from './HomeExperience';
@@ -33,10 +33,11 @@ const aboutParagraphs = [
 ];
 
 const practiceAreas: Array<{ title: string; slug: string; icon: LucideIcon }> = [
-  { title: 'Prawo medyczne', slug: 'prawo-medyczne', icon: Stethoscope }, { title: 'Prawo beauty', slug: 'prawo-beauty', icon: Sparkles },
-  { title: 'Prawo nieruchomości', slug: 'prawo-nieruchomosci', icon: Building2 }, { title: 'Prawo spadkowe', slug: 'prawo-spadkowe', icon: ScrollText },
-  { title: 'Prawo rolne', slug: 'prawo-rolne', icon: Wheat }, { title: 'Mediacje', slug: 'mediacje', icon: Handshake },
-  { title: 'Prawo karne', slug: 'prawo-karne', icon: Gavel },
+  { title: 'Prawo administracyjne', slug: 'prawo-administracyjne', icon: Landmark },
+  { title: 'Prawo medyczne', slug: 'prawo-medyczne', icon: Stethoscope },
+  { title: 'Prawo nieruchomości', slug: 'prawo-nieruchomosci', icon: Building2 },
+  { title: 'Prawo sztucznej inteligencji, AI Act, RODO', slug: 'prawo-sztucznej-inteligencji', icon: Cpu },
+  { title: 'Mediacje', slug: 'mediacje', icon: Handshake },
 ];
 
 const Brand = () => <span className="flex min-w-0 items-center gap-3"><span className="flex h-10 w-8 items-center justify-center bg-[#ebc256] px-1.5 py-1"><img src="/logo-pismo-w-sprawie.svg" alt="" width="20" height="32" className="h-full w-full object-contain" /></span><span className="text-sm font-black uppercase text-white">Pismo w Sprawie</span></span>;
