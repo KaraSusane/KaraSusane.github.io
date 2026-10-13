@@ -7,6 +7,7 @@ import { renderToString } from 'react-dom/server';
 import App from '../src/App';
 import { blogPosts } from '../src/data/blogPosts';
 import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
+import { intymnoscIGodnosc } from '../src/data/intymnoscIGodnosc';
 import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl } from '../src/data/site';
 import { services } from '../src/data/services';
 import { blogCategoryPages, categoryPath } from '../src/data/blogCategories';
@@ -131,6 +132,34 @@ test('RODO article preserves publication date, cover, headings and Word formatti
   assert.ok(html.includes('href="https://www.magnific.com"'));
   assert.ok(html.includes('text-justify'));
   assert.equal(html.includes('**po co firma'), false);
+});
+
+test('Hospital privacy article preserves headings, quotes, bibliography and publication date', async () => {
+  const post = intymnoscIGodnosc;
+  assert.ok(blogPosts.includes(post));
+  assert.equal(post.category, 'Prawo medyczne');
+  assert.equal(post.publishedAt, '2026-10-13');
+  const html = await readFile(resolve('dist', `blog/${post.slug}/index.html`), 'utf8');
+  assert.ok(html.includes(`>${escape(post.title)}</h1>`));
+  assert.ok(html.includes('dateTime="2026-10-13"'));
+  assert.ok(html.includes('src="/intymnosc-i-godnosc-w-szpitalu.jpeg"'));
+  const headings = [...post.content.matchAll(/^## (.+)$/gm)];
+  assert.equal(headings.length, 15);
+  for (const [, heading] of headings) assert.ok(html.includes(escape(heading)));
+  assert.ok(html.includes('„Proszę odnotować mój sprzeciw w dokumentacji”.'));
+  assert.ok(html.includes('Szpital dydaktyczny nie stanowi wyłączenia godności i obowiązku informacji.'));
+  assert.ok(html.includes('<em>Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.</em>'));
+  assert.ok(html.includes('<em>Autor: mgr. prawa Karolina Zdrojek</em>'));
+  assert.equal((post.content.match(/^- /gm) || []).length, 10);
+  assert.ok(html.includes('href="https://www.magnific.com"'));
+  assert.ok(html.includes('href="https://eli.gov.pl/eli/DU/2009/417/ogl"'));
+  assert.ok(html.includes('href="https://eli.gov.pl/eli/DU/1997/152/ogl"'));
+  assert.ok(html.includes('href="https://nil.org.pl/dokumenty/kodeks-etyki-lekarskiej"'));
+  assert.ok(html.includes('href="https://www.gov.pl/web/rpp/prawo-do-poszanowania-intymnosci-i-godnosci"'));
+  assert.ok(html.includes('class="relative space-y-6"'));
+  assert.ok(html.includes('text-justify'));
+  const category = await readFile('dist/blog/kategoria/prawo-medyczne/index.html', 'utf8');
+  assert.ok(category.includes(`href="/blog/${post.slug}/"`));
 });
 
 const readSchema = async (path: string) => {

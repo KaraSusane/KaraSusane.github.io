@@ -2,8 +2,10 @@ import type { BlogPost } from '../types';
 import { autoPoZakupie } from './autoPoZakupie';
 import { najtaniejJestWyrwac } from './najtaniejJestWyrwac';
 import { rodoWPraktyce } from './rodoWPraktyce';
+import { intymnoscIGodnosc } from './intymnoscIGodnosc';
 
 export const blogPosts: BlogPost[] = [
+  intymnoscIGodnosc,
   rodoWPraktyce,
   autoPoZakupie,
   najtaniejJestWyrwac,
