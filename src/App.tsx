@@ -5,7 +5,7 @@ import {
   Stethoscope, X, type LucideIcon,
 } from 'lucide-react';
 import { blogPosts } from './data/blogPosts';
-import { ebooks } from './data/ebooks';
+import { ebooks, ebookPath, findEbook, type Ebook } from './data/ebooks';
 import { AnimatedHero, HomeSections } from './HomeExperience';
 import { legalPages, type LegalPageData } from './data/legalPages';
 import { services } from './data/services';
@@ -161,24 +161,50 @@ const ContactPage = () => <PageShell><section className="flex min-h-[85vh] items
 const LegalPage = ({ page }: { page: LegalPageData }) => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-4xl"><a href="/" className="mb-10 inline-flex items-center gap-2 text-sm font-bold uppercase text-[#b7b7bd]"><ArrowLeft className="h-4 w-4" />Wróć na stronę główną</a><SectionHeading eyebrow="Informacje" title={page.title}>{page.intro}</SectionHeading><Reveal><article className="relative space-y-10 border border-white/10 bg-[#17171a] p-7 md:p-10">{page.sections.map((section) => <section key={section.title}><h2 className="mb-4 border-l-4 border-[#ebc256] pl-4 text-2xl font-black uppercase">{section.title}</h2><div className="space-y-4">{section.paragraphs.map((paragraph) => <p key={paragraph} className="leading-relaxed text-[#c9c9cf]">{paragraph}</p>)}</div></section>)}</article></Reveal></div></section></PageShell>;
 const NotFoundPage = () => <PageShell><section className="flex min-h-[75vh] items-center px-5 pt-28"><div className="mx-auto max-w-3xl text-center"><p className="text-2xl font-black text-[#ebc256]">404</p><h1 className="mt-4 text-5xl font-black uppercase">Nie znaleziono strony</h1><a href="/" className="mt-8 inline-flex bg-[#ebc256] px-7 py-4 text-sm font-black uppercase text-[#111113]">Wróć na stronę główną</a></div></section></PageShell>;
 
-const EbooksPage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-7xl">
-  <SectionHeading eyebrow="Publikacje" title="E-booki i kursy" />
-  <div className="divide-y divide-white/10 border-y border-white/10">{ebooks.map(ebook => <article id={ebook.id} key={ebook.id} className="grid gap-8 py-10 md:grid-cols-[220px_minmax(0,1fr)] md:gap-10 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-16">
+const EbookDownload = ({ ebook }: { ebook: Ebook }) => <a href={ebook.file} download={ebook.file.split('/').at(-1)} aria-label={`Pobierz e-book: ${ebook.title} (PDF, ${ebook.pages} stron)`} className="inline-flex items-center gap-3 bg-[#ebc256] px-6 py-4 text-sm font-black uppercase text-[#111113] transition-colors hover:bg-white"><Download className="h-5 w-5" />Pobierz PDF</a>;
+
+const EbookSummary = ({ ebook, detail = false }: { ebook: Ebook; detail?: boolean }) => {
+  const Heading = detail ? 'h1' : 'h2';
+  return <article id={ebook.id} className="grid gap-8 py-10 md:grid-cols-[220px_minmax(0,1fr)] md:gap-10 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-16">
     <Entrance x={-24}>
       <figure className="mx-auto max-w-[260px] md:max-w-none"><img src={ebook.cover} alt={`Okładka e-booka: ${ebook.title}`} width={ebook.coverWidth} height={ebook.coverHeight} decoding="async" fetchPriority="high" className="block h-auto w-full border border-white/15" /></figure>
     </Entrance>
     <Entrance delay={0.08} x={24} className="min-w-0">
       <p className="mb-4 text-xs font-black uppercase text-[#ebc256]">{ebook.category}</p>
-      <h2 className="max-w-3xl text-2xl font-black leading-tight md:text-3xl">{ebook.title}</h2>
-      <p className="mt-4 text-sm text-[#b7b7bd]">{ebook.author}</p>
+      <Heading className="max-w-3xl text-2xl font-black leading-tight md:text-3xl">{detail ? ebook.title : <a href={ebookPath(ebook)} className="transition-colors hover:text-[#ebc256]">{ebook.title}</a>}</Heading>
+      <p className="mt-4 text-sm text-[#b7b7bd]"><a href="/o-mnie/" rel="author" className="underline underline-offset-4 hover:text-white">{ebook.author}</a></p>
       <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 border-y border-white/10 py-4 text-sm text-[#c9c9cf]"><span>PDF</span><span>{ebook.pages} stron</span><span>Stan prawny: {ebook.legalState}</span></div>
       <p className="mt-6 max-w-3xl leading-relaxed text-[#c9c9cf]">{ebook.description}</p>
       <ul className="mt-5 space-y-3 text-sm leading-relaxed text-[#c9c9cf]">{ebook.topics.map(topic => <li key={topic} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[#ebc256]" /><span>{topic}</span></li>)}</ul>
-      <a href={ebook.file} download={ebook.file.split('/').at(-1)} aria-label={`Pobierz e-book: ${ebook.title} (PDF, ${ebook.pages} stron)`} className="mt-8 inline-flex items-center gap-3 bg-[#ebc256] px-6 py-4 text-sm font-black uppercase text-[#111113] transition-colors hover:bg-white"><Download className="h-5 w-5" />Pobierz PDF</a>
+      <div className="mt-8 flex flex-wrap items-center gap-5"><EbookDownload ebook={ebook} />{!detail && <a href={ebookPath(ebook)} className="inline-flex items-center gap-2 text-sm font-black text-white underline underline-offset-4 hover:text-[#ebc256]">Poznaj e-book<ArrowRight className="h-4 w-4" /></a>}</div>
       <p className="mt-5 text-xs leading-relaxed text-[#9d9da4]">Plik z ograniczeniami kopiowania i edycji. Drukowanie jest dozwolone.</p>
       <p className="mt-2 text-xs leading-relaxed text-[#9d9da4]">© {ebook.copyrightYear} {ebook.author}. Wszelkie prawa zastrzeżone. <a href="/nota-prawna/" className="underline underline-offset-4 hover:text-white">Prawa autorskie</a></p>
     </Entrance>
-  </article>)}</div>
+  </article>;
+};
+
+const EbooksPage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-7xl">
+  <SectionHeading eyebrow="Publikacje" title="E-booki i kursy" />
+  <div className="divide-y divide-white/10 border-y border-white/10">{ebooks.map(ebook => <div key={ebook.id}><EbookSummary ebook={ebook} /></div>)}</div>
+</div></section></PageShell>;
+
+const EbookPage = ({ ebook }: { ebook: Ebook }) => <PageShell><section className="px-5 pb-24 pt-32 md:px-8"><div className="mx-auto max-w-7xl">
+  <a href="/e-booki/" className="mb-8 inline-flex items-center gap-2 text-sm font-bold uppercase text-[#b7b7bd] hover:text-[#ebc256]"><ArrowLeft className="h-4 w-4" />Wróć do e-booków</a>
+  <div className="border-y border-white/10"><EbookSummary ebook={ebook} detail /></div>
+  <nav aria-label="Informacje o e-booku" className="flex flex-wrap gap-x-6 gap-y-4 border-b border-white/10 py-6 text-sm font-bold text-[#c9c9cf]">{[
+    ['#o-ebooku', 'O e-booku'], ['#spis-tresci', 'Spis treści'], ['#fragment', 'Przeczytaj fragment'], ['#autorka', 'Autorka'],
+  ].map(([href, label]) => <a key={href} href={href} className="underline underline-offset-4 hover:text-[#ebc256]">{label}</a>)}</nav>
+  <div className="max-w-4xl space-y-14 pt-14">
+    <section id="o-ebooku" className="scroll-mt-28"><h2 className="mb-6 text-2xl font-black md:text-3xl">O e-booku RODO w firmie</h2><div className="relative space-y-5 leading-relaxed text-[#c9c9cf]">{ebook.details.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div><h3 className="mb-3 mt-8 text-xl font-black">Dla kogo jest ten przewodnik?</h3><p className="leading-relaxed text-[#c9c9cf]">{ebook.audience}</p></section>
+    <section id="spis-tresci" className="scroll-mt-28"><h2 className="mb-6 text-2xl font-black md:text-3xl">Spis treści</h2>
+      <ol className="divide-y divide-white/10 border-y border-white/10">{ebook.chapters.map((chapter, index) => <li key={chapter.title} className="flex items-baseline gap-3 py-4 text-sm leading-relaxed"><span className="w-6 shrink-0 font-black tabular-nums text-[#ebc256]">{index + 1}.</span><span className="min-w-0 flex-1 text-[#d8d8dc]">{chapter.title}</span><span className="w-12 shrink-0 text-right tabular-nums text-[#9d9da4]">str. {chapter.page}</span></li>)}</ol>
+      <ul className="mt-4 space-y-3">{ebook.appendices.map(item => <li key={item.title} className="flex justify-between gap-4 text-sm text-[#c9c9cf]"><span>{item.title}</span><span className="shrink-0 tabular-nums text-[#9d9da4]">str. {item.page}</span></li>)}</ul>
+      <h3 className="mb-4 mt-8 text-xl font-black">Checklisty w publikacji</h3><ul className="space-y-3 text-sm text-[#c9c9cf]">{ebook.checklists.map(title => <li key={title} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[#ebc256]" /><span>{title}</span></li>)}</ul>
+    </section>
+    <section id="fragment" className="scroll-mt-28"><h2 className="mb-6 text-2xl font-black md:text-3xl">Przeczytaj fragment</h2><blockquote cite={`${ebook.file}#page=${ebook.sample.page}`} className="border-l-4 border-[#ebc256] pl-5 md:pl-7"><h3 className="mb-5 text-xl font-black">{ebook.sample.title}</h3><div className="relative space-y-5 text-justify leading-[1.8] text-[#c9c9cf]">{ebook.sample.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div><footer className="mt-6 text-xs text-[#9d9da4]"><a href={`${ebook.file}#page=${ebook.sample.page}`} target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-white">Fragment e-booka, str. {ebook.sample.page}.</a></footer></blockquote></section>
+    <section id="autorka" className="scroll-mt-28"><h2 className="mb-5 text-2xl font-black md:text-3xl">Autorka</h2><p className="leading-relaxed text-[#c9c9cf]">{ebook.author} jest prawnikiem i założycielką Pismo w Sprawie. W swojej pracy zajmuje się dokumentacją prawną, analizą umów i przygotowywaniem pism.</p><a href="/o-mnie/" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#ebc256] underline underline-offset-4 hover:text-white">Poznaj autorkę<ArrowRight className="h-4 w-4" /></a></section>
+    <section className="border-t border-white/10 pt-8"><h2 className="mb-5 text-2xl font-black">Cały przewodnik w PDF</h2><EbookDownload ebook={ebook} /><p className="mt-4 text-xs leading-relaxed text-[#9d9da4]">{ebook.pages} stron. Plik z ograniczeniami kopiowania i edycji. Drukowanie jest dozwolone.</p><div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm font-bold"><a href="/blog/kategoria/ochrona-danych-osobowych/" className="underline underline-offset-4 hover:text-[#ebc256]">Artykuły o RODO</a><a href="/praktyka/#prawo-sztucznej-inteligencji" className="underline underline-offset-4 hover:text-[#ebc256]">AI Act i ochrona danych</a></div></section>
+  </div>
 </div></section></PageShell>;
 
 const routePages: Record<string, ComponentType> = {
@@ -202,6 +228,7 @@ export default function App({ pathname = '/' }: { pathname?: string }) {
   const path = normalizePath(currentPath);
   const category = findBlogCategory(path);
   const article = blogPosts.find(post => path === `/blog/${post.slug}`);
+  const ebook = findEbook(path);
   const legalPage = legalPages[path];
   const Page = routePages[path];
   const { title, description, image = defaultCover, noindex = false } = getPageMetadata(path);
@@ -240,6 +267,7 @@ export default function App({ pathname = '/' }: { pathname?: string }) {
   }, [title, description, image, noindex, path]);
   if (category || path === '/blog') return <BlogPage category={category} />;
   if (article) return <ArticlePage slug={article.slug} />;
+  if (ebook) return <EbookPage ebook={ebook} />;
   if (legalPage) return <LegalPage page={legalPage} />;
   return Page ? <Page /> : <NotFoundPage />;
 }

@@ -5,6 +5,7 @@ import { renderToString } from 'react-dom/server';
 import App from '../src/App.tsx';
 import { blogPosts } from '../src/data/blogPosts.ts';
 import { blogCategoryPages, categoryPath } from '../src/data/blogCategories.ts';
+import { ebooks, ebookPath } from '../src/data/ebooks.ts';
 import { siteUrl, siteName, defaultCover, pageUrl, normalizePath, standardPages, getPageMetadata } from '../src/data/site.ts';
 import { getPageSchema, pageModifiedAt } from '../src/data/seo.ts';
 
@@ -43,6 +44,7 @@ const renderPage = (path: string) => {
 
 const paths = [
   ...Object.keys(standardPages),
+  ...ebooks.map(ebook => normalizePath(ebookPath(ebook))),
   ...blogCategoryPages.map(category => normalizePath(categoryPath(category))),
   ...blogPosts.map(post => `/blog/${post.slug}`),
 ];

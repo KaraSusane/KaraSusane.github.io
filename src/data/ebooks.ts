@@ -2,6 +2,9 @@ export const ebooks = [
   {
     id: 'przewodnik-po-rodo',
     title: 'Praktyczny przewodnik prawny po ochronie danych osobowych w firmie',
+    seoTitle: 'RODO w firmie - e-book i praktyczny przewodnik prawny',
+    seoDescription: 'Poznaj e-book o RODO w firmie autorstwa Karoliny Zdrojek: 20 rozdziałów, checklisty i przykłady. Sprawdź spis treści, przeczytaj fragment i pobierz PDF.',
+    updatedAt: '2026-10-17',
     author: 'Karolina Zuzanna Zdrojek',
     category: 'RODO w firmie',
     copyrightYear: 2026,
@@ -12,6 +15,53 @@ export const ebooks = [
       'Marketing, strona internetowa i narzędzia AI',
       'Naruszenia, audyt i plan naprawczy',
     ],
+    details: [
+      'Przewodnik pokazuje, jak czytać i stosować przepisy o ochronie danych osobowych w rzeczywistych procesach firmy. Punktem wyjścia są codzienne sytuacje: kontakt z klientem, rekrutacja, współpraca z dostawcami, marketing, prowadzenie strony internetowej czy korzystanie z narzędzi AI.',
+      'Kolejne rozdziały prowadzą od podstaw RODO i wyboru podstaw przetwarzania do dokumentacji, obsługi żądań osób, naruszeń oraz audytu własnej firmy. Publikacja obejmuje również dane wrażliwe, okresy przechowywania danych, rolę inspektora ochrony danych i ocenę skutków dla ochrony danych.',
+      'To opracowanie prawne, a nie instrukcja konfiguracji systemów informatycznych ani podręcznik cyberbezpieczeństwa. Przykłady pomagają uporządkować pytania i sposób analizy, ale nie zastępują oceny konkretnej sprawy. Stan prawny publikacji: październik 2026 r.',
+    ],
+    audience: 'Dla przedsiębiorców, osób zarządzających i praktyków, którzy chcą uporządkować sposób przetwarzania danych w swojej organizacji oraz zrozumieć związek między przepisami, dokumentacją i codziennymi działaniami firmy.',
+    chapters: [
+      { title: 'RODO od podstaw.', page: 8 },
+      { title: 'Zanim zbierzesz dane, odpowiedz na pięć pytań.', page: 11 },
+      { title: 'Zgoda nie jest lekarstwem na wszystko', page: 13 },
+      { title: 'Dane wrażliwe. Tu zasady są inne.', page: 16 },
+      { title: 'Klient wchodzi na Twoją stronę. Co dzieje się z jego danymi.', page: 18 },
+      { title: 'Marketing zgodny z prawem.', page: 22 },
+      { title: 'Obowiązek informacyjny bez ściany tekstu.', page: 24 },
+      { title: 'Pracownicy, kandydaci i współpracownicy.', page: 26 },
+      { title: 'Twoje dane są również u innych firm.', page: 28 },
+      { title: 'Jak długo można przechowywać dane.', page: 31 },
+      { title: 'Dokumentacja RODO, która rzeczywiście ma sens.', page: 33 },
+      { title: 'Klient mówi: „usuńcie moje dane”.', page: 36 },
+      { title: 'Wyciek danych. Pierwsze 72 godziny.', page: 39 },
+      { title: 'Bezpieczeństwo danych bez budowania bunkra.', page: 43 },
+      { title: 'AI w firmie a dane osobowe.', page: 45 },
+      { title: 'Czy potrzebujesz IOD (inspektor ochrony danych osobowych) i DPIA (Data Protection Impact Assessment).', page: 48 },
+      { title: 'Kontrola UODO i odpowiedzialność.', page: 50 },
+      { title: 'Audyt RODO własnej firmy w jeden dzień.', page: 52 },
+      { title: '25 błędów RODO, które możesz znaleźć we własnej firmie.', page: 55 },
+      { title: 'RODO w praktyce. Plan naprawczy.', page: 57 },
+    ],
+    appendices: [
+      { title: 'Checklisty', page: 60 },
+      { title: 'Podstawy prawne i źródła', page: 65 },
+    ],
+    checklists: [
+      'Checklista audytu prawnego RODO',
+      'Karta prawna nowego procesu',
+      'Checklista naruszenia',
+      'Checklista prawna wdrożenia AI',
+    ],
+    sample: {
+      title: 'RODO jest prawem procesu.',
+      page: 7,
+      paragraphs: [
+        'RODO bywa przedstawiane jako zbiór formularzy: zgoda, klauzula informacyjna, polityka prywatności, rejestr i umowa powierzenia. Taki obraz jest wygodny, ale prawnie niepełny. Rozporządzenie konstruuje system odpowiedzialności administratora. To administrator ma znać cele przetwarzania, dobrać podstawy prawne, ograniczyć zakres danych, określić retencję, zapewnić realizację praw osób i umieć wykazać zgodność.',
+        'Najważniejszą zasadą tej książki jest rozdzielenie trzech pytań. Po pierwsze, co rzeczywiście dzieje się z danymi. Po drugie, jaka norma prawna znajduje zastosowanie. Po trzecie, jakie działania pozwalają wykazać zgodność. Dopiero po przejściu tych etapów dokument ma sens. Dokumentacja nie może tworzyć fikcyjnego świata równoległego do praktyki firmy.',
+        'RODO jest rozporządzeniem opartym na ryzyku. Nie oznacza to dowolności. Oznacza konieczność uzasadnienia decyzji. Administrator powinien potrafić odpowiedzieć nie tylko „co zrobiliśmy”, lecz również „dlaczego uznaliśmy to za zgodne z prawem”. Właśnie temu ma służyć dalsza część książki.',
+      ],
+    },
     pages: 66,
     legalState: 'październik 2026',
     file: '/ebooks/przewodnik-po-rodo.pdf',
@@ -20,3 +70,7 @@ export const ebooks = [
     coverHeight: 1000,
   },
 ];
+
+export type Ebook = typeof ebooks[number];
+export const ebookPath = (ebook: Pick<Ebook, 'id'>) => `/e-booki/${ebook.id}/`;
+export const findEbook = (pathname: string) => ebooks.find(ebook => ebookPath(ebook).replace(/\/$/, '') === pathname.replace(/\/+$/, ''));

@@ -8,7 +8,7 @@ import App from '../src/App';
 import { blogPosts } from '../src/data/blogPosts';
 import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
 import { intymnoscIGodnosc } from '../src/data/intymnoscIGodnosc';
-import { ebooks } from '../src/data/ebooks';
+import { ebooks, ebookPath, findEbook } from '../src/data/ebooks';
 import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl } from '../src/data/site';
 import { services } from '../src/data/services';
 import { blogCategoryPages, categoryPath } from '../src/data/blogCategories';
@@ -16,7 +16,7 @@ import { practiceContent } from '../src/data/practiceAreas';
 import { responsiveImages } from '../src/data/responsiveImages';
 import { getPageSchema, latestPostDate, pageModifiedAt, postModifiedAt } from '../src/data/seo';
 
-const paths = [...Object.keys(standardPages), ...blogCategoryPages.map(category => categoryPath(category).replace(/\/$/, '')), ...blogPosts.map(post => `/blog/${post.slug}`)];
+const paths = [...Object.keys(standardPages), ...ebooks.map(ebook => ebookPath(ebook).replace(/\/$/, '')), ...blogCategoryPages.map(category => categoryPath(category).replace(/\/$/, '')), ...blogPosts.map(post => `/blog/${post.slug}`)];
 const escape = (value: string) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll("'", '&#039;');
 
 test('Routes, navigation and blog slugs are unique', () => {
@@ -175,6 +175,7 @@ test('E-books follow Contact and provide working downloads without analytics', a
     assert.ok(html.includes(`href="${ebook.file}" download="${ebook.file.split('/').at(-1)}"`));
     assert.ok(html.includes(`src="${ebook.cover}"`));
     assert.ok(html.includes(`${ebook.pages} stron`));
+    assert.ok(html.includes(`href="${ebookPath(ebook)}"`));
     const pdf = await readFile(resolve('dist', `.${ebook.file}`));
     assert.ok(pdf.subarray(0, 8).toString().startsWith('%PDF-2.0'));
     assert.ok(pdf.length > 1000);
@@ -184,6 +185,39 @@ test('E-books follow Contact and provide working downloads without analytics', a
   assert.equal(html.includes('googletagmanager.com'), false);
   assert.equal(html.includes('google-analytics.com'), false);
   assert.equal(html.includes('private-ebook-settings'), false);
+});
+
+test('Individual e-book pages expose descriptions, full contents and the original sample in static HTML', async () => {
+  for (const ebook of ebooks) {
+    const path = ebookPath(ebook);
+    assert.equal(findEbook(path), ebook);
+    assert.equal(findEbook(path.replace(/\/$/, '')), ebook);
+    const html = await readFile(resolve('dist', `.${path}index.html`), 'utf8');
+    assert.ok(html.includes(`>${escape(ebook.title)}</h1>`));
+    assert.ok(html.includes(`href="/e-booki/"`));
+    for (const paragraph of [...ebook.details, ebook.audience, ...ebook.sample.paragraphs]) assert.ok(html.includes(escape(paragraph)));
+    assert.equal(ebook.chapters.length, 20);
+    assert.equal(ebook.chapters[0].page, 8);
+    assert.equal(ebook.chapters.at(-1)?.page, 57);
+    for (const chapter of [...ebook.chapters, ...ebook.appendices]) {
+      assert.ok(html.includes(escape(chapter.title)));
+      assert.ok(chapter.page > 0 && chapter.page <= ebook.pages);
+    }
+    for (const title of ebook.checklists) assert.ok(html.includes(escape(title)));
+    for (const id of ['o-ebooku', 'spis-tresci', 'fragment', 'autorka']) {
+      assert.ok(html.includes(`id="${id}"`));
+      assert.ok(html.includes(`href="#${id}"`));
+    }
+    assert.ok(html.includes(`cite="${ebook.file}#page=${ebook.sample.page}"`));
+    assert.ok(html.includes(`href="${ebook.file}" download="${ebook.file.split('/').at(-1)}"`));
+    assert.ok(html.includes('href="/blog/kategoria/ochrona-danych-osobowych/"'));
+    assert.equal(getPageMetadata(path).title, ebook.seoTitle);
+    assert.equal(getPageMetadata(path).description, ebook.seoDescription);
+    assert.equal(pageModifiedAt(path), ebook.updatedAt);
+  }
+  assert.equal(findEbook('/e-booki/unknown/'), undefined);
+  assert.equal(getPageMetadata('/e-booki/unknown/').noindex, true);
+  assert.equal(getPageSchema('/e-booki/unknown/'), undefined);
 });
 
 const readSchema = async (path: string) => {
@@ -232,7 +266,29 @@ test('E-book structured data matches the published PDF rather than an invented o
     assert.equal(book.numberOfPages, ebook.pages);
     assert.equal(book.bookFormat, 'https://schema.org/EBook');
     assert.equal(book.encoding.contentUrl, `${siteUrl}${ebook.file}`);
+    assert.equal(book.url, pageUrl(ebookPath(ebook)));
     assert.equal(book.offers, undefined);
+  }
+});
+
+test('Individual e-book structured data shares the book identity and a three-level breadcrumb', async () => {
+  for (const ebook of ebooks) {
+    const path = ebookPath(ebook);
+    const schema = await readSchema(path.replace(/\/$/, ''));
+    const page = schema.find(node => node['@type'] === 'WebPage');
+    const book = schema.find(node => node['@type'] === 'Book');
+    assert.ok(page && book);
+    assert.equal(page.mainEntity['@id'], book['@id']);
+    assert.equal(book.url, pageUrl(path));
+    assert.equal(book.name, ebook.title);
+    assert.equal(book.author.name, ebook.author);
+    assert.equal(book.numberOfPages, ebook.pages);
+    assert.equal(book.encoding.contentUrl, `${siteUrl}${ebook.file}`);
+    const items = schema.find(node => node['@type'] === 'BreadcrumbList').itemListElement;
+    assert.deepEqual(items.map((item: Record<string, any>) => item.item), [pageUrl('/'), pageUrl('/e-booki'), pageUrl(path)]);
+    const collection = await readSchema('/e-booki');
+    const listed = collection.find(node => node['@type'] === 'CollectionPage').mainEntity.itemListElement.find((item: Record<string, any>) => item.item.url === book.url).item;
+    assert.deepEqual(book, listed);
   }
 });
 

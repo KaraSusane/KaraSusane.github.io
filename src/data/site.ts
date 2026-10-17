@@ -1,6 +1,7 @@
 import { blogPosts } from './blogPosts';
 import { legalPages } from './legalPages';
 import { findBlogCategory } from './blogCategories';
+import { findEbook } from './ebooks';
 
 export const siteUrl = 'https://pismowsprawie.pl';
 export const siteName = 'Pismo w Sprawie';
@@ -43,6 +44,8 @@ export function getPageMetadata(pathname: string): PageMetadata {
   const path = normalizePath(pathname);
   const standard = standardPages[path];
   if (standard) return standard;
+  const ebook = findEbook(path);
+  if (ebook) return { title: ebook.seoTitle, description: ebook.seoDescription, image: ebook.cover };
   const category = findBlogCategory(path);
   if (category) return { title: `${category.name} - artykuły i praktyczne wyjaśnienia`, description: category.description };
   const post = blogPosts.find(post => path === `/blog/${post.slug}`);
