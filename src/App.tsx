@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
-  ArrowLeft, ArrowRight, Building2, Cpu, Handshake, Landmark, Mail, Menu,
+  ArrowLeft, ArrowRight, Building2, Cpu, Download, Handshake, Landmark, Mail, Menu,
   Stethoscope, X, type LucideIcon,
 } from 'lucide-react';
 import { blogPosts } from './data/blogPosts';
+import { ebooks } from './data/ebooks';
 import { AnimatedHero, HomeSections } from './HomeExperience';
 import { legalPages, type LegalPageData } from './data/legalPages';
 import { services } from './data/services';
@@ -160,6 +161,26 @@ const ContactPage = () => <PageShell><section className="flex min-h-[85vh] items
 const LegalPage = ({ page }: { page: LegalPageData }) => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-4xl"><a href="/" className="mb-10 inline-flex items-center gap-2 text-sm font-bold uppercase text-[#b7b7bd]"><ArrowLeft className="h-4 w-4" />Wróć na stronę główną</a><SectionHeading eyebrow="Informacje" title={page.title}>{page.intro}</SectionHeading><Reveal><article className="relative space-y-10 border border-white/10 bg-[#17171a] p-7 md:p-10">{page.sections.map((section) => <section key={section.title}><h2 className="mb-4 border-l-4 border-[#ebc256] pl-4 text-2xl font-black uppercase">{section.title}</h2><div className="space-y-4">{section.paragraphs.map((paragraph) => <p key={paragraph} className="leading-relaxed text-[#c9c9cf]">{paragraph}</p>)}</div></section>)}</article></Reveal></div></section></PageShell>;
 const NotFoundPage = () => <PageShell><section className="flex min-h-[75vh] items-center px-5 pt-28"><div className="mx-auto max-w-3xl text-center"><p className="text-2xl font-black text-[#ebc256]">404</p><h1 className="mt-4 text-5xl font-black uppercase">Nie znaleziono strony</h1><a href="/" className="mt-8 inline-flex bg-[#ebc256] px-7 py-4 text-sm font-black uppercase text-[#111113]">Wróć na stronę główną</a></div></section></PageShell>;
 
+const EbooksPage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="mx-auto max-w-7xl">
+  <SectionHeading eyebrow="Publikacje" title="E-booki i kursy" />
+  <div className="divide-y divide-white/10 border-y border-white/10">{ebooks.map(ebook => <article id={ebook.id} key={ebook.id} className="grid gap-8 py-10 md:grid-cols-[220px_minmax(0,1fr)] md:gap-10 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-16">
+    <Entrance x={-24}>
+      <figure className="mx-auto max-w-[260px] md:max-w-none"><img src={ebook.cover} alt={`Okładka e-booka: ${ebook.title}`} width={ebook.coverWidth} height={ebook.coverHeight} decoding="async" fetchPriority="high" className="block h-auto w-full border border-white/15" /></figure>
+    </Entrance>
+    <Entrance delay={0.08} x={24} className="min-w-0">
+      <p className="mb-4 text-xs font-black uppercase text-[#ebc256]">{ebook.category}</p>
+      <h2 className="max-w-3xl text-2xl font-black leading-tight md:text-3xl">{ebook.title}</h2>
+      <p className="mt-4 text-sm text-[#b7b7bd]">{ebook.author}</p>
+      <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 border-y border-white/10 py-4 text-sm text-[#c9c9cf]"><span>PDF</span><span>{ebook.pages} stron</span><span>Stan prawny: {ebook.legalState}</span></div>
+      <p className="mt-6 max-w-3xl leading-relaxed text-[#c9c9cf]">{ebook.description}</p>
+      <ul className="mt-5 space-y-3 text-sm leading-relaxed text-[#c9c9cf]">{ebook.topics.map(topic => <li key={topic} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[#ebc256]" /><span>{topic}</span></li>)}</ul>
+      <a href={ebook.file} download={ebook.file.split('/').at(-1)} aria-label={`Pobierz e-book: ${ebook.title} (PDF, ${ebook.pages} stron)`} className="mt-8 inline-flex items-center gap-3 bg-[#ebc256] px-6 py-4 text-sm font-black uppercase text-[#111113] transition-colors hover:bg-white"><Download className="h-5 w-5" />Pobierz PDF</a>
+      <p className="mt-5 text-xs leading-relaxed text-[#9d9da4]">Plik z ograniczeniami kopiowania i edycji. Drukowanie jest dozwolone.</p>
+      <p className="mt-2 text-xs leading-relaxed text-[#9d9da4]">© {ebook.copyrightYear} {ebook.author}. Wszelkie prawa zastrzeżone. <a href="/nota-prawna/" className="underline underline-offset-4 hover:text-white">Prawa autorskie</a></p>
+    </Entrance>
+  </article>)}</div>
+</div></section></PageShell>;
+
 const routePages: Record<string, ComponentType> = {
   '/': HomePage,
   '/uslugi': ServicesPage,
@@ -167,6 +188,7 @@ const routePages: Record<string, ComponentType> = {
   '/o-mnie': AboutPage,
   '/blog': BlogPage,
   '/kontakt': ContactPage,
+  '/e-booki': EbooksPage,
 };
 
 export default function App({ pathname = '/' }: { pathname?: string }) {

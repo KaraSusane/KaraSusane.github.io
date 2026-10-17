@@ -8,6 +8,7 @@ import App from '../src/App';
 import { blogPosts } from '../src/data/blogPosts';
 import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
 import { intymnoscIGodnosc } from '../src/data/intymnoscIGodnosc';
+import { ebooks } from '../src/data/ebooks';
 import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl } from '../src/data/site';
 import { services } from '../src/data/services';
 import { blogCategoryPages, categoryPath } from '../src/data/blogCategories';
@@ -162,6 +163,29 @@ test('Hospital privacy article preserves headings, quotes, bibliography and publ
   assert.ok(category.includes(`href="/blog/${post.slug}/"`));
 });
 
+test('E-books follow Contact and provide working downloads without analytics', async () => {
+  const contactIndex = navItems.findIndex(item => item.href === '/kontakt/');
+  assert.deepEqual(navItems[contactIndex + 1], { label: 'E-booki', href: '/e-booki/' });
+  const html = await readFile('dist/e-booki/index.html', 'utf8');
+  assert.ok(html.includes('E-booki i kursy</h1>'));
+  for (const ebook of ebooks) {
+    assert.ok(html.includes(`id="${ebook.id}"`));
+    assert.ok(html.includes(escape(ebook.title)));
+    assert.ok(html.includes(escape(ebook.author)));
+    assert.ok(html.includes(`href="${ebook.file}" download="${ebook.file.split('/').at(-1)}"`));
+    assert.ok(html.includes(`src="${ebook.cover}"`));
+    assert.ok(html.includes(`${ebook.pages} stron`));
+    const pdf = await readFile(resolve('dist', `.${ebook.file}`));
+    assert.ok(pdf.subarray(0, 8).toString().startsWith('%PDF-2.0'));
+    assert.ok(pdf.length > 1000);
+    await access(resolve('dist', `.${ebook.cover}`));
+  }
+  assert.ok(html.includes('Drukowanie jest dozwolone.'));
+  assert.equal(html.includes('googletagmanager.com'), false);
+  assert.equal(html.includes('google-analytics.com'), false);
+  assert.equal(html.includes('private-ebook-settings'), false);
+});
+
 const readSchema = async (path: string) => {
   const html = await readFile(resolve('dist', `.${path === '/' ? '' : path}/index.html`), 'utf8');
   const match = html.match(/<script id="structured-data" type="application\/ld\+json">(.+?)<\/script>/s);
@@ -192,6 +216,24 @@ test('Structured data describes the actual legal service and author profile', as
   assert.equal(profile.mainEntity.name, authorName);
   assert.equal(profile.mainEntity.jobTitle, 'Prawnik');
   assert.equal(profile.mainEntity.url, pageUrl('/o-mnie'));
+});
+
+test('E-book structured data matches the published PDF rather than an invented offer', async () => {
+  const schema = await readSchema('/e-booki');
+  const collection = schema.find(node => node['@type'] === 'CollectionPage');
+  assert.ok(collection);
+  assert.equal(collection.dateModified, '2026-10-17');
+  assert.equal(collection.mainEntity.itemListElement.length, ebooks.length);
+  for (const [index, ebook] of ebooks.entries()) {
+    const book = collection.mainEntity.itemListElement[index].item;
+    assert.equal(book['@type'], 'Book');
+    assert.equal(book.name, ebook.title);
+    assert.equal(book.author.name, ebook.author);
+    assert.equal(book.numberOfPages, ebook.pages);
+    assert.equal(book.bookFormat, 'https://schema.org/EBook');
+    assert.equal(book.encoding.contentUrl, `${siteUrl}${ebook.file}`);
+    assert.equal(book.offers, undefined);
+  }
 });
 
 test('Breadcrumbs and article schemas have canonical URLs, category and publisher logo', async () => {

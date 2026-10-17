@@ -2,6 +2,7 @@ import type { BlogPost } from '../types';
 import { blogPosts } from './blogPosts';
 import { categoryPath, findBlogCategory, findCategoryByName } from './blogCategories';
 import { services } from './services';
+import { ebooks } from './ebooks';
 import { siteUrl, siteName, authorName, contactEmail, defaultCover, pageUrl, navItems, normalizePath, getPageMetadata } from './site';
 
 export const postModifiedAt = (post: BlogPost) => post.updatedAt || post.publishedAt;
@@ -14,6 +15,7 @@ export const pageModifiedAt = (pathname: string) => {
   if (category) return [category.updatedAt, latestPostDate(blogPosts.filter(post => post.category === category.name))].filter(Boolean).sort().at(-1);
   if (path === '/blog') return latestPostDate(blogPosts);
   if (path === '/praktyka') return '2026-10-12';
+  if (path === '/e-booki') return '2026-10-17';
 };
 
 const websiteSchema = {
@@ -72,7 +74,24 @@ export function getPageSchema(pathname: string) {
       },
     }, breadcrumbSchema([{ name: siteName, path: '/' }, { name: 'Blog', path: '/blog' }, { name: category.name, path }]));
   } else {
-    graph.push(websiteSchema, path === '/o-mnie' ? { ...webpage, '@type': 'ProfilePage', mainEntity: authorSchema } : webpage);
+    const pageSchema = path === '/o-mnie' ? { ...webpage, '@type': 'ProfilePage', mainEntity: authorSchema }
+      : path === '/e-booki' ? {
+        ...webpage, '@type': 'CollectionPage', dateModified: pageModifiedAt(path),
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: ebooks.map((ebook, index) => ({
+            '@type': 'ListItem', position: index + 1,
+            item: {
+              '@type': 'Book', '@id': `${pageUrl(path)}#${ebook.id}`, name: ebook.title,
+              author: { '@type': 'Person', name: ebook.author }, inLanguage: 'pl-PL',
+              bookFormat: 'https://schema.org/EBook', numberOfPages: ebook.pages,
+              description: ebook.description, image: `${siteUrl}${ebook.cover}`,
+              encoding: { '@type': 'MediaObject', contentUrl: `${siteUrl}${ebook.file}`, encodingFormat: 'application/pdf' },
+            },
+          })),
+        },
+      } : webpage;
+    graph.push(websiteSchema, pageSchema);
     if (path === '/' || path === '/uslugi') graph.push(legalServiceSchema);
     if (path !== '/') graph.push(breadcrumbSchema([
       { name: siteName, path: '/' },

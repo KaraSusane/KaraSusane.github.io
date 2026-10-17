@@ -8,3 +8,4 @@ coverage/
 !.env.example
 JAK-WYSYLAC-NA-GITHUB.txt
 backup-strony-*.zip
+private-ebook-settings/
