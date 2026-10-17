@@ -108,15 +108,29 @@ test('Practice headings and cards use the same CSS entrance, without hidden Moti
 test('Reading columns contain WebKit selection painting without changing justification', () => {
   for (const post of blogPosts) {
     const html = renderToString(createElement(App, { pathname: `/blog/${post.slug}/` }));
-    assert.ok(html.includes('class="relative space-y-6"'));
+    assert.ok(html.includes('class="relative selection-boundary space-y-6"'));
     assert.ok(html.includes('class="text-justify text-lg leading-[1.85]'));
   }
   const about = renderToString(createElement(App, { pathname: '/o-mnie/' }));
-  assert.ok(about.includes('class="relative space-y-6 text-justify'));
+  assert.ok(about.includes('class="relative selection-boundary space-y-6 text-justify'));
   for (const path of ['/polityka-prywatnosci/', '/nota-prawna/', '/wazne-informacje/']) {
     const html = renderToString(createElement(App, { pathname: path }));
-    assert.ok(html.includes('<article class="relative space-y-10'));
+    assert.ok(html.includes('<article class="relative selection-boundary space-y-10'));
   }
+});
+
+test('Selection boundaries cover complete pages and the ebook cross-section reading column', async () => {
+  for (const path of paths) {
+    const html = renderToString(createElement(App, { pathname: path }));
+    assert.ok(html.includes('<main class="selection-boundary">'), path);
+    assert.ok(html.includes('<footer class="selection-boundary border-t'), path);
+    assert.ok(html.includes('selection:bg-[#ebc256] selection:text-[#111113]'), path);
+  }
+  const html = renderToString(createElement(App, { pathname: ebookPath(ebooks[0]) }));
+  assert.ok(html.includes('class="relative selection-boundary max-w-4xl space-y-14 pt-14"'));
+  const css = await readFile('src/index.css', 'utf8');
+  assert.ok(css.includes('.selection-boundary::selection,\nmain > :is(section, article)::selection {\n  background-color: transparent;'));
+  assert.equal(css.includes('user-select: none'), false, 'Text must remain selectable and copyable');
 });
 
 test('RODO article preserves publication date, cover, headings and Word formatting', async () => {
@@ -157,7 +171,7 @@ test('Hospital privacy article preserves headings, quotes, bibliography and publ
   assert.ok(html.includes('href="https://eli.gov.pl/eli/DU/1997/152/ogl"'));
   assert.ok(html.includes('href="https://nil.org.pl/dokumenty/kodeks-etyki-lekarskiej"'));
   assert.ok(html.includes('href="https://www.gov.pl/web/rpp/prawo-do-poszanowania-intymnosci-i-godnosci"'));
-  assert.ok(html.includes('class="relative space-y-6"'));
+  assert.ok(html.includes('class="relative selection-boundary space-y-6"'));
   assert.ok(html.includes('text-justify'));
   const category = await readFile('dist/blog/kategoria/prawo-medyczne/index.html', 'utf8');
   assert.ok(category.includes(`href="/blog/${post.slug}/"`));
@@ -337,7 +351,7 @@ test('Category pages contain only matching articles and expose crawlable filters
     for (const paragraph of category.paragraphs) assert.ok(html.includes(escape(paragraph)));
     for (const other of blogCategoryPages) assert.ok(html.includes(`href="${categoryPath(other)}"`));
     for (const post of blogPosts) {
-      const card = `href="/blog/${post.slug}/" class="group block h-full`;
+      const card = `href="/blog/${post.slug}/" class="relative selection-boundary group block h-full`;
       assert.equal(html.includes(card), post.category === category.name, `${category.name}: ${post.slug}`);
     }
     assert.ok(html.includes(`data-blog-category="${category.name}" href="${path}" aria-current="page"`));

@@ -9,6 +9,11 @@ body {
 }
 
 html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+/* WebKit paints selection gaps on layout boxes, even outside selected text. */
+.selection-boundary::selection,
+main > :is(section, article)::selection {
+  background-color: transparent;
+}
 .home-hero { position: relative; overflow: hidden; padding: 140px 32px 38px; background: #111113; }
 .home-hero-inner { position: relative; max-width: 1280px; margin: auto; }
 .home-slash { position: absolute; inset: 0 0 0 auto; width: 29%; background: #ebc256; clip-path: polygon(75% 0,100% 0,100% 100%,0 100%); }
