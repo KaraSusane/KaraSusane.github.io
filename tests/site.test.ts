@@ -383,13 +383,15 @@ test('Sitemap lists all canonical pages exactly once and uses actual modificatio
 });
 
 test('SEO titles can be descriptive without replacing original article headlines', async () => {
-  const post = blogPosts.find(post => post.seoTitle)!;
-  assert.ok(post);
-  const html = await readFile(resolve('dist', 'blog', post.slug, 'index.html'), 'utf8');
-  assert.ok(html.includes(`<title>${escape(post.seoTitle!)} | ${siteName}</title>`));
-  assert.ok(html.includes(`>${escape(post.title)}</h1>`));
-  assert.ok(html.includes(`dateTime="${post.updatedAt}"`));
-  assert.ok(html.includes('href="/o-mnie/" rel="author"'));
+  const posts = blogPosts.filter(post => post.seoTitle);
+  assert.ok(posts.length > 0);
+  for (const post of posts) {
+    const html = await readFile(resolve('dist', 'blog', post.slug, 'index.html'), 'utf8');
+    assert.ok(html.includes(`<title>${escape(post.seoTitle!)} | ${siteName}</title>`), post.slug);
+    assert.ok(html.includes(`>${escape(post.title)}</h1>`), post.slug);
+    assert.ok(html.includes(`dateTime="${post.updatedAt || post.publishedAt}"`), post.slug);
+    assert.ok(html.includes('href="/o-mnie/" rel="author"'), post.slug);
+  }
   assert.equal(new Set(paths.map(path => getPageMetadata(path).title)).size, paths.length);
   assert.equal(new Set(paths.map(path => getPageMetadata(path).description)).size, paths.length);
 });
@@ -455,4 +457,49 @@ test('Article covers reserve their real proportions and have appropriate loading
     assert.ok(articleHtml.includes(`${cover} fetchPriority="high" decoding="async"`));
     assert.equal(articleHtml.includes(`${cover} loading="lazy"`), false);
   }
+});
+
+test('Content visible on first screen is not hidden until the script hydrates', () => {
+  const home = renderToString(createElement(App, { pathname: '/' }));
+  const hero = home.slice(0, home.indexOf('id="od-sprawy-do-pisma"'));
+  assert.ok(hero.includes('Prawo po Twojej stronie.'));
+  assert.equal(hero.includes('opacity:0'), false);
+  for (const path of ['/blog/', '/nota-prawna/', '/polityka-prywatnosci/', '/wazne-informacje/']) {
+    assert.equal(renderToString(createElement(App, { pathname: path })).includes('opacity:0'), false, path);
+  }
+});
+
+test('Page titles do not end with a period before the site name', () => {
+  for (const path of paths) assert.equal(getPageMetadata(path).title.endsWith('.'), false, path);
+});
+
+test('Contact metadata does not promise a free quote absent from the page', () => {
+  const contact = getPageMetadata('/kontakt');
+  assert.equal(`${contact.title} ${contact.description}`.toLowerCase().includes('bezpłatn'), false);
+});
+
+test('Article practice cards name an existing practice area or fall back to the category', () => {
+  for (const post of blogPosts) {
+    const html = renderToString(createElement(App, { pathname: `/blog/${post.slug}/` }));
+    const category = blogCategoryPages.find(item => item.name === post.category)!;
+    if (category.practiceId) assert.ok(html.includes(`href="/praktyka/#${category.practiceId}"`), post.slug);
+    else {
+      assert.ok(html.includes('Więcej w kategorii'), post.slug);
+      assert.equal(html.includes('>Obszar praktyki<'), false, post.slug);
+    }
+  }
+  const practice = renderToString(createElement(App, { pathname: '/praktyka/' }));
+  for (const category of blogCategoryPages.filter(item => item.practiceId)) {
+    assert.ok(practice.includes(`href="${categoryPath(category)}"`), category.name);
+  }
+});
+
+test('Ebook pages take their headings and related links from the ebook data', () => {
+  for (const ebook of ebooks) {
+    const html = renderToString(createElement(App, { pathname: ebookPath(ebook) }));
+    assert.ok(html.includes(`>${ebook.aboutTitle}</h2>`));
+    for (const link of ebook.relatedLinks) assert.ok(html.includes(`href="${link.href}"`));
+  }
+  const list = renderToString(createElement(App, { pathname: '/e-booki/' }));
+  assert.equal((list.match(/<img[^>]*fetchPriority="high"/g) || []).length, 1);
 });

@@ -3,6 +3,7 @@ import type { BlogPost } from '../types';
 export const rodoWPraktyce: BlogPost = {
   slug: '10-bledow-stosowania-przepisow-rodo-w-praktyce',
   title: '10 błędów stosowania przepisów RODO w praktyce.',
+  seoTitle: '10 błędów stosowania przepisów RODO w praktyce',
   excerpt:
     '10 częstych błędów w stosowaniu RODO: zgody klientów, obowiązek informacyjny, dane wrażliwe, bezpieczeństwo bazy danych i marketing.',
   category: 'Ochrona danych osobowych',

@@ -65,6 +65,12 @@ article h2 { text-transform: none; }
 .page-enter {
   animation: page-enter .55s cubic-bezier(.22, 1, .36, 1) var(--enter-delay, 0s) both;
 }
+@keyframes hero-slash { from { opacity: 0; transform: translateX(180px); } }
+@keyframes hero-title { from { transform: translateY(110%); } }
+@keyframes hero-rule { from { transform: scaleX(0); } }
+.home-slash { animation: hero-slash .85s ease-out both; }
+.home-title-mask > span { animation: hero-title .75s cubic-bezier(.22, 1, .36, 1) both; }
+.home-rule { animation: hero-rule .8s ease .25s both; }
 @media (max-width: 1023px) {
   .home-title { font-size: 80px; }
   .home-slash { width: 18%; opacity: .85; }

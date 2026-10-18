@@ -3,6 +3,7 @@ import type { BlogPost } from '../types';
 export const intymnoscIGodnosc: BlogPost = {
   slug: 'o-prawie-do-intymnosci-i-godnosci-w-szpitalu',
   title: 'O prawie do intymności i godności w szpitalu.',
+  seoTitle: 'Prawo do intymności i godności pacjenta w szpitalu',
   excerpt: 'Prawo pacjentki do intymności i godności w szpitalu: obecność innych osób podczas badania, informacja, osoba bliska i reakcja na naruszenie praw.',
   category: 'Prawo medyczne',
   readTime: '14 min',

@@ -3,22 +3,23 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { mailto } from './data/site';
 import { ResponsiveImage } from './components/ResponsiveImage';
+import { Entrance } from './components/Entrance';
 
 const reveal = { opacity: 1, y: 0 };
 
+// The hero animates with CSS so it is visible before the script loads.
 export function AnimatedHero() {
-  const reduced = useReducedMotion();
   return <section className="home-hero">
-    <motion.div className="home-slash" aria-hidden="true" initial={{ x: 180, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: reduced ? 0 : 0.85, ease: 'easeOut' }} />
+    <div className="home-slash" aria-hidden="true" />
     <div className="home-hero-inner selection-boundary">
       <p className="home-eyebrow">Precyzyjne pisma / Skuteczne rozwiązania</p>
-      <h1 className="home-title">{['Pismo', 'w Sprawie'].map((line, index) => <span key={line} className="home-title-mask"><motion.span initial={{ y: '110%' }} animate={{ y: 0 }} transition={{ duration: reduced ? 0 : 0.75, delay: reduced ? 0 : index * 0.13, ease: [0.22, 1, 0.36, 1] }}>{line}</motion.span></span>)}</h1>
-      <motion.div className="home-rule" aria-hidden="true" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: reduced ? 0 : 0.8, delay: reduced ? 0 : 0.25 }} />
-      <motion.div className="relative selection-boundary" initial={{ opacity: 0, y: 12 }} animate={reveal} transition={{ duration: reduced ? 0 : 0.6, delay: reduced ? 0 : 0.35 }}>
+      <h1 className="home-title">{['Pismo', 'w Sprawie'].map((line, index) => <span key={line} className="home-title-mask"><span style={{ animationDelay: `${index * 0.13}s` }}>{line}</span></span>)}</h1>
+      <div className="home-rule" aria-hidden="true" />
+      <Entrance className="relative selection-boundary" delay={0.35} y={12}>
         <h2 className="home-tagline">Prawo po Twojej stronie.</h2>
         <p className="home-intro relative">Prawne wsparcie, precyzyjna argumentacja i dokumenty przygotowane z myślą o realnym celu Twojej sprawy.</p>
         <div className="home-actions"><a className="home-button" href="/praktyka/">Poznaj obszary praktyki <ArrowRight size={20} /></a><a className="home-text-link" href="/uslugi/">Zobacz usługi <ArrowRight size={20} /></a></div>
-      </motion.div>
+      </Entrance>
       <a href="#od-sprawy-do-pisma" className="home-scroll">Od sprawy do pisma <ArrowDown size={17} /></a>
     </div>
   </section>;

@@ -12,7 +12,7 @@ export const practiceContent = {
   'prawo-nieruchomosci': {
     description: 'Pomagam przeanalizować dokumenty i zapisy umowne związane z nieruchomością przed podjęciem decyzji. Sprawdzam konstrukcję zobowiązań, wskazuję niejasności i przygotowuję projekty pism dotyczących ustaleń między stronami.',
     examples: 'Przykładowe sprawy: analiza umowy najmu, uporządkowanie warunków współpracy oraz projekt wezwania lub odpowiedzi. Usługa nie zastępuje czynności notariusza.',
-    category: null,
+    category: 'Prawo rolne',
   },
   'prawo-sztucznej-inteligencji': {
     description: 'Pomagam analizować dokumentację i umowy związane z wykorzystaniem sztucznej inteligencji oraz przetwarzaniem danych osobowych. Porządkuję pytania dotyczące AI Act i RODO, wskazuję ryzyka wymagające oceny i przygotowuję projekty dokumentów dostosowane do sposobu działania klienta.',

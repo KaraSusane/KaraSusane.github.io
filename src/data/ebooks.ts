@@ -20,6 +20,11 @@ export const ebooks = [
       'Kolejne rozdziały prowadzą od podstaw RODO i wyboru podstaw przetwarzania do dokumentacji, obsługi żądań osób, naruszeń oraz audytu własnej firmy. Publikacja obejmuje również dane wrażliwe, okresy przechowywania danych, rolę inspektora ochrony danych i ocenę skutków dla ochrony danych.',
       'To opracowanie prawne, a nie instrukcja konfiguracji systemów informatycznych ani podręcznik cyberbezpieczeństwa. Przykłady pomagają uporządkować pytania i sposób analizy, ale nie zastępują oceny konkretnej sprawy. Stan prawny publikacji: październik 2026 r.',
     ],
+    aboutTitle: 'O e-booku RODO w firmie',
+    relatedLinks: [
+      { href: '/blog/kategoria/ochrona-danych-osobowych/', label: 'Artykuły o RODO' },
+      { href: '/praktyka/#prawo-sztucznej-inteligencji', label: 'AI Act i ochrona danych' },
+    ],
     audience: 'Dla przedsiębiorców, osób zarządzających i praktyków, którzy chcą uporządkować sposób przetwarzania danych w swojej organizacji oraz zrozumieć związek między przepisami, dokumentacją i codziennymi działaniami firmy.',
     chapters: [
       { title: 'RODO od podstaw.', page: 8 },
