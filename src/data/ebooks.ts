@@ -2,7 +2,7 @@ export const ebooks = [
   {
     id: 'przewodnik-po-rodo',
     title: 'Praktyczny przewodnik prawny po ochronie danych osobowych w firmie',
-    seoTitle: 'RODO w firmie - e-book i praktyczny przewodnik prawny',
+    seoTitle: 'RODO w firmie - praktyczny e-book prawny',
     seoDescription: 'Poznaj e-book o RODO w firmie autorstwa Karoliny Zdrojek: 20 rozdziałów, checklisty i przykłady. Sprawdź spis treści, przeczytaj fragment i pobierz PDF.',
     updatedAt: '2026-10-17',
     author: 'Karolina Zuzanna Zdrojek',
@@ -71,6 +71,7 @@ export const ebooks = [
     legalState: 'październik 2026',
     file: '/ebooks/przewodnik-po-rodo.pdf',
     cover: '/ebooks/przewodnik-po-rodo-okladka.webp',
+    shareImage: '/ebooks/przewodnik-po-rodo-og.jpg',
     coverWidth: 705,
     coverHeight: 1000,
   },

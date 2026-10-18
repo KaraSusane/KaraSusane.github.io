@@ -3,7 +3,7 @@ import { blogPosts } from './blogPosts';
 import { categoryPath, findBlogCategory, findCategoryByName } from './blogCategories';
 import { services } from './services';
 import { ebooks, ebookPath, findEbook, type Ebook } from './ebooks';
-import { siteUrl, siteName, authorName, contactEmail, defaultCover, pageUrl, navItems, normalizePath, getPageMetadata } from './site';
+import { siteUrl, siteName, authorName, contactEmail, defaultCover, pageUrl, navItems, normalizePath, getPageMetadata, fullTitle, tiktokUrl } from './site';
 
 export const postModifiedAt = (post: BlogPost) => post.updatedAt || post.publishedAt;
 export const latestPostDate = (posts: BlogPost[]) => posts.map(postModifiedAt).sort().at(-1);
@@ -34,6 +34,7 @@ const legalServiceSchema = {
   image: `${siteUrl}${defaultCover}`, logo: publisherLogo, email: contactEmail,
   priceRange: services.find(service => service.number === '02')?.price, founder: authorSchema,
   areaServed: { '@type': 'Country', name: 'Polska' },
+  sameAs: [tiktokUrl.split('?')[0]],
 };
 const breadcrumbSchema = (items: Array<{ name: string; path: string }>) => ({
   '@type': 'BreadcrumbList',
@@ -58,7 +59,7 @@ export function getPageSchema(pathname: string) {
   const ebook = findEbook(path);
   const post = blogPosts.find(post => path === `/blog/${post.slug}`);
   const webpage = {
-    '@type': 'WebPage', '@id': `${pageUrl(path)}#webpage`, name: `${metadata.title} | ${siteName}`,
+    '@type': 'WebPage', '@id': `${pageUrl(path)}#webpage`, name: fullTitle(metadata.title),
     description: metadata.description, url: pageUrl(path), inLanguage: 'pl-PL', isPartOf: { '@id': websiteSchema['@id'] },
   };
   const graph: Record<string, unknown>[] = [];

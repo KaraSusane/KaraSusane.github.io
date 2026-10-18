@@ -13,7 +13,7 @@ export function AnimatedHero() {
     <div className="home-slash" aria-hidden="true" />
     <div className="home-hero-inner selection-boundary">
       <p className="home-eyebrow">Precyzyjne pisma / Skuteczne rozwiązania</p>
-      <h1 className="home-title">{['Pismo', 'w Sprawie'].map((line, index) => <span key={line} className="home-title-mask"><span style={{ animationDelay: `${index * 0.13}s` }}>{line}</span></span>)}</h1>
+      <h1 className="home-title">{['Pismo', 'w Sprawie'].map((line, index) => <span key={line} className="home-title-mask">{index > 0 && ' '}<span style={{ animationDelay: `${index * 0.13}s` }}>{line}</span></span>)}</h1>
       <div className="home-rule" aria-hidden="true" />
       <Entrance className="relative selection-boundary" delay={0.35} y={12}>
         <h2 className="home-tagline">Prawo po Twojej stronie.</h2>

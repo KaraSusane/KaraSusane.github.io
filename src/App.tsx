@@ -9,7 +9,7 @@ import { ebooks, ebookPath, findEbook, type Ebook } from './data/ebooks';
 import { AnimatedHero, HomeSections } from './HomeExperience';
 import { legalPages, type LegalPageData } from './data/legalPages';
 import { services } from './data/services';
-import { contactEmail, tiktokUrl, defaultCover, mailto, navItems, siteName, siteUrl, pageUrl, normalizePath, getPageMetadata, authorName } from './data/site';
+import { contactEmail, tiktokUrl, defaultCover, mailto, navItems, siteUrl, pageUrl, normalizePath, getPageMetadata, authorName, fullTitle, pageShareImage } from './data/site';
 import { blogCategoryPages, categoryPath, findBlogCategory, findCategoryByName, type BlogCategory } from './data/blogCategories';
 import { practiceContent } from './data/practiceAreas';
 import { getPageSchema } from './data/seo';
@@ -237,9 +237,11 @@ export default function App({ pathname = '/' }: { pathname?: string }) {
   const ebook = findEbook(path);
   const legalPage = legalPages[path];
   const Page = routePages[path];
-  const { title, description, image = defaultCover, noindex = false } = getPageMetadata(path);
+  const metadata = getPageMetadata(path);
+  const { title, description, noindex = false } = metadata;
+  const image = pageShareImage(metadata);
   useEffect(() => {
-    const completeTitle = `${title} | ${siteName}`;
+    const completeTitle = fullTitle(title);
     document.title = completeTitle;
     const values = {
       'meta[name="description"]': description,
@@ -247,10 +249,14 @@ export default function App({ pathname = '/' }: { pathname?: string }) {
       'meta[property="og:type"]': article ? 'article' : 'website',
       'meta[property="og:description"]': description,
       'meta[property="og:url"]': pageUrl(path),
-      'meta[property="og:image"]': `${siteUrl}${image}`,
+      'meta[property="og:image"]': `${siteUrl}${image.url}`,
+      'meta[property="og:image:width"]': String(image.width ?? ''),
+      'meta[property="og:image:height"]': String(image.height ?? ''),
+      'meta[property="og:image:alt"]': image.alt,
+      'meta[name="twitter:image:alt"]': image.alt,
       'meta[name="twitter:title"]': completeTitle,
       'meta[name="twitter:description"]': description,
-      'meta[name="twitter:image"]': `${siteUrl}${image}`,
+      'meta[name="twitter:image"]': `${siteUrl}${image.url}`,
       'meta[name="robots"]': noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large',
     };
     for (const [selector, content] of Object.entries(values)) {
@@ -270,7 +276,7 @@ export default function App({ pathname = '/' }: { pathname?: string }) {
       const script = document.querySelector<HTMLScriptElement>('#structured-data');
       if (script && schema) script.textContent = JSON.stringify(schema);
     }
-  }, [title, description, image, noindex, path]);
+  }, [title, description, image.url, image.width, image.height, image.alt, noindex, path]);
   if (category || path === '/blog') return <BlogPage category={category} />;
   if (article) return <ArticlePage slug={article.slug} />;
   if (ebook) return <EbookPage ebook={ebook} />;

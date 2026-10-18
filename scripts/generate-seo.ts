@@ -6,8 +6,8 @@ import App from '../src/App.tsx';
 import { blogPosts } from '../src/data/blogPosts.ts';
 import { blogCategoryPages, categoryPath } from '../src/data/blogCategories.ts';
 import { ebooks, ebookPath } from '../src/data/ebooks.ts';
-import { siteUrl, siteName, defaultCover, pageUrl, normalizePath, standardPages, getPageMetadata } from '../src/data/site.ts';
-import { getPageSchema, pageModifiedAt } from '../src/data/seo.ts';
+import { siteUrl, siteName, authorName, pageUrl, normalizePath, standardPages, getPageMetadata, fullTitle, pageShareImage } from '../src/data/site.ts';
+import { getPageSchema, pageModifiedAt, postModifiedAt } from '../src/data/seo.ts';
 
 const distDir = resolve('dist');
 const baseHtml = await readFile(resolve(distDir, 'index.html'), 'utf8');
@@ -16,23 +16,34 @@ const escapeHtml = (value: string) => value.replaceAll('&', '&amp;').replaceAll(
 const renderPage = (path: string) => {
   const page = getPageMetadata(path);
   const canonicalUrl = pageUrl(path);
-  const completeTitle = `${page.title} | ${siteName}`;
-  const image = `${siteUrl}${page.image || defaultCover}`;
+  const completeTitle = fullTitle(page.title);
+  const shareImage = pageShareImage(page);
+  const image = `${siteUrl}${shareImage.url}`;
   const schema = getPageSchema(path);
-  const isArticle = blogPosts.some(post => path === `/blog/${post.slug}`);
+  const post = blogPosts.find(post => path === `/blog/${post.slug}`);
+  const articleMeta = post ? `
+    <meta property="article:published_time" content="${post.publishedAt}" />
+    <meta property="article:modified_time" content="${postModifiedAt(post)}" />
+    <meta property="article:author" content="${escapeHtml(authorName)}" />
+    <meta property="article:section" content="${escapeHtml(post.category)}" />` : '';
+  const imageSize = shareImage.width && shareImage.height ? `
+    <meta property="og:image:width" content="${shareImage.width}" />
+    <meta property="og:image:height" content="${shareImage.height}" />` : '';
   const head = `
     ${page.noindex ? '<meta name="robots" content="noindex, follow" />' : `<link rel="canonical" href="${escapeHtml(canonicalUrl)}" /><meta name="robots" content="index, follow, max-image-preview:large" />`}
     <meta property="og:locale" content="pl_PL" />
-    <meta property="og:type" content="${isArticle ? 'article' : 'website'}" />
+    <meta property="og:type" content="${post ? 'article' : 'website'}" />${articleMeta}
     <meta property="og:site_name" content="${siteName}" />
     <meta property="og:title" content="${escapeHtml(completeTitle)}" />
     <meta property="og:description" content="${escapeHtml(page.description)}" />
     ${page.noindex ? '' : `<meta property="og:url" content="${escapeHtml(canonicalUrl)}" />`}
-    <meta property="og:image" content="${escapeHtml(image)}" />
+    <meta property="og:image" content="${escapeHtml(image)}" />${imageSize}
+    <meta property="og:image:alt" content="${escapeHtml(shareImage.alt)}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(completeTitle)}" />
     <meta name="twitter:description" content="${escapeHtml(page.description)}" />
     <meta name="twitter:image" content="${escapeHtml(image)}" />
+    <meta name="twitter:image:alt" content="${escapeHtml(shareImage.alt)}" />
     ${schema ? `<script id="structured-data" type="application/ld+json">${JSON.stringify(schema).replaceAll('<', '\\u003c')}</script>` : ''}`;
   const content = renderToString(createElement(App, { pathname: path }));
   return baseHtml

@@ -1,6 +1,7 @@
 export type LegalPageData = {
   title: string;
   intro: string;
+  description: string;
   sections: Array<{ title: string; paragraphs: string[] }>;
 };
 
@@ -8,6 +9,7 @@ export const legalPages: Record<string, LegalPageData> = {
   '/polityka-prywatnosci': {
     title: 'Polityka prywatności',
     intro: 'Polityka prywatności strony internetowej Pismo w Sprawie.',
+    description: 'Polityka prywatności Pismo w Sprawie: kto jest administratorem danych, w jakim celu je przetwarzamy, jak długo przechowujemy i jakie masz prawa.',
     sections: [
       {
         title: '§ 1. Administrator Danych Osobowych',
@@ -59,6 +61,7 @@ export const legalPages: Record<string, LegalPageData> = {
   '/nota-prawna': {
     title: 'Nota prawna i prawa autorskie',
     intro: 'Informacje dotyczące praw autorskich i wyłączenia odpowiedzialności.',
+    description: 'Nota prawna Pismo w Sprawie: ochrona praw autorskich do tekstów, grafik i zdjęć na stronie oraz zasady wyłączenia odpowiedzialności za treści.',
     sections: [
       {
         title: '§ 1. Prawa autorskie',
@@ -81,6 +84,7 @@ export const legalPages: Record<string, LegalPageData> = {
   '/wazne-informacje': {
     title: 'Ważne informacje',
     intro: 'Najważniejsze zasady realizacji usługi.',
+    description: 'Zasady współpracy z Pismo w Sprawie: dokumenty od klienta, płatność, odstąpienie od umowy, poufność, terminy realizacji, korekty i reklamacje.',
     sections: [
       { title: '§ 1. Dokumenty i informacje od klienta', paragraphs: ['Klient powinien przekazać prawdziwe, kompletne i aktualne informacje dotyczące sprawy. Treść przygotowanego dokumentu opiera się na materiałach otrzymanych od klienta. Jeżeli po wykonaniu usługi pojawią się nowe fakty, dokumenty albo okoliczności, mogą one wymagać dodatkowej analizy i odrębnej wyceny, a co za tym idzie zmiany terminów wykonywania usług.'] },
       { title: '§ 2. Płatność', paragraphs: ['Płatność następuje przed rozpoczęciem pracy nad zleceniem, chyba że strony ustalą inaczej. Rozpoczęcie realizacji usługi następuje po zaakceptowaniu wyceny, warunków współpracy oraz zaksięgowaniu płatności.'] },

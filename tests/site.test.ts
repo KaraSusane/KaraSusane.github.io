@@ -9,7 +9,7 @@ import { blogPosts } from '../src/data/blogPosts';
 import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
 import { intymnoscIGodnosc } from '../src/data/intymnoscIGodnosc';
 import { ebooks, ebookPath, findEbook } from '../src/data/ebooks';
-import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl } from '../src/data/site';
+import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl, fullTitle, pageShareImage, tiktokUrl } from '../src/data/site';
 import { services } from '../src/data/services';
 import { blogCategoryPages, categoryPath } from '../src/data/blogCategories';
 import { practiceContent } from '../src/data/practiceAreas';
@@ -63,9 +63,9 @@ for (const path of paths) {
     const html = await readFile(resolve('dist', `.${path === '/' ? '' : path}/index.html`), 'utf8');
     const metadata = getPageMetadata(`${path}/`);
     assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1);
-    assert.ok(html.includes(`<title>${escape(metadata.title)} | ${siteName}</title>`));
-    assert.ok(html.includes(`property="og:title" content="${escape(metadata.title)} | ${siteName}"`));
-    assert.ok(html.includes(`name="twitter:title" content="${escape(metadata.title)} | ${siteName}"`));
+    assert.ok(html.includes(`<title>${escape(fullTitle(metadata.title))}</title>`));
+    assert.ok(html.includes(`property="og:title" content="${escape(fullTitle(metadata.title))}"`));
+    assert.ok(html.includes(`name="twitter:title" content="${escape(fullTitle(metadata.title))}"`));
     assert.ok(html.includes(`name="description" content="${escape(metadata.description)}"`));
     assert.ok(html.includes(`rel="canonical" href="${pageUrl(path)}"`));
     assert.ok(html.includes('data-prerendered'));
@@ -387,7 +387,7 @@ test('SEO titles can be descriptive without replacing original article headlines
   assert.ok(posts.length > 0);
   for (const post of posts) {
     const html = await readFile(resolve('dist', 'blog', post.slug, 'index.html'), 'utf8');
-    assert.ok(html.includes(`<title>${escape(post.seoTitle!)} | ${siteName}</title>`), post.slug);
+    assert.ok(html.includes(`<title>${escape(fullTitle(post.seoTitle!))}</title>`), post.slug);
     assert.ok(html.includes(`>${escape(post.title)}</h1>`), post.slug);
     assert.ok(html.includes(`dateTime="${post.updatedAt || post.publishedAt}"`), post.slug);
     assert.ok(html.includes('href="/o-mnie/" rel="author"'), post.slug);
@@ -502,4 +502,49 @@ test('Ebook pages take their headings and related links from the ebook data', ()
   }
   const list = renderToString(createElement(App, { pathname: '/e-booki/' }));
   assert.equal((list.match(/<img[^>]*fetchPriority="high"/g) || []).length, 1);
+});
+
+test('Home H1 reads as the brand name with a space between its lines', () => {
+  const html = renderToString(createElement(App, { pathname: '/' }));
+  const h1 = html.match(/<h1[^>]*>(.*?)<\/h1>/s)![1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  assert.equal(h1, 'Pismo w Sprawie');
+});
+
+test('Search titles fit in 60 characters and carry the brand only once', () => {
+  for (const path of paths) {
+    const title = fullTitle(getPageMetadata(path).title);
+    assert.ok(title.length <= 60, `${path}: ${title.length}`);
+    assert.ok((title.match(/Pismo w Sprawie/g) || []).length <= 1, path);
+  }
+  assert.equal(fullTitle('Blog'), `Blog | ${siteName}`);
+});
+
+test('Every indexed page has a meta description of useful length', () => {
+  for (const path of paths) {
+    const { description } = getPageMetadata(path);
+    assert.ok(description.length >= 70 && description.length <= 160, `${path}: ${description.length}`);
+  }
+});
+
+test('Share images are landscape files with declared size and alt text', async () => {
+  for (const path of paths) {
+    const html = await readFile(resolve('dist', `.${path === '/' ? '' : path}/index.html`), 'utf8');
+    const image = pageShareImage(getPageMetadata(path));
+    assert.ok(image.width && image.height && image.width > image.height, path);
+    assert.ok(html.includes(`property="og:image" content="${siteUrl}${image.url}"`), path);
+    assert.ok(html.includes(`property="og:image:width" content="${image.width}"`), path);
+    assert.ok(html.includes(`property="og:image:height" content="${image.height}"`), path);
+    assert.ok(html.includes(`property="og:image:alt" content="${escape(image.alt)}"`), path);
+    await access(resolve('dist', `.${image.url}`));
+  }
+});
+
+test('Articles expose publication dates and the organization links its social profile', async () => {
+  for (const post of blogPosts) {
+    const html = await readFile(resolve('dist', 'blog', post.slug, 'index.html'), 'utf8');
+    assert.ok(html.includes(`property="article:published_time" content="${post.publishedAt}"`), post.slug);
+    assert.ok(html.includes(`property="article:modified_time" content="${postModifiedAt(post)}"`), post.slug);
+  }
+  const organization = (getPageSchema('/')!['@graph'] as Array<Record<string, any>>).find(item => item['@type'] === 'LegalService')!;
+  assert.deepEqual(organization.sameAs, [tiktokUrl.split('?')[0]]);
 });

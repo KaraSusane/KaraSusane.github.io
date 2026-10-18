@@ -12,6 +12,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: 'klauzula-sumienia-lekarza-kiedy-mozna-odmowic-wykonania-swiadczenia',
     title: 'Klauzula sumienia lekarza. Kiedy można odmówić wykonania świadczenia?',
+    seoTitle: 'Klauzula sumienia lekarza - kiedy można odmówić świadczenia',
     excerpt:
       'Kiedy lekarz może powołać się na klauzulę sumienia, gdzie przebiega granica w stanie nagłym i jakie formalności powinien zachować.',
     category: 'Prawo medyczne',
@@ -64,6 +65,7 @@ Autor: mgr prawa Karolina Zdrojek`,
   {
     slug: 'dziedziczenie-ustawowe-kto-dostaje-spadek-gdy-nie-ma-testamentu',
     title: 'Dziedziczenie ustawowe. Kto dostaje spadek, gdy nie ma testamentu?',
+    seoTitle: 'Dziedziczenie ustawowe - kto dziedziczy bez testamentu?',
     excerpt:
       'Kto dziedziczy po zmarłym bez testamentu, jak dzieli się spadek między małżonka, dzieci i rodziców oraz co dzieje się z mieszkaniem należącym do małżonków.',
     category: 'Prawo spadkowe',
