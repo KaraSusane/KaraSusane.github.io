@@ -2,6 +2,7 @@ import { blogPosts } from './blogPosts';
 import { legalPages } from './legalPages';
 import { findBlogCategory } from './blogCategories';
 import { findEbook } from './ebooks';
+import { servicesEnabled } from './features';
 
 export const siteUrl = 'https://pismowsprawie.pl';
 export const siteName = 'Pismo w Sprawie';
@@ -11,6 +12,7 @@ export const tiktokUrl = 'https://www.tiktok.com/@pismowsprawie?_r=1&_t=ZN-97Er7
 export const defaultCover = '/karolina-zdrojek.jpg';
 export const defaultShareImage = { url: '/og-image.jpg', width: 1200, height: 630, alt: 'Pismo w Sprawie - prawo po Twojej stronie' };
 export const mailto = (subject?: string) => `mailto:${contactEmail}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
+export const mailCtaLabel = 'Masz problem? Napisz maila!';
 export const normalizePath = (path: string) => path.replace(/\/+$/, '') || '/';
 // Search results cut titles at roughly 60 characters, so the brand is added only when it fits.
 export const fullTitle = (title: string) => {
@@ -20,7 +22,7 @@ export const fullTitle = (title: string) => {
 export const pageUrl = (path: string) => `${siteUrl}${normalizePath(path) === '/' ? '/' : `${normalizePath(path)}/`}`;
 
 export const navItems = [
-  { label: 'Usługi', href: '/uslugi/' },
+  ...(servicesEnabled ? [{ label: 'Usługi', href: '/uslugi/' }] : []),
   { label: 'O mnie', href: '/o-mnie/' },
   { label: 'Praktyka', href: '/praktyka/' },
   { label: 'Blog', href: '/blog/' },
@@ -38,11 +40,13 @@ export type PageMetadata = {
   noindex?: boolean;
 };
 
+const servicesMetadata: PageMetadata = { title: 'Usługi i cennik - pisma, umowy, doradztwo', description: 'Sprawdź zakres usług i cennik Pismo w Sprawie: sporządzanie pism prawnych, wezwań, odwołań, opiniowanie i tworzenie umów oraz doradztwo prawne.' };
+
 export const standardPages: Record<string, PageMetadata> = {
   '/': { title: 'Prawne wsparcie i precyzyjne pisma prawne', description: 'Pisma prawne, wezwania, odwołania, analiza umów i doradztwo prawne przygotowane jasno, konkretnie i z myślą o realnym celu Twojej sprawy.' },
-  '/uslugi': { title: 'Usługi i cennik - pisma, umowy, doradztwo', description: 'Sprawdź zakres usług i cennik Pismo w Sprawie: sporządzanie pism prawnych, wezwań, odwołań, opiniowanie i tworzenie umów oraz doradztwo prawne.' },
+  ...(servicesEnabled ? { '/uslugi': servicesMetadata } : {}),
   '/o-mnie': { title: 'O mnie - Karolina Zdrojek, prawnik', description: 'Karolina Zdrojek - prawnik i założycielka Pismo w Sprawie. Specjalizacja w prawie medycznym, obsłudze dokumentacji prawnej i analizie umów.' },
-  '/praktyka': { title: 'Obszary praktyki - prawo medyczne, AI, RODO', description: 'Poznaj obszary praktyki Pismo w Sprawie: prawo administracyjne, medyczne, nieruchomości, prawo sztucznej inteligencji, AI Act, RODO oraz mediacje.' },
+  '/praktyka': { title: 'Obszary praktyki - AI, medyczne i spadkowe', description: 'Prawo sztucznej inteligencji, AI Act i RODO, prawo medyczne, spadkowe i nieruchomości, legal tech i cyberbezpieczeństwo oraz mediacje. Poznaj obszary praktyki.' },
   '/blog': { title: 'Blog prawny - prawo w życiu codziennym', description: 'Praktyczne artykuły i analizy prawne: prawo medyczne, prawa pacjenta, RODO, rękojmia przy zakupie auta, dziedziczenie ustawowe i mediacje.' },
   '/kontakt': { title: 'Kontakt - opisz sprawę i otrzymaj wycenę', description: `Opisz swoją sprawę i otrzymaj indywidualną wycenę oraz proponowany termin realizacji. Skontaktuj się mailowo z Pismo w Sprawie: ${contactEmail}.` },
   '/e-booki': { title: 'E-booki prawne - przewodnik po RODO', description: 'Autorskie publikacje Karoliny Zdrojek. Pobierz praktyczny przewodnik prawny po ochronie danych osobowych w firmie: 66 stron o RODO, przykłady i checklisty.', image: '/ebooks/przewodnik-po-rodo-og.jpg', imageWidth: 1200, imageHeight: 630, imageAlt: 'Okładka e-booka o RODO w firmie' },

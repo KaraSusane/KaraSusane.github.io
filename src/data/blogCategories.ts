@@ -33,7 +33,7 @@ export const blogCategoryPages: BlogCategory[] = [
     ],
   },
   {
-    name: 'Prawo spadkowe', slug: 'prawo-spadkowe', updatedAt: '2026-10-11',
+    name: 'Prawo spadkowe', slug: 'prawo-spadkowe', practiceId: 'prawo-spadkowe', updatedAt: '2026-10-19',
     description: 'Prawo spadkowe przystępnie: dziedziczenie bez testamentu, kolejność spadkobierców i udziały w majątku. Przykłady dotyczące małżonka i dzieci.',
     paragraphs: [
       'Sprawy spadkowe często wymagają ustalenia dwóch rzeczy: kto należy do kręgu spadkobierców oraz jaki majątek rzeczywiście wchodzi do spadku. Sam opis rodzinnej sytuacji nie zawsze wystarcza do obliczenia udziałów.',

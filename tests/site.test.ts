@@ -9,8 +9,9 @@ import { blogPosts } from '../src/data/blogPosts';
 import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
 import { intymnoscIGodnosc } from '../src/data/intymnoscIGodnosc';
 import { ebooks, ebookPath, findEbook } from '../src/data/ebooks';
-import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl, fullTitle, pageShareImage, tiktokUrl } from '../src/data/site';
+import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl, fullTitle, pageShareImage, tiktokUrl, mailCtaLabel, mailto } from '../src/data/site';
 import { services } from '../src/data/services';
+import { servicesEnabled } from '../src/data/features';
 import { blogCategoryPages, categoryPath } from '../src/data/blogCategories';
 import { practiceContent } from '../src/data/practiceAreas';
 import { responsiveImages } from '../src/data/responsiveImages';
@@ -23,6 +24,43 @@ test('Routes, navigation and blog slugs are unique', () => {
   assert.equal(new Set(paths).size, paths.length);
   assert.equal(new Set(navItems.map(item => item.href)).size, navItems.length);
   for (const item of navItems) assert.ok(standardPages[item.href.replace(/\/$/, '')]);
+});
+
+test('Services can be unpublished and restored through one feature flag', async () => {
+  assert.equal(navItems.some(item => item.href === '/uslugi/'), servicesEnabled);
+  assert.equal(Boolean(standardPages['/uslugi']), servicesEnabled);
+  assert.equal(Boolean(getPageMetadata('/uslugi/').noindex), !servicesEnabled);
+  const html = renderToString(createElement(App, { pathname: '/uslugi/' }));
+  assert.equal(html.includes('W czym mogę Ci pomóc?'), servicesEnabled);
+  assert.equal(html.includes('Nie znaleziono strony'), !servicesEnabled);
+  assert.equal(Boolean(getPageSchema('/uslugi/')), servicesEnabled);
+  const sitemap = await readFile('dist/sitemap.xml', 'utf8');
+  assert.equal(sitemap.includes('<loc>https://pismowsprawie.pl/uslugi/</loc>'), servicesEnabled);
+  if (servicesEnabled) await access('dist/uslugi/index.html');
+  else {
+    await assert.rejects(access('dist/uslugi/index.html'));
+    for (const path of paths) {
+      const page = await readFile(resolve('dist', `.${path === '/' ? '' : path}/index.html`), 'utf8');
+      assert.equal(page.includes('href="/uslugi/"'), false, path);
+      assert.equal(page.includes('Zobacz usługi'), false, path);
+    }
+  }
+  const source = await readFile('src/App.tsx', 'utf8');
+  assert.ok(source.includes('const ServicesPage ='));
+  assert.ok(source.includes('<CooperationSection />'));
+  assert.equal(services.length, 5);
+});
+
+test('Mail calls to action share the requested wording and keep working mail links', () => {
+  assert.equal(mailCtaLabel, 'Masz problem? Napisz maila!');
+  for (const path of ['/', '/kontakt/', `/blog/${blogPosts[0].slug}/`]) {
+    const html = renderToString(createElement(App, { pathname: path }));
+    assert.ok(html.includes(mailCtaLabel), path);
+    assert.ok(html.includes(`href="${mailto()}"`), path);
+    assert.equal(html.includes('>Napisz maila<'), false, path);
+  }
+  const home = renderToString(createElement(App, { pathname: '/' }));
+  assert.equal(home.includes('Zobacz usługi'), servicesEnabled);
 });
 
 test('Every published page provides versioned browser icons and an iPhone touch icon', async () => {
@@ -244,13 +282,13 @@ const readSchema = async (path: string) => {
 };
 
 test('Structured data describes the actual legal service and author profile', async () => {
-  for (const path of ['/', '/uslugi']) {
+  for (const path of servicesEnabled ? ['/', '/uslugi'] : ['/']) {
     const schema = await readSchema(path);
     const service = schema.find(node => node['@type'] === 'LegalService');
     assert.ok(service);
     assert.equal(service.name, siteName);
     assert.equal(service.email, contactEmail);
-    assert.equal(service.priceRange, services.find(service => service.number === '02')?.price);
+    assert.equal(service.priceRange, servicesEnabled ? services.find(service => service.number === '02')?.price : undefined);
     assert.equal(service.founder.name, authorName);
     assert.equal(service.founder.url, pageUrl('/o-mnie'));
     assert.equal(service.areaServed.name, 'Polska');
@@ -396,7 +434,7 @@ test('SEO titles can be descriptive without replacing original article headlines
   assert.equal(new Set(paths.map(path => getPageMetadata(path).description)).size, paths.length);
 });
 
-test('Every practice area includes useful descriptions and a service link', async () => {
+test('Every practice area includes useful descriptions and an available next step', async () => {
   const html = await readFile('dist/praktyka/index.html', 'utf8');
   for (const [id, content] of Object.entries(practiceContent)) {
     assert.ok(html.includes(`id="${id}"`));
@@ -404,17 +442,19 @@ test('Every practice area includes useful descriptions and a service link', asyn
     assert.ok(html.includes(escape(content.examples)));
     assert.ok(content.description.split(/\s+/).length >= 25);
   }
-  assert.equal((html.match(/href="\/uslugi\/" class="underline underline-offset-4"/g) || []).length, Object.keys(practiceContent).length);
+  assert.equal((html.match(/href="\/uslugi\/" class="underline underline-offset-4"/g) || []).length, servicesEnabled ? Object.keys(practiceContent).length : 0);
+  if (!servicesEnabled) assert.equal((html.match(/>Opisz swoją sprawę<\/a>/g) || []).length, Object.keys(practiceContent).length);
 });
 
-test('Practice lists the five requested areas in order and keeps blog practice links valid', async () => {
+test('Practice lists the six requested areas in order and keeps blog practice links valid', async () => {
   const html = await readFile('dist/praktyka/index.html', 'utf8');
   const headings = [...html.matchAll(/<h2[^>]*>(.*?)<\/h2>/g)].map(([, title]) => title);
   assert.deepEqual(headings, [
-    'Prawo administracyjne', 'Prawo medyczne', 'Prawo nieruchomości',
-    'Prawo sztucznej inteligencji, AI Act, RODO', 'Mediacje',
+    'Prawo sztucznej inteligencji, AI Act, RODO', 'Prawo medyczne', 'Prawo spadkowe',
+    'Prawo nieruchomości', 'Legal tech i cyberbezpieczeństwo', 'Mediacje',
   ]);
-  assert.equal(Object.keys(practiceContent).length, 5);
+  assert.equal(Object.keys(practiceContent).length, 6);
+  assert.equal(html.includes('Prawo administracyjne'), false);
   for (const category of blogCategoryPages) {
     if (!category.practiceId) continue;
     assert.ok(html.includes(`id="${category.practiceId}"`), category.name);
@@ -423,7 +463,7 @@ test('Practice lists the five requested areas in order and keeps blog practice l
       assert.ok(article.includes(`href="/praktyka/#${category.practiceId}"`));
     }
   }
-  assert.equal(pageModifiedAt('/praktyka/'), '2026-10-12');
+  assert.equal(pageModifiedAt('/praktyka/'), '2026-10-19');
 });
 
 test('Responsive images use valid WebP files and retain original image fallbacks', async () => {

@@ -26,6 +26,14 @@ GitHub Actions wykonuje te kontrole przed publikacja strony.
 Dane kontaktowe, nawigacja i metadane podstron maja jedno zrodlo w `src/data/site.ts`.
 Aktualna oferta znajduje sie w `src/data/services.ts`.
 
+## Przywracanie zakladki Uslugi
+
+Zakladka jest obecnie ukryta. Aby ja przywrocic, ustaw `servicesEnabled = true`
+w `src/data/features.ts`, przebuduj projekt i opublikuj zmiany.
+Ten przelacznik przywraca podstrone, menu, odnosniki oraz wpis w mapie witryny.
+Komponent `ServicesPage`, cennik i opis wspolpracy pozostaja w kodzie.
+Po wylaczeniu zakladki jej adres zwraca strone 404, zamiast udostepniac ukryty cennik.
+
 ## Deployment na GitHub Pages
 
 Projekt ma juz przygotowany workflow w `.github/workflows/deploy-pages.yml`.

@@ -2,6 +2,7 @@ import type { BlogPost } from '../types';
 import { blogPosts } from './blogPosts';
 import { categoryPath, findBlogCategory, findCategoryByName } from './blogCategories';
 import { services } from './services';
+import { servicesEnabled } from './features';
 import { ebooks, ebookPath, findEbook, type Ebook } from './ebooks';
 import { siteUrl, siteName, authorName, contactEmail, defaultCover, pageUrl, navItems, normalizePath, getPageMetadata, fullTitle, tiktokUrl } from './site';
 
@@ -16,7 +17,7 @@ export const pageModifiedAt = (pathname: string) => {
   const category = findBlogCategory(path);
   if (category) return [category.updatedAt, latestPostDate(blogPosts.filter(post => post.category === category.name))].filter(Boolean).sort().at(-1);
   if (path === '/blog') return latestPostDate(blogPosts);
-  if (path === '/praktyka') return '2026-10-12';
+  if (path === '/praktyka') return '2026-10-19';
   if (path === '/e-booki') return ebooks.map(ebook => ebook.updatedAt).sort().at(-1);
 };
 
@@ -32,7 +33,7 @@ const authorSchema = {
 const legalServiceSchema = {
   '@type': 'LegalService', '@id': `${pageUrl('/')}#organization`, name: siteName, url: pageUrl('/'),
   image: `${siteUrl}${defaultCover}`, logo: publisherLogo, email: contactEmail,
-  priceRange: services.find(service => service.number === '02')?.price, founder: authorSchema,
+  ...(servicesEnabled ? { priceRange: services.find(service => service.number === '02')?.price } : {}), founder: authorSchema,
   areaServed: { '@type': 'Country', name: 'Polska' },
   sameAs: [tiktokUrl.split('?')[0]],
 };
