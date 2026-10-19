@@ -143,6 +143,19 @@ test('Practice headings and cards use the same CSS entrance, without hidden Moti
   assert.equal(html.includes('opacity:0'), false);
 });
 
+test('Practice cards share six responsive row tracks instead of bottom-aligning their text', () => {
+  const html = renderToString(createElement(App, { pathname: '/praktyka/' }));
+  const cards = [...html.matchAll(/<article id="[^"]+"[^>]*class="([^"]+)"/g)];
+  assert.equal(cards.length, Object.keys(practiceContent).length);
+  for (const [, classes] of cards) {
+    assert.ok(classes.includes('md:row-span-6 md:grid-rows-subgrid'));
+    assert.ok(classes.includes('grid min-h-60 gap-y-0'));
+    assert.equal(classes.includes('justify-between'), false);
+    assert.equal(classes.includes('@container'), false, 'Container queries belong to the heading, not the shared-row card');
+  }
+  assert.equal((html.match(/class="relative selection-boundary @container min-w-0"/g) || []).length, cards.length);
+});
+
 test('Reading columns contain WebKit selection painting without changing justification', () => {
   for (const post of blogPosts) {
     const html = renderToString(createElement(App, { pathname: `/blog/${post.slug}/` }));

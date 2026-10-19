@@ -102,17 +102,17 @@ const PracticePage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px
   const Icon = area.icon;
   const content = practiceContent[area.slug as keyof typeof practiceContent];
   const category = content.category ? findCategoryByName(content.category) : undefined;
-  return <article id={area.slug} key={area.title} style={entranceStyle(index * 0.06)} className={`page-enter relative selection-boundary @container scroll-mt-28 flex min-h-60 flex-col justify-between border p-7 ${index === 0 ? 'border-[#ebc256] bg-[#ebc256] text-[#111113]' : 'border-white/10 bg-[#1a1a1e] text-white'}`}>
+  return <article id={area.slug} key={area.title} style={entranceStyle(index * 0.06)} className={`page-enter relative selection-boundary scroll-mt-28 grid min-h-60 gap-y-0 border p-7 md:row-span-6 md:grid-rows-subgrid ${index === 0 ? 'border-[#ebc256] bg-[#ebc256] text-[#111113]' : 'border-white/10 bg-[#1a1a1e] text-white'}`}>
     <Icon className="h-9 w-9" strokeWidth={1.7} />
-    <div className="mt-8">
-      <p className={`mb-3 text-xs font-black uppercase ${index === 0 ? 'text-[#111113]/60' : 'text-[#ebc256]'}`}>0{index + 1}</p>
+    <p className={`mb-3 mt-8 text-xs font-black uppercase ${index === 0 ? 'text-[#111113]/60' : 'text-[#ebc256]'}`}>0{index + 1}</p>
+    <div className="relative selection-boundary @container min-w-0">
       <h2 className={`font-black uppercase leading-tight ${area.slug === 'legal-tech-i-cyberbezpieczenstwo' ? 'text-xl @[280px]:text-2xl @[340px]:text-3xl' : 'text-3xl'}`}>{area.title}</h2>
-      <p className={`mt-5 text-sm leading-relaxed ${index === 0 ? 'text-[#111113]/85' : 'text-[#c9c9cf]'}`}>{content.description}</p>
-      <p className={`mt-4 text-sm leading-relaxed ${index === 0 ? 'text-[#111113]/75' : 'text-[#b7b7bd]'}`}>{content.examples}</p>
-      <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3 text-xs font-black uppercase">
-        <a href={servicesEnabled ? '/uslugi/' : mailto(`Zapytanie: ${area.title}`)} className="underline underline-offset-4">{servicesEnabled ? 'Zakres usług' : 'Opisz swoją sprawę'}</a>
-        {category && <a href={categoryPath(category)} className="underline underline-offset-4">Artykuły i przykłady</a>}
-      </div>
+    </div>
+    <p className={`mt-5 text-sm leading-relaxed ${index === 0 ? 'text-[#111113]/85' : 'text-[#c9c9cf]'}`}>{content.description}</p>
+    <p className={`mt-4 text-sm leading-relaxed ${index === 0 ? 'text-[#111113]/75' : 'text-[#b7b7bd]'}`}>{content.examples}</p>
+    <div className="mt-6 flex flex-wrap content-start items-start gap-x-5 gap-y-3 text-xs font-black uppercase">
+      <a href={servicesEnabled ? '/uslugi/' : mailto(`Zapytanie: ${area.title}`)} className="underline underline-offset-4">{servicesEnabled ? 'Zakres usług' : 'Opisz swoją sprawę'}</a>
+      {category && <a href={categoryPath(category)} className="underline underline-offset-4">Artykuły i przykłady</a>}
     </div>
   </article>;
 })}</div></div></section></PageShell>;
