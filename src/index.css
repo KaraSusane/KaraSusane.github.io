@@ -106,11 +106,6 @@ summary:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 [data-reveal="shown"] .document-sign .document-sign-line { transition-duration: .5s; transition-delay: 3.5s; }
 @keyframes document-caret { 0% { border-color: #202023; } 50% { border-color: transparent; } }
 
-/* Highlighter sweeping under key words. */
-.marker { padding: 0 .06em; background: linear-gradient(transparent 64%, rgba(235, 194, 86, .85) 64%, rgba(235, 194, 86, .85) 90%, transparent 90%) no-repeat 0 0 / 100% 100%; color: inherit; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-.marker[data-reveal="waiting"] { background-size: 0% 100%; }
-.marker[data-reveal="shown"] { transition: background-size .8s cubic-bezier(.22, 1, .36, 1) var(--marker-delay, .2s); }
-
 /* Envelope on mail buttons: the letter slides in on hover and flies off on click. */
 .mail-send .envelope { flex-shrink: 0; overflow: visible; transition: transform .45s cubic-bezier(.5, 0, .75, 0), opacity .45s ease; }
 .envelope :is(path, rect):not(clipPath rect) { stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
@@ -124,11 +119,10 @@ summary:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 .home-envelope { width: 26px; height: 21px; }
 
 /* Reading progress under the navigation on article pages. */
-.article-progress { position: fixed; left: 0; right: 0; top: 69px; z-index: 30; background: rgba(17, 17, 19, .98); border-bottom: 1px solid #ffffff14; backdrop-filter: blur(8px); opacity: 0; transform: translateY(-100%); transition: opacity .3s ease, transform .3s ease; pointer-events: none; }
+.article-progress { position: fixed; left: 0; right: 0; top: var(--article-progress-top, 64px); z-index: 30; background: #111113; border-bottom: 1px solid #ffffff14; backdrop-filter: blur(8px); opacity: 0; transform: translateY(-100%); transition: opacity .3s ease, transform .3s ease; pointer-events: none; }
 .article-progress[data-visible] { opacity: 1; transform: none; }
 .article-progress-label { max-width: 1024px; margin: auto; padding: 8px 20px; overflow: hidden; color: #c9c9cf; font-size: 12px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; }
 .article-progress-label > span { margin-right: 8px; color: #ebc256; }
-.article-progress-bar { height: 3px; background: #ebc256; transform-origin: left; }
 .article-toc a[aria-current="location"] { color: #ebc256; font-weight: 700; }
 a:focus-visible, button:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 h1, h2 { overflow-wrap: anywhere; }

@@ -6,7 +6,6 @@ import { mailto, mailCtaLabel } from './data/site';
 import { ResponsiveImage } from './components/ResponsiveImage';
 import { BlogCard } from './components/BlogCard';
 import { CopyEmailButton } from './components/CopyEmailButton';
-import { Marker } from './components/Marker';
 import { Envelope, MailSendLink } from './components/MailSend';
 import { useRevealOnce } from './components/useRevealOnce';
 import { blogPosts } from './data/blogPosts';
@@ -33,7 +32,7 @@ export function AnimatedHero() {
       <h1 className="home-title">{['Pismo', 'w Sprawie'].map((line, index) => <span key={line} className="home-title-mask">{index > 0 && ' '}<span style={{ animationDelay: `${index * 0.13}s` }}>{line}</span></span>)}</h1>
       <div className="home-rule" aria-hidden="true" />
       <Entrance className="relative selection-boundary" delay={0.35} y={12}>
-        <h2 className="home-tagline">Prawo po <Marker delay={0.9}>Twojej stronie</Marker>.</h2>
+        <h2 className="home-tagline">Prawo po Twojej stronie.</h2>
         <p className="home-intro relative">Prawne wsparcie, precyzyjna argumentacja i dokumenty przygotowane z myślą o realnym celu Twojej sprawy.</p>
         <div className="home-actions"><a className="home-button" href="/praktyka/">Poznaj obszary praktyki <ArrowRight size={20} /></a><a className="home-text-link" href={mailto('Opis sprawy')}>Opisz swoją sprawę <ArrowRight size={20} /></a>{servicesEnabled && <a className="home-text-link" href="/uslugi/">Zobacz usługi <ArrowRight size={20} /></a>}</div>
       </Entrance>
@@ -76,7 +75,7 @@ export function HomeSections() {
       <DocumentAssembly />
     </section>
     <section className="home-practice home-wide" aria-labelledby="home-practice-title">
-      <div className="home-section-copy home-wide-head"><p className="home-eyebrow">Obszary praktyki</p><h2 id="home-practice-title">W czym mogę <Marker>pomóc</Marker>?</h2><p>Pracuję na dokumentach i faktach konkretnej sprawy. Najczęściej pomagam w sprawach z poniższych obszarów.</p></div>
+      <div className="home-section-copy home-wide-head"><p className="home-eyebrow">Obszary praktyki</p><h2 id="home-practice-title">W czym mogę pomóc?</h2><p>Pracuję na dokumentach i faktach konkretnej sprawy. Najczęściej pomagam w sprawach z poniższych obszarów.</p></div>
       <ul className="home-practice-grid">{practiceAreas.map((area, index) => {
         const Icon = area.icon;
         return <li key={area.slug}><a href={`/praktyka/#${area.slug}`} className="home-practice-tile"><span className="home-practice-top"><Icon size={26} strokeWidth={1.7} aria-hidden="true" /><span>{String(index + 1).padStart(2, '0')}</span></span><h3>{area.title}</h3><p>{area.summary}</p></a></li>;
@@ -96,6 +95,6 @@ export function HomeSections() {
       <div className="home-section-copy"><p className="home-eyebrow">Najczęstsze pytania</p><h2 id="home-faq-title">Zanim napiszesz</h2></div>
       <div className="home-faq-list">{faq.map(item => <details key={item.question}><summary><h3>{item.question}</h3><span className="home-faq-icon" aria-hidden="true" /></summary><p>{item.answer}</p></details>)}</div>
     </section>
-    <section className="home-contact"><div className="relative selection-boundary"><p className="home-eyebrow">Zacznijmy od rozmowy</p><h2>Opisz <Marker>swoją sprawę</Marker>.</h2><p>Otrzymasz indywidualną wycenę i proponowany termin realizacji.</p><CopyEmailButton className="home-copy" /></div><MailSendLink className="home-button" href={mailto()}>{mailCtaLabel} <Envelope className="home-envelope" /></MailSendLink></section>
+    <section className="home-contact"><div className="relative selection-boundary"><p className="home-eyebrow">Zacznijmy od rozmowy</p><h2>Opisz swoją sprawę.</h2><p>Otrzymasz indywidualną wycenę i proponowany termin realizacji.</p><CopyEmailButton className="home-copy" /></div><MailSendLink className="home-button" href={mailto()}>{mailCtaLabel} <Envelope className="home-envelope" /></MailSendLink></section>
   </>;
 }

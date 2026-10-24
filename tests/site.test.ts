@@ -679,7 +679,7 @@ test('The email address can be copied on the home, contact and every footer', ()
 
 test('Home animations start from finished content in the server HTML', () => {
   const html = renderToString(createElement(App, { pathname: '/' }));
-  assert.ok((html.match(/<mark class="marker" data-reveal="idle"/g) || []).length >= 3);
+  assert.equal(html.includes('<mark'), false);
   assert.ok(html.includes('class="document-paper" data-reveal="idle"'));
   assert.ok(html.includes('Dotyczy: wezwania do zapłaty'));
   assert.ok(/class="document-sign"[\s\S]*?<path pathLength="1"/.test(html));
