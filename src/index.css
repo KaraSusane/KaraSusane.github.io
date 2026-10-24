@@ -106,16 +106,17 @@ summary:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 [data-reveal="shown"] .document-sign .document-sign-line { transition-duration: .5s; transition-delay: 3.5s; }
 @keyframes document-caret { 0% { border-color: #202023; } 50% { border-color: transparent; } }
 
-/* Envelope on mail buttons: the letter slides in on hover and flies off on click. */
-.mail-send .envelope { flex-shrink: 0; overflow: visible; transition: transform .45s cubic-bezier(.5, 0, .75, 0), opacity .45s ease; }
+/* Envelope on mail buttons: closed at rest, opens with the letter rising on hover,
+   and on click the letter goes back in, the flap closes and the envelope flies off. */
+.mail-send .envelope { flex-shrink: 0; overflow: visible; transition: transform .45s cubic-bezier(.55, 0, .7, .3) .3s, opacity .2s ease .55s; }
 .envelope :is(path, rect):not(clipPath rect) { stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
-.envelope-letter { fill: #fff; }
-.envelope-letter, .envelope-letter-lines { transition: transform .35s ease; }
 .envelope-body { fill: none; }
-.envelope-flap { transform-box: view-box; transform-origin: 15px 9px; transform: scaleY(-1); transition: transform .3s ease .12s; }
-.mail-send:hover .envelope :is(.envelope-letter, .envelope-letter-lines), .mail-send[data-sending] .envelope :is(.envelope-letter, .envelope-letter-lines) { transform: translateY(9px); }
-.mail-send:hover .envelope-flap, .mail-send[data-sending] .envelope-flap { transform: scaleY(1); }
-.mail-send[data-sending] .envelope { transform: translate(38px, -12px) rotate(-14deg); opacity: 0; }
+.envelope-letter { fill: #fff; }
+.envelope-letter, .envelope-letter-lines { transform: translateY(13px); transition: transform .25s ease; }
+.envelope-flap { transform-box: view-box; transform-origin: 16px 6.5px; transition: transform .25s ease .15s; }
+.mail-send:hover:not([data-sending]) .envelope-flap { transform: scaleY(-1); transition-delay: 0s; }
+.mail-send:hover:not([data-sending]) .envelope :is(.envelope-letter, .envelope-letter-lines) { transform: none; transition-delay: .15s; }
+.mail-send[data-sending] .envelope { transform: translate(46px, -18px) rotate(-12deg) scale(.9); opacity: 0; }
 .home-envelope { width: 26px; height: 21px; }
 
 /* Reading progress under the navigation on article pages. */
