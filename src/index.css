@@ -128,7 +128,27 @@ summary:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 .article-letter { display: grid; gap: 14px; padding: 28px; border-left: 4px solid #ebc256; background: #f5f5f2; color: #202023; font-size: 15px; line-height: 1.65; }
 .article-letter strong { color: #111113; }
 .article-letter > p:first-child { text-align: right; }
-@media (max-width: 639px) { .article-letter { padding: 20px; font-size: 14px; } }
+@media (max-width: 639px) { .article-letter { padding: 16px; font-size: 14px; } }
+/* Articles read on light paper; the rest of the site stays black.
+   Brand yellow is too pale for text on cream, so it marks links and accents while the text stays dark. */
+.article-paper { background: #f6f2ea; border-color: #e2d8c8; }
+.article-paper p, .article-paper li { color: #2b231c; }
+.article-paper h2 { color: #17120d; }
+.article-paper strong { color: #17120d; }
+.article-paper a { color: #17120d; text-decoration-color: #ebc256; text-decoration-thickness: 3px; }
+.article-paper a:hover { background: #ebc25640; color: #17120d; }
+.article-paper li > span:first-child { background: #ebc256; }
+.article-paper :is(.article-toc, aside) { background: #ede5d8; border-color: #d9ccb8; }
+.article-paper aside[class] { border-left-color: #ebc256; }
+.article-paper .article-toc summary { color: #17120d; }
+.article-paper .article-toc-icon::before, .article-paper .article-toc-icon::after { background: #17120d; }
+.article-paper .article-toc nav { border-color: #d9ccb8; }
+.article-paper .article-toc a { text-decoration: none; }
+.article-paper .article-toc a:not([aria-current]) { color: #2b231c; }
+.article-paper .article-toc a[aria-current] { color: #17120d; box-shadow: inset 0 -.45em 0 #ebc256; }
+.article-paper .article-letter { background: #fffdf8; box-shadow: 0 1px 0 #e2d8c8, 0 8px 24px rgba(60, 40, 20, .08); }
+.article-paper .article-letter p { color: #202023; }
+.article-paper .article-letter strong { color: #111113; }
 a:focus-visible, button:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 h1, h2 { overflow-wrap: anywhere; }
 article h2 { text-transform: none; }
