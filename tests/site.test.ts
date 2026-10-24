@@ -13,7 +13,7 @@ import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName
 import { services } from '../src/data/services';
 import { servicesEnabled } from '../src/data/features';
 import { blogCategoryPages, categoryPath } from '../src/data/blogCategories';
-import { practiceContent } from '../src/data/practiceAreas';
+import { practiceAreas, practiceContent } from '../src/data/practiceAreas';
 import { responsiveImages } from '../src/data/responsiveImages';
 import { getPageSchema, latestPostDate, pageModifiedAt, postModifiedAt } from '../src/data/seo';
 
@@ -631,4 +631,24 @@ test('The ebook is linked from its blog category, practice area and the RODO art
 test('Outbound links carry no tracking parameters', () => {
   for (const post of blogPosts) assert.equal(/[?&](utm_[a-z]+|_t|_r)=/.test(post.content), false, post.slug);
   assert.equal(tiktokUrl.includes('?'), false);
+});
+
+test('Home page introduces practice areas, newest articles and common questions without hiding them', () => {
+  const html = renderToString(createElement(App, { pathname: '/' }));
+  for (const area of practiceAreas) {
+    assert.ok(html.includes(`href="/praktyka/#${area.slug}"`), area.slug);
+    assert.ok(html.includes(area.summary), area.slug);
+  }
+  const newest = [...blogPosts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 3);
+  for (const post of newest) assert.ok(html.includes(`href="/blog/${post.slug}/"`), post.slug);
+  for (const question of ['Czy Pismo w Sprawie to kancelaria?', 'Jak wygląda współpraca?', 'Ile trwa przygotowanie pisma?', 'Ile to kosztuje?']) {
+    assert.ok(html.includes(`<summary><h3>${question}</h3>`), question);
+  }
+  for (const id of ['home-practice-title', 'home-blog-title', 'home-faq-title']) {
+    const section = html.slice(html.indexOf(`id="${id}"`) - 400, html.indexOf(`id="${id}"`) + 4000);
+    assert.equal(section.includes('opacity:0'), false, id);
+  }
+  assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1);
+  const words = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ').match(/\p{L}+/gu)!.length;
+  assert.ok(words > 500, `${words} słów`);
 });

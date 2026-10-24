@@ -1,3 +1,15 @@
+import { Building2, Cpu, Handshake, ScrollText, ShieldCheck, Stethoscope, type LucideIcon } from 'lucide-react';
+
+// Order matches the practice page; summaries are the short versions shown on the home page.
+export const practiceAreas: Array<{ title: string; slug: string; icon: LucideIcon; summary: string }> = [
+  { title: 'Prawo sztucznej inteligencji, AI Act, RODO', slug: 'prawo-sztucznej-inteligencji', icon: Cpu, summary: 'Umowy dotyczące narzędzi AI, klauzule informacyjne i porządek w dokumentacji ochrony danych.' },
+  { title: 'Prawo medyczne', slug: 'prawo-medyczne', icon: Stethoscope, summary: 'Dokumentacja medyczna, prawa pacjenta, zgoda na świadczenie i pisma do placówek.' },
+  { title: 'Prawo spadkowe', slug: 'prawo-spadkowe', icon: ScrollText, summary: 'Krąg spadkobierców, dokumenty dotyczące spadku i projekty pism.' },
+  { title: 'Prawo nieruchomości', slug: 'prawo-nieruchomosci', icon: Building2, summary: 'Analiza umów i zapisów dotyczących nieruchomości przed podjęciem decyzji.' },
+  { title: 'Legal tech i cyberbezpieczeństwo', slug: 'legal-tech-i-cyberbezpieczenstwo', icon: ShieldCheck, summary: 'Umowy na usługi IT, zapisy o poufności i dokumentacja bezpieczeństwa informacji.' },
+  { title: 'Mediacje', slug: 'mediacje', icon: Handshake, summary: 'Zasady mediacji i różnice wobec postępowania sądowego. Prowadzenie mediacji: już wkrótce.' },
+];
+
 export const practiceContent: Record<string, { description: string; examples: string; category: string | null; ebookId?: string }> = {
   'prawo-sztucznej-inteligencji': {
     description: 'Pomagam analizować dokumentację i umowy związane z wykorzystaniem sztucznej inteligencji oraz przetwarzaniem danych osobowych. Porządkuję pytania dotyczące AI Act i RODO, wskazuję ryzyka wymagające oceny i przygotowuję projekty dokumentów dostosowane do sposobu działania klienta.',

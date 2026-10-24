@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import {
-  ArrowLeft, ArrowRight, Building2, Cpu, Download, Handshake, Mail, Menu,
-  ScrollText, ShieldCheck, Stethoscope, X, type LucideIcon,
-} from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download, Mail, Menu, X } from 'lucide-react';
 import { blogPosts } from './data/blogPosts';
 import { ebooks, ebookPath, findEbook, type Ebook } from './data/ebooks';
 import { AnimatedHero, HomeSections } from './HomeExperience';
@@ -12,9 +9,10 @@ import { services } from './data/services';
 import { servicesEnabled } from './data/features';
 import { contactEmail, tiktokUrl, defaultCover, mailto, mailCtaLabel, navItems, siteUrl, pageUrl, normalizePath, getPageMetadata, authorName, fullTitle, pageShareImage } from './data/site';
 import { blogCategoryPages, categoryPath, findBlogCategory, findCategoryByName, type BlogCategory } from './data/blogCategories';
-import { practiceContent } from './data/practiceAreas';
+import { practiceAreas, practiceContent } from './data/practiceAreas';
 import { getPageSchema } from './data/seo';
 import { ResponsiveImage } from './components/ResponsiveImage';
+import { BlogCard, formatDate } from './components/BlogCard';
 import { Entrance, entranceStyle } from './components/Entrance';
 
 const cooperationSteps = [
@@ -34,14 +32,6 @@ const aboutParagraphs = [
   'W Pismo w Sprawie łączę wiedzę prawniczą z dbałością o język, strukturę i strategię działania. Moim celem jest tworzenie rozwiązań, które dają klientowi jasność sytuacji, poczucie kontroli i solidną podstawę do podejmowania dalszych decyzji.',
 ];
 
-const practiceAreas: Array<{ title: string; slug: string; icon: LucideIcon }> = [
-  { title: 'Prawo sztucznej inteligencji, AI Act, RODO', slug: 'prawo-sztucznej-inteligencji', icon: Cpu },
-  { title: 'Prawo medyczne', slug: 'prawo-medyczne', icon: Stethoscope },
-  { title: 'Prawo spadkowe', slug: 'prawo-spadkowe', icon: ScrollText },
-  { title: 'Prawo nieruchomości', slug: 'prawo-nieruchomosci', icon: Building2 },
-  { title: 'Legal tech i cyberbezpieczeństwo', slug: 'legal-tech-i-cyberbezpieczenstwo', icon: ShieldCheck },
-  { title: 'Mediacje', slug: 'mediacje', icon: Handshake },
-];
 
 const Brand = () => <span className="flex min-w-0 items-center gap-3"><span className="flex h-10 w-8 items-center justify-center bg-[#ebc256] px-1.5 py-1"><img src="/logo-pismo-w-sprawie.svg" alt="" width="20" height="32" className="h-full w-full object-contain" /></span><span className="text-sm font-black uppercase text-white">Pismo w Sprawie</span></span>;
 
@@ -121,7 +111,6 @@ const PracticePage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px
 
 const AboutPage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="relative selection-boundary mx-auto grid max-w-7xl items-start gap-12 lg:grid-cols-[390px_1fr]"><Entrance className="order-2 lg:order-1 lg:sticky lg:top-28" x={-28}><figure className="border-t-8 border-[#ebc256] bg-[#1a1a1e]"><ResponsiveImage src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek" width="600" height="750" decoding="async" sizes="(min-width: 1024px) 390px, calc(100vw - 40px)" className="block aspect-[4/5] w-full object-cover object-top" /></figure></Entrance><div className="relative selection-boundary order-1 lg:order-2"><SectionHeading eyebrow="O mnie" title="Karolina Zdrojek" /><Entrance delay={0.1} x={28}><div className="relative selection-boundary space-y-6 text-justify text-lg leading-[1.8] text-[#c9c9cf]">{aboutParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></Entrance></div></div></section></PageShell>;
 
-const formatDate = (date: string) => new Intl.DateTimeFormat('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${date}T12:00:00`));
 const articleWord = (count: number) => {
   if (count === 1) return 'artykuł';
   const lastDigit = count % 10;
@@ -129,7 +118,6 @@ const articleWord = (count: number) => {
   return lastDigit >= 2 && lastDigit <= 4 && (lastTwo < 12 || lastTwo > 14) ? 'artykuły' : 'artykułów';
 };
 const blogCategories = ['Wszystkie', ...blogCategoryPages.map(category => category.name)];
-const BlogCard = ({ post }: { post: (typeof blogPosts)[number] }) => <a href={`/blog/${post.slug}/`} className="relative selection-boundary group block h-full overflow-hidden border border-white/10 bg-[#1a1a1e] transition-colors hover:border-[#ebc256]"><ResponsiveImage src={post.coverImage || defaultCover} alt={post.coverAlt || post.title} width={post.coverWidth} height={post.coverHeight} sizes="(min-width: 1280px) 410px, (min-width: 768px) calc((100vw - 80px) / 2), calc(100vw - 40px)" loading="lazy" decoding="async" className="aspect-[16/10] w-full object-cover object-top" /><div className="border-t-4 border-[#ebc256] p-6"><div className="mb-4 flex items-center justify-between gap-3 text-xs font-bold uppercase text-[#ebc256]"><span>{post.category}</span><time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time></div><h2 className="text-2xl font-black leading-tight">{post.title}</h2><p className="mt-4 line-clamp-5 text-sm leading-relaxed text-[#b7b7bd]">{post.excerpt}</p><span className="mt-6 inline-flex items-center gap-2 text-sm font-black uppercase">Czytaj dalej<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span></div></a>;
 const BlogPage = ({ category }: { category?: BlogCategory }) => {
   const reduceMotion = useReducedMotion();
   const activeCategory = category?.name || 'Wszystkie';
