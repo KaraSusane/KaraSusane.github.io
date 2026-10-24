@@ -515,7 +515,7 @@ test('Article covers reserve their real proportions and have appropriate loading
 test('Content visible on first screen is not hidden until the script hydrates', () => {
   const home = renderToString(createElement(App, { pathname: '/' }));
   const hero = home.slice(0, home.indexOf('id="od-sprawy-do-pisma"'));
-  assert.ok(hero.includes('Prawo po Twojej stronie.'));
+  assert.ok(hero.replace(/<[^>]+>/g, '').includes('Prawo po Twojej stronie.'));
   assert.equal(hero.includes('opacity:0'), false);
   for (const path of ['/blog/', '/nota-prawna/', '/polityka-prywatnosci/', '/wazne-informacje/']) {
     assert.equal(renderToString(createElement(App, { pathname: path })).includes('opacity:0'), false, path);
@@ -675,4 +675,20 @@ test('The email address can be copied on the home, contact and every footer', ()
   const home = renderToString(createElement(App, { pathname: '/' }));
   const hero = home.slice(0, home.indexOf('id="od-sprawy-do-pisma"'));
   assert.ok(hero.includes('>Opisz swoją sprawę'));
+});
+
+test('Home animations start from finished content in the server HTML', () => {
+  const html = renderToString(createElement(App, { pathname: '/' }));
+  assert.ok((html.match(/<mark class="marker" data-reveal="idle"/g) || []).length >= 3);
+  assert.ok(html.includes('class="document-paper" data-reveal="idle"'));
+  assert.ok(html.includes('Dotyczy: wezwania do zapłaty'));
+  assert.ok(/class="document-sign"[\s\S]*?<path pathLength="1"/.test(html));
+  for (const path of ['/', '/kontakt/']) {
+    const page = renderToString(createElement(App, { pathname: path }));
+    assert.ok(page.includes(`class="mail-send`), path);
+    assert.equal(/data-sending/.test(page), false, path);
+  }
+  const article = renderToString(createElement(App, { pathname: `/blog/${blogPosts[0].slug}/` }));
+  assert.ok(article.includes('class="article-progress" aria-hidden="true"'));
+  assert.ok(article.includes('id="article-body"'));
 });
