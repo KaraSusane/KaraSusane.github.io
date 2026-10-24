@@ -66,7 +66,7 @@ export const legalPages: Record<string, LegalPageData> = {
       {
         title: '§ 1. Prawa autorskie',
         paragraphs: [
-          'Wszelkie treści zamieszczone na stronie internetowej PISMO W SPRAWIE, w szczególności: logotypy, grafiki, zdjęcia, wizualizacje projektów, teksty oraz układ strony, stanowią własność firmy PISMO W SPRAWIE Karolina Zdrojek lub zostały użyte na podstawie odpowiednich licencji.',
+          'Wszelkie treści zamieszczone na stronie internetowej PISMO W SPRAWIE, w szczególności: logotypy, grafiki, zdjęcia, wizualizacje projektów, teksty oraz układ strony, stanowią własność działalności nierejestrowanej PISMO W SPRAWIE Karolina Zdrojek lub zostały użyte na podstawie odpowiednich licencji.',
           'Treści te podlegają ochronie prawnej zgodnie z ustawą z dnia 4 lutego 1994 r. o prawie autorskim i prawach pokrewnych.',
           'Jakiekolwiek kopiowanie, powielanie, rozpowszechnianie lub wykorzystywanie materiałów znajdujących się na stronie w celach komercyjnych (bez pisemnej zgody właściciela) jest zabronione i może skutkować odpowiedzialnością cywilną oraz karną.',
         ],
