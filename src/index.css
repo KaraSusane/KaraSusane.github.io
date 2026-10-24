@@ -123,6 +123,7 @@ summary:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 .article-progress[data-visible] { opacity: 1; transform: none; }
 .article-progress-label { max-width: 1024px; margin: auto; padding: 8px 20px; overflow: hidden; color: #c9c9cf; font-size: 12px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; }
 .article-progress-label > span { margin-right: 8px; color: #ebc256; }
+.article-progress-bar { height: 3px; background: #ebc256; transform-origin: left; }
 .article-toc a[aria-current="location"] { color: #ebc256; font-weight: 700; }
 a:focus-visible, button:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 h1, h2 { overflow-wrap: anywhere; }

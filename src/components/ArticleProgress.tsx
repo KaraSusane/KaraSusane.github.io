@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
-// A thin strip under the navigation naming the section the reader is in.
+// A thin strip under the navigation: which section the reader is in and how much is read.
 // It also marks that section in the table of contents.
 export function ArticleProgress({ bodyId, headings }: { bodyId: string; headings: Array<{ id: string; text: string }> }) {
+  const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(false);
   const [active, setActive] = useState<string | null>(null);
   useEffect(() => {
@@ -15,6 +16,8 @@ export function ArticleProgress({ bodyId, headings }: { bodyId: string; headings
       // Sits flush under the fixed navigation, whatever its height.
       const navBottom = document.querySelector('nav')?.getBoundingClientRect().bottom ?? 64;
       document.documentElement.style.setProperty('--article-progress-top', `${Math.round(navBottom)}px`);
+      const distance = Math.max(rect.height - window.innerHeight * 0.6, 1);
+      setProgress(Math.min(1, Math.max(0, (navBottom + 70 - rect.top) / distance)));
       setVisible(rect.top < 100 && rect.bottom > 160);
       let current: string | null = null;
       for (const heading of body.querySelectorAll<HTMLElement>('h2[id]')) {
@@ -40,5 +43,6 @@ export function ArticleProgress({ bodyId, headings }: { bodyId: string; headings
   const section = headings.find(heading => heading.id === active)?.text;
   return <div className="article-progress" data-visible={visible || undefined} aria-hidden="true">
     <div className="article-progress-label"><span>§</span>{section || 'Wprowadzenie'}</div>
+    <div className="article-progress-bar" style={{ transform: `scaleX(${progress})` }} />
   </div>;
 }

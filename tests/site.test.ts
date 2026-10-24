@@ -690,5 +690,6 @@ test('Home animations start from finished content in the server HTML', () => {
   }
   const article = renderToString(createElement(App, { pathname: `/blog/${blogPosts[0].slug}/` }));
   assert.ok(article.includes('class="article-progress" aria-hidden="true"'));
+  assert.ok(article.includes('class="article-progress-bar" style="transform:scaleX(0)"'));
   assert.ok(article.includes('id="article-body"'));
 });
