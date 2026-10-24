@@ -150,6 +150,8 @@ summary:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 .article-paper .article-letter { background: #fffdf8; box-shadow: 0 1px 0 #e2d8c8, 0 8px 24px rgba(60, 40, 20, .08); }
 .article-paper .article-letter p { color: #202023; }
 .article-paper .article-letter strong { color: #111113; }
+.reveal[data-reveal="waiting"] { opacity: 0; transform: translate(var(--reveal-x, 0px), var(--reveal-y, 24px)) scale(var(--reveal-scale, 1)); }
+.reveal[data-reveal="shown"] { transition: opacity var(--reveal-duration, .6s) cubic-bezier(.22, 1, .36, 1) var(--reveal-delay, 0s), transform var(--reveal-duration, .6s) cubic-bezier(.22, 1, .36, 1) var(--reveal-delay, 0s); }
 a:focus-visible, button:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 h1, h2 { overflow-wrap: anywhere; }
 article h2 { text-transform: none; }

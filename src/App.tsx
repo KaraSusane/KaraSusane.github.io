@@ -17,6 +17,7 @@ import { CopyEmailButton } from './components/CopyEmailButton';
 import { Envelope, MailSendLink } from './components/MailSend';
 import { ArticleProgress } from './components/ArticleProgress';
 import { Entrance, entranceStyle } from './components/Entrance';
+import { ScrollReveal } from './components/ScrollReveal';
 
 const cooperationSteps = [
   'Najpierw opisujesz sprawę w mailu i przesyłasz istotne dla sprawy dokumenty.',
@@ -38,10 +39,7 @@ const aboutParagraphs = [
 
 const Brand = () => <span className="flex min-w-0 items-center gap-3"><span className="flex h-10 w-8 items-center justify-center bg-[#ebc256] px-1.5 py-1"><img src="/logo-pismo-w-sprawie.svg" alt="" width="20" height="32" className="h-full w-full object-contain" /></span><span className="text-sm font-black uppercase text-white">Pismo w Sprawie</span></span>;
 
-const Reveal = ({ children, className = '', delay = 0, x = 0, y = 24, id }: { children: ReactNode; className?: string; delay?: number; x?: number; y?: number; id?: string }) => {
-  const reduceMotion = useReducedMotion();
-  return <motion.div id={id} className={className} initial={{ opacity: 0, x, y }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: true, amount: 0.14 }} transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] }}>{children}</motion.div>;
-};
+const Reveal = ({ children, className = '', delay = 0, x = 0, y = 24, id }: { children: ReactNode; className?: string; delay?: number; x?: number; y?: number; id?: string }) => <ScrollReveal id={id} className={className} x={x} y={y} delay={delay} duration={0.55} threshold={0.14}>{children}</ScrollReveal>;
 
 const SectionHeading = ({ eyebrow, title, children, level = 'h1', titleClassName = 'text-4xl md:text-6xl' }: { eyebrow: string; title: string; children?: ReactNode; level?: 'h1' | 'h2'; titleClassName?: string }) => {
   const Heading = level;

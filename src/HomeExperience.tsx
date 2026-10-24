@@ -1,5 +1,5 @@
 import { Fragment, useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { servicesEnabled } from './data/features';
 import { mailto, mailCtaLabel } from './data/site';
@@ -11,8 +11,7 @@ import { useRevealOnce } from './components/useRevealOnce';
 import { blogPosts } from './data/blogPosts';
 import { practiceAreas } from './data/practiceAreas';
 import { Entrance } from './components/Entrance';
-
-const reveal = { opacity: 1, y: 0 };
+import { ScrollReveal } from './components/ScrollReveal';
 
 const faq = [
   { question: 'Czy Pismo w Sprawie to kancelaria adwokacka lub radcowska?', answer: 'Nie. Pismo w Sprawie nie jest kancelarią adwokacką ani radcowską. Nie prowadzę zastępstwa procesowego i nie podpisuję pism w imieniu klienta. Przygotowuję dokumenty i analizy, a o ich wykorzystaniu decydujesz samodzielnie.' },
@@ -43,7 +42,6 @@ export function AnimatedHero() {
 
 function DocumentAssembly() {
   const target = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({ target, offset: ['start 90%', 'center 45%'] });
   const x = useTransform(scrollYProgress, [0, 1], [-42, 0]);
   const right = useTransform(scrollYProgress, [0, 1], [42, 0]);
@@ -51,7 +49,7 @@ function DocumentAssembly() {
   const rotateRight = useTransform(scrollYProgress, [0, 1], [6, 0]);
   const [paper, written] = useRevealOnce<HTMLDivElement>(0.3);
   return <div ref={target} className="document-scene relative selection-boundary" aria-label="Przykładowe pismo: fakty, argumenty i wniosek">
-    <motion.div className="document-sheet relative selection-boundary" initial={{ opacity: 0, x: 52, y: 24, scale: 0.96 }} whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.05 }} transition={{ duration: reduced ? 0 : 0.75, delay: reduced ? 0 : 0.12, ease: [0.22, 1, 0.36, 1] }}>
+    <ScrollReveal className="document-sheet relative selection-boundary" x={52} y={24} scale={0.96} delay={0.12} duration={0.75}>
       <div ref={paper} className="document-paper" data-reveal={written}>
       <div className="document-top"><span>PISMO W SPRAWIE</span><span>01 / 01</span></div>
       <div className="document-meta"><span className="document-date">Miejscowość, data</span><span className="document-to">Nadawca → Adresat</span><span className="document-subject"><span>Dotyczy: wezwania do zapłaty</span></span></div>
@@ -63,15 +61,14 @@ function DocumentAssembly() {
       <div className="document-sign" aria-hidden="true"><svg viewBox="0 0 220 64" fill="none"><path pathLength={1} d="M10 46c8-22 22-34 20-12s-14 28 4 16 18-30 26-20-4 26 8 20 14-24 22-18 0 18 10 14 12-20 20-16-6 18 6 16 14-18 22-16-6 16 6 14 16-12 30-10" /><path pathLength={1} className="document-sign-line" d="M40 56c50-4 110 2 170-6" /></svg></div>
       <div className="document-bottom">Precyzja ma znaczenie.<span>Pismo w Sprawie</span></div>
       </div>
-    </motion.div>
+    </ScrollReveal>
   </div>;
 }
 
 export function HomeSections() {
-  const reduced = useReducedMotion();
   return <>
     <section id="od-sprawy-do-pisma" className="home-process home-band relative selection-boundary">
-      <motion.div className="home-section-copy relative selection-boundary" initial={{ opacity: 0, y: 38 }} whileInView={reveal} viewport={{ once: true, amount: 0.05 }} transition={{ duration: reduced ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}><p className="home-eyebrow">Od sprawy do pisma</p><h2>Trudna sprawa.<br /><span>Jasne stanowisko.</span></h2><p>Wezwanie, umowa, odpowiedź. Zaczynam od zrozumienia Twojej sytuacji. Porządkuję fakty, analizuję dokumenty i dobieram argumenty, które mają znaczenie.</p><p>Efektem jest pismo dopasowane do Twojej sprawy, z czytelną strukturą i konkretnym celem.</p><a href={servicesEnabled ? '/uslugi/' : '/praktyka/'} className="home-text-link">Sprawdź, jak mogę Ci pomóc <ArrowRight size={20} /></a></motion.div>
+      <ScrollReveal className="home-section-copy relative selection-boundary" y={38} duration={0.7}><p className="home-eyebrow">Od sprawy do pisma</p><h2>Trudna sprawa.<br /><span>Jasne stanowisko.</span></h2><p>Wezwanie, umowa, odpowiedź. Zaczynam od zrozumienia Twojej sytuacji. Porządkuję fakty, analizuję dokumenty i dobieram argumenty, które mają znaczenie.</p><p>Efektem jest pismo dopasowane do Twojej sprawy, z czytelną strukturą i konkretnym celem.</p><a href={servicesEnabled ? '/uslugi/' : '/praktyka/'} className="home-text-link">Sprawdź, jak mogę Ci pomóc <ArrowRight size={20} /></a></ScrollReveal>
       <DocumentAssembly />
     </section>
     <section className="home-practice home-wide" aria-labelledby="home-practice-title">
@@ -83,7 +80,7 @@ export function HomeSections() {
       <a href="/praktyka/" className="home-text-link">Zobacz wszystkie obszary praktyki <ArrowRight size={20} /></a>
     </section>
     <section className="home-about home-band relative selection-boundary">
-      <motion.figure initial={{ opacity: 0, y: 24 }} whileInView={reveal} viewport={{ once: true, amount: 0.05 }} transition={{ duration: reduced ? 0 : 0.6 }}><ResponsiveImage src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek, założycielka Pismo w Sprawie" width="600" height="750" loading="lazy" sizes="(min-width: 761px) 410px, 270px" /></motion.figure>
+      <ScrollReveal as="figure"><ResponsiveImage src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek, założycielka Pismo w Sprawie" width="600" height="750" loading="lazy" sizes="(min-width: 761px) 410px, 270px" /></ScrollReveal>
       <div className="home-section-copy relative selection-boundary"><p className="home-eyebrow">Za każdym pismem stoi człowiek</p><h2>Karolina Zdrojek</h2><p className="home-about-lead">Wiedza prawnicza.<br />Uważność na Twoją sprawę.</p><p>Jestem prawnikiem i założycielką Pismo w Sprawie. Łączę analizę prawną z dbałością o język, strukturę dokumentów i ich praktyczne zastosowanie.</p><a href="/o-mnie/" className="home-button">Poznaj mnie <ArrowRight size={20} /></a></div>
     </section>
     <section className="home-blog home-wide" aria-labelledby="home-blog-title">
