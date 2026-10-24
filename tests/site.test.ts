@@ -652,3 +652,27 @@ test('Home page introduces practice areas, newest articles and common questions 
   const words = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ').match(/\p{L}+/gu)!.length;
   assert.ok(words > 500, `${words} słów`);
 });
+
+test('Articles show breadcrumbs, a working table of contents and highlighted related links', () => {
+  for (const post of blogPosts) {
+    const html = renderToString(createElement(App, { pathname: `/blog/${post.slug}/` }));
+    assert.ok(html.includes('aria-label="Okruszki"'), post.slug);
+    assert.ok(html.includes('href="/blog/" class="hover:text-[#ebc256]">Blog</a>'), post.slug);
+    const tocLinks = [...html.matchAll(/<nav aria-label="Spis treści"[\s\S]*?<\/nav>/g)].flatMap(nav => [...nav[0].matchAll(/href="#([^"]+)"/g)].map(match => match[1]));
+    for (const id of tocLinks) assert.ok(html.includes(`<h2 id="${id}"`), `${post.slug}: #${id}`);
+    if ((post.content.match(/^## /gm) || []).length >= 5) assert.ok(tocLinks.length >= 4, post.slug);
+    if (post.content.includes('**Czytaj też:**')) assert.ok(/<aside class="border-l-4[^"]*"><strong[^>]*>Czytaj też:<\/strong>/.test(html), post.slug);
+    assert.equal(/<h1 class="[^"]*uppercase/.test(html), false, post.slug);
+  }
+});
+
+test('The email address can be copied on the home, contact and every footer', () => {
+  for (const path of ['/', '/kontakt/', '/blog/']) {
+    const html = renderToString(createElement(App, { pathname: path }));
+    assert.ok((html.match(/Skopiuj adres/g) || []).length >= (path === '/blog/' ? 1 : 2), path);
+    assert.ok(html.includes('Działam zdalnie na terenie całej Polski.'), path);
+  }
+  const home = renderToString(createElement(App, { pathname: '/' }));
+  const hero = home.slice(0, home.indexOf('id="od-sprawy-do-pisma"'));
+  assert.ok(hero.includes('>Opisz swoją sprawę'));
+});
