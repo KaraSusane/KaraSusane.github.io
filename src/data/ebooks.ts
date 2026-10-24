@@ -7,6 +7,7 @@ export const ebooks = [
     updatedAt: '2026-10-17',
     author: 'Karolina Zuzanna Zdrojek',
     category: 'RODO w firmie',
+    blogCategory: 'Ochrona danych osobowych',
     copyrightYear: 2026,
     description: 'Opracowanie dla przedsiębiorców, osób zarządzających i praktyków. Dwadzieścia rozdziałów, przykłady oraz checklisty pomagają uporządkować ochronę danych osobowych w codziennych procesach firmy.',
     topics: [

@@ -107,21 +107,23 @@ Nie każda kontrolka po zakupie jest ukrytą wadą. Nie każdy wyciek w starym s
 
 Tego typu sprawy polegają na pokazaniu, że wada była istotna, ukryta, niezgodna z umową albo z zapewnieniami, a jej źródło nie pojawiło się dopiero po zakupie.
 
+**Czytaj też:** [Mediacja a sprawa w sądzie – dwie drogi rozwiązywania sporu](/blog/mediacja-a-sprawa-w-sadzie-dwie-drogi-rozwiazywania-sporu/)
+
 **Autor: mgr prawa Karolina Zdrojek**
 
 **Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.**
 
 ## Bibliografia
 
-- Art. 43a ustawy o prawach konsumenta, brak zgodności towaru z umową. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43a/?utm_source=chatgpt.com))
-- Art. 43b ustawy o prawach konsumenta, kryteria zgodności towaru z umową oraz obowiązek wyraźnego poinformowania konsumenta o konkretnej cesze odbiegającej od zgodności. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43b/?utm_source=chatgpt.com))
-- Art. 43c ustawy o prawach konsumenta, odpowiedzialność przedsiębiorcy i domniemanie istnienia braku zgodności. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43c/?utm_source=chatgpt.com))
-- Art. 43d ustawy o prawach konsumenta, naprawa albo wymiana towaru. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43d/?utm_source=chatgpt.com))
-- Art. 43e ustawy o prawach konsumenta, obniżenie ceny albo odstąpienie od umowy. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43e/?utm_source=chatgpt.com))
-- Art. 556 Kodeksu cywilnego, odpowiedzialność sprzedawcy z tytułu rękojmi. ([Lexlege](https://lexlege.pl/kc/art-556/?utm_source=chatgpt.com))
-- Art. 558 Kodeksu cywilnego, wyłączenie lub ograniczenie rękojmi i podstępne zatajenie wady. ([Lexlege](https://lexlege.pl/kc/art-558/?utm_source=chatgpt.com))
-- Art. 559 Kodeksu cywilnego, odpowiedzialność za wady istniejące w chwili przejścia niebezpieczeństwa albo wynikłe z przyczyny tkwiącej w rzeczy w tej samej chwili. ([pb.pl](https://lexlege.pb.pl/kodeks-cywilny/dzial-ii-rekojmia-za-wady/2006?utm_source=chatgpt.com))
-- Art. 560 Kodeksu cywilnego, obniżenie ceny albo odstąpienie od umowy. ([Lexlege](https://lexlege.pl/kc/art-560/?utm_source=chatgpt.com))
+- Art. 43a ustawy o prawach konsumenta, brak zgodności towaru z umową. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43a/))
+- Art. 43b ustawy o prawach konsumenta, kryteria zgodności towaru z umową oraz obowiązek wyraźnego poinformowania konsumenta o konkretnej cesze odbiegającej od zgodności. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43b/))
+- Art. 43c ustawy o prawach konsumenta, odpowiedzialność przedsiębiorcy i domniemanie istnienia braku zgodności. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43c/))
+- Art. 43d ustawy o prawach konsumenta, naprawa albo wymiana towaru. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43d/))
+- Art. 43e ustawy o prawach konsumenta, obniżenie ceny albo odstąpienie od umowy. ([Lexlege](https://lexlege.pl/ustawa-o-prawach-konsumenta/art-43e/))
+- Art. 556 Kodeksu cywilnego, odpowiedzialność sprzedawcy z tytułu rękojmi. ([Lexlege](https://lexlege.pl/kc/art-556/))
+- Art. 558 Kodeksu cywilnego, wyłączenie lub ograniczenie rękojmi i podstępne zatajenie wady. ([Lexlege](https://lexlege.pl/kc/art-558/))
+- Art. 559 Kodeksu cywilnego, odpowiedzialność za wady istniejące w chwili przejścia niebezpieczeństwa albo wynikłe z przyczyny tkwiącej w rzeczy w tej samej chwili. ([pb.pl](https://lexlege.pb.pl/kodeks-cywilny/dzial-ii-rekojmia-za-wady/2006))
+- Art. 560 Kodeksu cywilnego, obniżenie ceny albo odstąpienie od umowy. ([Lexlege](https://lexlege.pl/kc/art-560/))
 - Art. 561 Kodeksu cywilnego, żądanie usunięcia wady albo wymiany rzeczy. ([Kodeks cywilny - źródło urzędowe ELI](https://eli.gov.pl/eli/DU/1964/93/ogl))
 - [Ustawa o prawach konsumenta - źródło urzędowe ELI](https://eli.gov.pl/eli/DU/2014/827/ogl).
 - Zdjęcie: [magnific.com](https://www.magnific.com)`,

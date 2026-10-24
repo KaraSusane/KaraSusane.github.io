@@ -35,7 +35,7 @@ const legalServiceSchema = {
   image: `${siteUrl}${defaultCover}`, logo: publisherLogo, email: contactEmail,
   ...(servicesEnabled ? { priceRange: services.find(service => service.number === '02')?.price } : {}), founder: authorSchema,
   areaServed: { '@type': 'Country', name: 'Polska' },
-  sameAs: [tiktokUrl.split('?')[0]],
+  sameAs: [tiktokUrl],
 };
 const breadcrumbSchema = (items: Array<{ name: string; path: string }>) => ({
   '@type': 'BreadcrumbList',

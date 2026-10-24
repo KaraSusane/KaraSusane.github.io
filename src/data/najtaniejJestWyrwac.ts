@@ -74,6 +74,8 @@ Art. 16 ustawy o prawach pacjenta przyznaje pacjentowi prawo do wyrażenia zgody
 
 Precyzja jest ważna dla obu stron. Pacjentowi pozwala zachować godność i sprawczość. Lekarzowi pozwala wykazać, że wyjaśnił ryzyko i nie zaniechał pomocy. Jeżeli pacjent odmawia ekstrakcji, ale zgadza się na inne postępowanie, należy opisać, czego odmówił, na co był gotów się zgodzić, jakie ryzyka omówiono, jakie alternatywy przedstawiono i jakie zalecono dalsze działania. Krótka formuła „pacjent nie wyraża zgody na leczenie” może być wygodna, ale w sprawach spornych bywa zbyt szeroka i zbyt krzywdząca.
 
+**Czytaj też:** [Klauzula sumienia lekarza – kiedy można odmówić wykonania świadczenia](/blog/klauzula-sumienia-lekarza-kiedy-mozna-odmowic-wykonania-swiadczenia/)
+
 ## Tomografia, hospitalizacja i „100 procent” usunięcia zęba.
 
 Szczególnej analizy wymaga stwierdzenie lekarza: „Jak Pan chce, to damy skierowanie na tomografię, zrobimy i zobaczymy fizycznie, gdzie to jest, ale im większa szansa na przyjęcie do nas, to wtedy na 100% ten ząb jest do usunięcia”. Dla pacjenta taki komunikat jest niejasny, bo łączy kilka różnych kwestii w jedno zdanie: diagnostykę obrazową, ewentualne przyjęcie do placówki i decyzję o nieodwracalnym usunięciu zęba. Pacjent może nie wiedzieć, czy tomografia ma służyć realnej ocenie sytuacji i poszukiwaniu najlepszego leczenia, czy jedynie potwierdzeniu decyzji, która została już z góry przyjęta.
@@ -97,6 +99,8 @@ Zgoda poinformowana oznacza decyzję pacjenta podjętą po uzyskaniu informacji 
 Rzadziej mówi się o odmowie poinformowanej, a w tej sprawie to pojęcie jest kluczowe. Pacjent ma prawo odmówić świadczenia, ale jego odmowa powinna być świadoma. Powinien wiedzieć, co może się stać, jeżeli ropień się powiększy, jeżeli zakażenie obejmie sąsiednie przestrzenie, jeżeli pojawi się szczękościsk, gorączka, duszność, trudności w połykaniu albo pogorszenie stanu ogólnego. Z dokumentacji wynika, że pacjentowi zalecono ponowne zgłoszenie się w razie narastania obrzęku, problemów z przełykaniem lub oddychaniem. To ważne. Ale informacja o ryzyku odmowy nie jest jeszcze informacją o alternatywach.
 
 Lekarz powinien umieć powiedzieć: istnieje wariant A, który rekomenduję, bo daje największą szansę opanowania infekcji, praktycznie od razu. Istnieje wariant B, który może być mniej radykalny, ale niesie takie ryzyko. Wariant C uważam za niedopuszczalny, bo zagraża zdrowiu. Dopiero wtedy pacjent rozumie, czy naprawdę stoi przed wyborem, czy tylko przed koniecznością zaakceptowania jednej procedury. Sąd Najwyższy w orzecznictwie dotyczącym obowiązku informacyjnego wskazywał, że jeżeli istnieją alternatywne metody diagnostyczne lub lecznicze, pacjent powinien zostać o nich poinformowany, bo to pacjent ponosi konsekwencje wyboru metody.
+
+**Czytaj też:** [Prawo do intymności i godności pacjenta w szpitalu](/blog/o-prawie-do-intymnosci-i-godnosci-w-szpitalu/)
 
 ## Granica między rekomendacją, a naciskiem.
 

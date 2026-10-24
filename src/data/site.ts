@@ -8,7 +8,7 @@ export const siteUrl = 'https://pismowsprawie.pl';
 export const siteName = 'Pismo w Sprawie';
 export const authorName = 'Karolina Zdrojek';
 export const contactEmail = 'pismowsprawie@gmail.com';
-export const tiktokUrl = 'https://www.tiktok.com/@pismowsprawie?_r=1&_t=ZN-97Er7B8gTdW';
+export const tiktokUrl = 'https://www.tiktok.com/@pismowsprawie';
 export const defaultCover = '/karolina-zdrojek.jpg';
 export const defaultShareImage = { url: '/og-image.jpg', width: 1200, height: 630, alt: 'Pismo w Sprawie - prawo po Twojej stronie' };
 export const mailto = (subject?: string) => `mailto:${contactEmail}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
@@ -46,7 +46,7 @@ export const standardPages: Record<string, PageMetadata> = {
   '/': { title: 'Prawne wsparcie i precyzyjne pisma prawne', description: 'Pisma prawne, wezwania, odwołania, analiza umów i doradztwo prawne przygotowane jasno, konkretnie i z myślą o realnym celu Twojej sprawy.' },
   ...(servicesEnabled ? { '/uslugi': servicesMetadata } : {}),
   '/o-mnie': { title: 'O mnie - Karolina Zdrojek, prawnik', description: 'Karolina Zdrojek - prawnik i założycielka Pismo w Sprawie. Specjalizacja w prawie medycznym, obsłudze dokumentacji prawnej i analizie umów.' },
-  '/praktyka': { title: 'Obszary praktyki - AI, medyczne i spadkowe', description: 'Prawo sztucznej inteligencji, AI Act i RODO, prawo medyczne, spadkowe i nieruchomości, legal tech i cyberbezpieczeństwo oraz mediacje. Poznaj obszary praktyki.' },
+  '/praktyka': { title: 'Obszary praktyki - prawo AI, medyczne i spadkowe', description: 'Prawo sztucznej inteligencji, AI Act i RODO, prawo medyczne, spadkowe i nieruchomości, legal tech i cyberbezpieczeństwo oraz mediacje. Poznaj obszary praktyki.' },
   '/blog': { title: 'Blog prawny - prawo w życiu codziennym', description: 'Praktyczne artykuły i analizy prawne: prawo medyczne, prawa pacjenta, RODO, rękojmia przy zakupie auta, dziedziczenie ustawowe i mediacje.' },
   '/kontakt': { title: 'Kontakt - opisz sprawę i otrzymaj wycenę', description: `Opisz swoją sprawę i otrzymaj indywidualną wycenę oraz proponowany termin realizacji. Skontaktuj się mailowo z Pismo w Sprawie: ${contactEmail}.` },
   '/e-booki': { title: 'E-booki prawne - przewodnik po RODO', description: 'Autorskie publikacje Karoliny Zdrojek. Pobierz praktyczny przewodnik prawny po ochronie danych osobowych w firmie: 66 stron o RODO, przykłady i checklisty.', image: '/ebooks/przewodnik-po-rodo-og.jpg', imageWidth: 1200, imageHeight: 630, imageAlt: 'Okładka e-booka o RODO w firmie' },

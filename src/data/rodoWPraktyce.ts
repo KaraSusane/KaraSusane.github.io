@@ -109,6 +109,8 @@ Wiele małych firm działa na dokumentach skopiowanych z internetu. Regulamin od
 
 Jeżeli firma w polityce prywatności pisze, że nie przekazuje danych poza Europejski Obszar Gospodarczy, a jednocześnie korzysta z narzędzi analitycznych, reklamowych, mailingowych albo chmurowych powiązanych z dostawcami spoza EOG, dokument w prost może być nieprawdziwy. Jeżeli pisze, że przechowuje dane „do czasu cofnięcia zgody”, ale w praktyce trzyma je bezterminowo, również tworzy problem. Jeżeli pisze, że klient może łatwo usunąć dane, ale nikt w firmie nie wie, jak obsłużyć takie żądanie, to jest pozór zgodności.
 
+**Czytaj też:** [e-book „Praktyczny przewodnik prawny po ochronie danych osobowych w firmie”](/e-booki/przewodnik-po-rodo/) – 66 stron o RODO w codziennych procesach firmy, z przykładami i checklistami.
+
 ## Przykład pierwszy: sklep internetowy i checkbox na realizację zamówienia.
 
 Sklep internetowy dodaje przy koszyku checkbox: „Wyrażam zgodę na przetwarzanie danych osobowych w celu realizacji zamówienia”. Klient bez zaznaczenia checkboxa nie może kupić produktu. Na pierwszy rzut oka wygląda to bezpiecznie, wystarczy po prostu kliknąć. W praktyce jest to wątpliwe. Realizacja zamówienia opiera się zasadniczo na wykonaniu umowy, a nie na zgodzie. Jeżeli sklep pyta o zgodę, sugeruje klientowi, że może ją cofnąć i zablokować przetwarzanie danych potrzebnych do wykonania umowy albo obowiązków prawnych.

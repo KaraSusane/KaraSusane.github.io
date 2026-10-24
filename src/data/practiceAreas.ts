@@ -1,8 +1,9 @@
-export const practiceContent = {
+export const practiceContent: Record<string, { description: string; examples: string; category: string | null; ebookId?: string }> = {
   'prawo-sztucznej-inteligencji': {
     description: 'Pomagam analizować dokumentację i umowy związane z wykorzystaniem sztucznej inteligencji oraz przetwarzaniem danych osobowych. Porządkuję pytania dotyczące AI Act i RODO, wskazuję ryzyka wymagające oceny i przygotowuję projekty dokumentów dostosowane do sposobu działania klienta.',
     examples: 'Przykładowe sprawy: analiza zapisów umowy dotyczącej narzędzi AI, przygotowanie klauzul informacyjnych oraz uporządkowanie dokumentacji ochrony danych osobowych.',
     category: 'Ochrona danych osobowych',
+    ebookId: 'przewodnik-po-rodo',
   },
   'prawo-medyczne': {
     description: 'Pomagam uporządkować dokumentację medyczną, stanowisko pacjenta lub podmiotu medycznego oraz pytania wymagające analizy prawnej. Przygotowuję projekty pism i analizuję dokumenty dotyczące informacji o leczeniu, zgody na świadczenie i przebiegu kontaktu z placówką.',

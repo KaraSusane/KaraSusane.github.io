@@ -96,6 +96,8 @@ W kontekście intymności oznacza to jedno: pacjentka musi rozumieć, co się dz
 
 Milczenie przestraszonej pacjentki nie powinno być wygodnym alibi dla systemu.
 
+**Czytaj też:** [Usunięcie zęba a zgoda pacjenta – analiza sprawy medycznej](/blog/najtaniej-jest-wyrwac/)
+
 ## Pacjentka ma prawo do osoby bliskiej.
 
 W wielu sytuacjach pacjentka może odzyskać głos dzięki obecności osoby bliskiej. Ustawa o prawach pacjenta przewiduje, że na życzenie pacjenta przy udzielaniu świadczeń zdrowotnych może być obecna osoba bliska. Osoba wykonująca zawód medyczny może odmówić obecności osoby bliskiej w przypadku prawdopodobieństwa zagrożenia epidemicznego albo ze względu na bezpieczeństwo zdrowotne pacjenta, a odmowę odnotowuje się w dokumentacji medycznej.
@@ -175,6 +177,8 @@ Art. 36 ustawy o zawodach lekarza i lekarza dentysty mówi wprost, że lekarz po
 To jest szczególnie ważne, gdy w sali znajduje się lekarz o wysokiej pozycji, grupa młodszych lekarzy albo osoby szkolące się. Im większy autorytet osoby prowadzącej badanie, tym trudniej pacjentce zaprotestować. Im większa grupa, tym większe ryzyko uprzedmiotowienia. Im bardziej intymne badanie, tym większy obowiązek ostrożności.
 
 Autorytet lekarza nie polega na tym, że pacjentka milczy. Autorytet lekarza polega na tym, że pacjentka może powiedzieć „boję się” i nie zostanie za to ukarana chłodem.
+
+**Czytaj też:** [Klauzula sumienia lekarza – kiedy można odmówić wykonania świadczenia](/blog/klauzula-sumienia-lekarza-kiedy-mozna-odmowic-wykonania-swiadczenia/)
 
 ## Pacjentka wychodzi ze szpitala nie tylko z wynikiem, ale też z pamięcią.
 

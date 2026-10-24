@@ -599,5 +599,36 @@ test('Articles expose publication dates and the organization links its social pr
     assert.ok(html.includes(`property="article:modified_time" content="${postModifiedAt(post)}"`), post.slug);
   }
   const organization = (getPageSchema('/')!['@graph'] as Array<Record<string, any>>).find(item => item['@type'] === 'LegalService')!;
-  assert.deepEqual(organization.sameAs, [tiktokUrl.split('?')[0]]);
+  assert.deepEqual(organization.sameAs, [tiktokUrl]);
+  assert.equal(tiktokUrl.includes('?'), false);
+});
+
+test('Articles link to related site pages in their content, in the same tab', () => {
+  const routes = new Set(paths.map(path => pageUrl(path).replace(siteUrl, '')));
+  for (const post of blogPosts) {
+    const targets = [...post.content.matchAll(/\]\((\/[^)]+)\)/g)].map(match => match[1]);
+    assert.ok(targets.length > 0, post.slug);
+    const html = renderToString(createElement(App, { pathname: `/blog/${post.slug}/` }));
+    for (const target of targets) {
+      assert.ok(routes.has(target), `${post.slug}: ${target}`);
+      assert.notEqual(target, `/blog/${post.slug}/`, post.slug);
+      assert.ok(html.includes(`href="${target}" class=`), `${post.slug}: ${target}`);
+      assert.equal(html.includes(`href="${target}" target="_blank"`), false, `${post.slug}: ${target}`);
+    }
+  }
+});
+
+test('The ebook is linked from its blog category, practice area and the RODO article', () => {
+  for (const ebook of ebooks) {
+    const href = `href="${ebookPath(ebook)}"`;
+    const category = blogCategoryPages.find(item => item.name === ebook.blogCategory)!;
+    assert.ok(renderToString(createElement(App, { pathname: categoryPath(category) })).includes(href));
+    assert.ok(renderToString(createElement(App, { pathname: '/praktyka/' })).includes(href));
+  }
+  assert.ok(rodoWPraktyce.content.includes('](/e-booki/przewodnik-po-rodo/)'));
+});
+
+test('Outbound links carry no tracking parameters', () => {
+  for (const post of blogPosts) assert.equal(/[?&](utm_[a-z]+|_t|_r)=/.test(post.content), false, post.slug);
+  assert.equal(tiktokUrl.includes('?'), false);
 });

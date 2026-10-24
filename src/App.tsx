@@ -100,8 +100,9 @@ const ServicesPage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px
 
 const PracticePage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="relative selection-boundary mx-auto max-w-7xl"><SectionHeading eyebrow="Praktyka" title="Obszary, w których działam">Każda sprawa jest analizowana indywidualnie, z uwzględnieniem jej celu, ryzyka i dokumentów.</SectionHeading><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{practiceAreas.map((area, index) => {
   const Icon = area.icon;
-  const content = practiceContent[area.slug as keyof typeof practiceContent];
+  const content = practiceContent[area.slug];
   const category = content.category ? findCategoryByName(content.category) : undefined;
+  const ebook = ebooks.find(item => item.id === content.ebookId);
   return <article id={area.slug} key={area.title} style={entranceStyle(index * 0.06)} className={`page-enter relative selection-boundary scroll-mt-28 grid min-h-60 gap-y-0 border p-7 md:row-span-6 md:grid-rows-subgrid ${index === 0 ? 'border-[#ebc256] bg-[#ebc256] text-[#111113]' : 'border-white/10 bg-[#1a1a1e] text-white'}`}>
     <Icon className="h-9 w-9" strokeWidth={1.7} />
     <p className={`mb-3 mt-8 text-xs font-black uppercase ${index === 0 ? 'text-[#111113]/60' : 'text-[#ebc256]'}`}>0{index + 1}</p>
@@ -113,6 +114,7 @@ const PracticePage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px
     <div className="mt-6 flex flex-wrap content-start items-start gap-x-5 gap-y-3 text-xs font-black uppercase">
       <a href={servicesEnabled ? '/uslugi/' : mailto(`Zapytanie: ${area.title}`)} className="underline underline-offset-4">{servicesEnabled ? 'Zakres usług' : 'Opisz swoją sprawę'}</a>
       {category && <a href={categoryPath(category)} className="underline underline-offset-4">Artykuły i przykłady</a>}
+      {ebook && <a href={ebookPath(ebook)} className="underline underline-offset-4">E-book o RODO</a>}
     </div>
   </article>;
 })}</div></div></section></PageShell>;
@@ -147,17 +149,20 @@ const BlogPage = ({ category }: { category?: BlogCategory }) => {
     window.history.pushState(null, '', href);
     window.dispatchEvent(new PopStateEvent('popstate'));
   };
-  return <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="relative selection-boundary mx-auto max-w-7xl"><SectionHeading eyebrow="Blog" title={category?.name || "Prawo w życiu codziennym"}>{category && <div className="space-y-4">{category.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>}</SectionHeading><div className="mb-12 border-y border-white/10 py-5"><p className="mb-4 text-[10px] font-black uppercase text-[#77777f]">Wybierz obszar</p><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-label="Kategorie artykułów">{blogCategories.map((category, index) => { const count = category === 'Wszystkie' ? blogPosts.length : blogPosts.filter((post) => post.category === category).length; const active = category === activeCategory; return <a key={category} data-blog-category={category} href={category === 'Wszystkie' ? '/blog/' : categoryPath(findCategoryByName(category)!)} aria-current={active ? 'page' : undefined} onClick={event => {
+  return <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="relative selection-boundary mx-auto max-w-7xl"><SectionHeading eyebrow="Blog" title={category?.name || "Prawo w życiu codziennym"}>{category && <div className="space-y-4">{category.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}{ebooks.filter(ebook => ebook.blogCategory === category.name).map(ebook => <p key={ebook.id}><a href={ebookPath(ebook)} className="inline-flex items-center gap-2 font-bold text-[#ebc256] underline underline-offset-4 hover:text-white">E-book: {ebook.title}<ArrowRight className="h-4 w-4 shrink-0" /></a></p>)}</div>}</SectionHeading><div className="mb-12 border-y border-white/10 py-5"><p className="mb-4 text-[10px] font-black uppercase text-[#77777f]">Wybierz obszar</p><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-label="Kategorie artykułów">{blogCategories.map((category, index) => { const count = category === 'Wszystkie' ? blogPosts.length : blogPosts.filter((post) => post.category === category).length; const active = category === activeCategory; return <a key={category} data-blog-category={category} href={category === 'Wszystkie' ? '/blog/' : categoryPath(findCategoryByName(category)!)} aria-current={active ? 'page' : undefined} onClick={event => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
       selectCategory(category);
     }} className={`group grid min-h-14 w-full grid-cols-[2rem_1fr_2rem] items-center gap-3 border px-4 py-3 text-left transition-colors ${active ? 'border-[#ebc256] bg-[#ebc256] text-[#111113]' : 'border-white/10 bg-[#17171a] text-white hover:border-[#ebc256]'}`}><span className={`text-[10px] font-black ${active ? 'text-[#111113]/55' : 'text-[#ebc256]'}`}>{String(index + 1).padStart(2, '0')}</span><span className="text-xs font-black uppercase leading-snug">{category}</span><span className={`flex h-7 w-7 items-center justify-center text-[10px] font-black ${active ? 'bg-[#111113] text-white' : 'bg-white/10 text-[#b7b7bd]'}`}>{count}</span></a>; })}</div></div><motion.p layout className="mb-5 text-sm text-[#8f8f96]">{visiblePosts.length} {articleWord(visiblePosts.length)} w kategorii <strong className="text-white">{activeCategory.toLowerCase()}</strong></motion.p><motion.div layout className="grid gap-5 md:grid-cols-2 xl:grid-cols-3"><AnimatePresence mode="popLayout" initial={false}>{visiblePosts.map((post) => <motion.article layout key={post.slug} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97 }} transition={{ duration: reduceMotion ? 0 : 0.28 }}><BlogCard post={post} /></motion.article>)}</AnimatePresence></motion.div></div></section></PageShell>;
 };
 
-const renderInline = (text: string) => text.split(/(\*\*.*?\*\*|\[[^\]]+\]\(https?:\/\/[^)]+\)|\*[^*\n]+\*)/g).map((part, index) => {
+// Links to "/..." stay on the site; full addresses open sources in a new tab.
+const renderInline = (text: string) => text.split(/(\*\*.*?\*\*|\[[^\]]+\]\((?:https?:\/\/|\/)[^)]+\)|\*[^*\n]+\*)/g).map((part, index) => {
+  const link = part.match(/^\[([^\]]+)\]\(((?:https?:\/\/|\/)[^)]+)\)$/);
+  const linkClass = 'font-bold text-[#ebc256] underline decoration-1 underline-offset-4 hover:text-white';
+  if (link?.[2].startsWith('/')) return <a key={index} href={link[2]} className={linkClass}>{link[1]}</a>;
+  if (link) return <a key={index} href={link[2]} target="_blank" rel="noreferrer" className={linkClass}>{link[1]}</a>;
   if (part.startsWith('**') && part.endsWith('**')) return <strong key={index} className="font-black text-white">{part.slice(2, -2)}</strong>;
-  const link = part.match(/^\[([^\]]+)\]\((https?:\/\/[^)]+)\)$/);
-  if (link) return <a key={index} href={link[2]} target="_blank" rel="noreferrer" className="font-bold text-[#ebc256] underline decoration-1 underline-offset-4 hover:text-white">{link[1]}</a>;
   if (part.startsWith('*') && part.endsWith('*')) return <em key={index}>{part.slice(1, -1)}</em>;
   return part;
 });

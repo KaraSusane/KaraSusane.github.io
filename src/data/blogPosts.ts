@@ -54,6 +54,8 @@ Klauzula sumienia chroni lekarza wtedy, gdy jest używana rzetelnie. Najbezpiecz
 
 Powinien też pamiętać, że klauzula sumienia nie zastępuje obowiązku działania zgodnie z aktualną wiedzą medyczną, należytą starannością i zasadami etyki zawodowej. Dobrze użyta klauzula sumienia nie jest ucieczką od odpowiedzialności. Jest prawną ochroną lekarza w sytuacji, w której państwo nie może wymagać wykonania każdego świadczenia wbrew jego sumieniu.
 
+**Czytaj też:** [Usunięcie zęba a zgoda pacjenta – analiza sprawy medycznej](/blog/najtaniej-jest-wyrwac/) oraz [Prawo do intymności i godności pacjenta w szpitalu](/blog/o-prawie-do-intymnosci-i-godnosci-w-szpitalu/)
+
 ## Bibliografia
 
 Art. 30 i art. 39 [ustawy o zawodach lekarza i lekarza dentysty](https://eli.gov.pl/eli/DU/1997/152/ogl), art. 53 [Konstytucji RP](https://eli.gov.pl/eli/DU/1997/483/ogl) oraz [wyrok Trybunału Konstytucyjnego z 7 października 2015 r., K 12/14](https://ipo.trybunal.gov.pl/ipo/view/sprawa.xhtml?dokument=13021&sprawa=13434).
@@ -139,6 +141,8 @@ Załóżmy, że umiera mężczyzna, który nie miał żony, dzieci ani testament
 
 Nie dziedziczy automatycznie partnerka, nawet jeżeli mieszkała z nim przez wiele lat. Nie dziedziczy też przyjaciel, który opiekował się nim w chorobie. Prawo ustawowe patrzy na formalne więzi rodzinne, a nie na to, kto był najbliżej emocjonalnie. Jeżeli zmarły chciałby zabezpieczyć partnerkę, powinien sporządzić testament. Bez testamentu spadek idzie według ustawowej kolejności.
 
+**Czytaj też:** [Mediacja a sprawa w sądzie – dwie drogi rozwiązywania sporu](/blog/mediacja-a-sprawa-w-sadzie-dwie-drogi-rozwiazywania-sporu/)
+
 ## Bibliografia
 
 Art. 926, art. 927, art. 931, art. 932, art. 933, art. 934 i art. 935 [Kodeksu cywilnego](https://eli.gov.pl/eli/DU/1964/93/ogl) oraz art. 31 [Kodeksu rodzinnego i opiekuńczego](https://eli.gov.pl/eli/DU/1964/59/ogl).
@@ -190,6 +194,8 @@ Ważną zasadą jest poufność. To, co strony mówią w mediacji, co do zasady 
 Mediację można porównać do szybszej drogi osiągnięcia porozumienia przed sądem, może zakończyć się ona ugodą albo - w zależności od stron - brakiem porozumienia. Jeżeli strony zawrą ugodę przed mediatorem, mogą wystąpić do sądu o jej zatwierdzenie. Po zatwierdzeniu przez sąd ugoda mediatora ma moc prawną ugody zawartej przed sądem, a jeżeli nadaje się do egzekucji, sąd zatwierdza ją przez nadanie klauzuli wykonalności.
 
 Sąd nie zatwierdzi jednak ugody, jeżeli jest sprzeczna z prawem, zasadami współżycia społecznego, zmierza do obejścia prawa, jest niezrozumiała albo zawiera sprzeczności. Dlatego mediacja nie jest drogą „poza prawem”. To raczej szansa na rozwiązanie sporu szybciej, spokojniej i bardziej po ludzku, ale nadal w granicach obowiązujących przepisów.
+
+**Czytaj też:** [Dziedziczenie ustawowe – kto dostaje spadek, gdy nie ma testamentu](/blog/dziedziczenie-ustawowe-kto-dostaje-spadek-gdy-nie-ma-testamentu/) oraz [Auto po zakupie okazało się miną – co może zrobić kupujący](/blog/auto-po-zakupie-okazalo-sie-mina-co-moze-zrobic-kupujacy/)
 
 **Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.**
 
@@ -246,6 +252,8 @@ Jeżeli KOWR składa takie oświadczenie, wchodzi w miejsce kupującego i nabywa
 Sprzedaż nieruchomości rolnej z pominięciem ustawowego prawa pierwokupu nie jest zwykłym błędem technicznym. Może skutkować **nieważnością czynności prawnej**, czyli w praktyce cofnięciem wszelkich czynności do stanu poprzedniego.
 
 Dlatego przed podpisaniem umowy warto sprawdzić przeznaczenie nieruchomości, jej powierzchnię, status kupującego, ewentualną dzierżawę i możliwe wyjątki ustawowe. W obrocie ziemią rolną bezpieczeństwo transakcji zaczyna się nie przy akcie notarialnym, ale dużo wcześniej.
+
+**Czytaj też:** [Dziedziczenie ustawowe – kto dostaje spadek, gdy nie ma testamentu](/blog/dziedziczenie-ustawowe-kto-dostaje-spadek-gdy-nie-ma-testamentu/)
 
 **Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.**
 
