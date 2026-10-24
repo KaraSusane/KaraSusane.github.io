@@ -12,4 +12,5 @@ export const responsiveImages: Record<string, { srcSet: string }> = {
   '/dziedziczenie-ustawowe.jpg': variants('dziedziczenie-ustawowe', 1800),
   '/mediacja-a-sprawa-w-sadzie.jpg': variants('mediacja-a-sprawa-w-sadzie', 1800),
   '/prawo-pierwokupu-kowr.jpg': variants('prawo-pierwokupu-kowr', 1280),
+  '/jak-napisac-pismo-w-sprawie.jpg': variants('jak-napisac-pismo-w-sprawie', 1280),
 };

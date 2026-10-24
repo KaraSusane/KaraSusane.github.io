@@ -9,6 +9,14 @@ export type BlogCategory = {
 
 export const blogCategoryPages: BlogCategory[] = [
   {
+    name: 'Pisma i dokumenty', slug: 'pisma-i-dokumenty', updatedAt: '2026-10-24',
+    description: 'Jak napisać pismo w sprawie do sklepu, urzędu lub sądu: budowa pisma, wymagane elementy, sposób wysyłki, załączniki i najczęstsze błędy.',
+    paragraphs: [
+      'Reklamacja, wniosek do urzędu, wezwanie do zapłaty czy odpowiedź na pismo z sądu mają wspólny cel: jasno przedstawić sprawę i powiedzieć adresatowi, czego od niego oczekujesz. Różnią się jednak wymaganiami, terminami i sposobem doręczenia.',
+      'W tej kategorii znajdziesz praktyczne wskazówki dotyczące przygotowania pism: od uporządkowania faktów i sformułowania żądania, przez wymagania przepisów, po wysyłkę i dołączanie dokumentów.',
+    ],
+  },
+  {
     name: 'Ochrona danych osobowych', slug: 'ochrona-danych-osobowych', practiceId: 'prawo-sztucznej-inteligencji', updatedAt: '2026-10-11',
     description: 'RODO w praktyce: zgody klientów, obowiązek informacyjny, dane wrażliwe i bezpieczeństwo dokumentacji. Artykuły o ochronie danych osobowych.',
     paragraphs: [

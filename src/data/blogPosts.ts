@@ -3,8 +3,10 @@ import { autoPoZakupie } from './autoPoZakupie';
 import { najtaniejJestWyrwac } from './najtaniejJestWyrwac';
 import { rodoWPraktyce } from './rodoWPraktyce';
 import { intymnoscIGodnosc } from './intymnoscIGodnosc';
+import { jakNapisacPismo } from './jakNapisacPismo';
 
 export const blogPosts: BlogPost[] = [
+  jakNapisacPismo,
   intymnoscIGodnosc,
   rodoWPraktyce,
   autoPoZakupie,

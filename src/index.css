@@ -125,6 +125,10 @@ summary:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 .article-progress-label > span { margin-right: 8px; color: #ebc256; }
 .article-progress-bar { height: 3px; background: #ebc256; transform-origin: left; }
 .article-toc a[aria-current="location"] { color: #ebc256; font-weight: 700; }
+.article-letter { display: grid; gap: 14px; padding: 28px; border-left: 4px solid #ebc256; background: #f5f5f2; color: #202023; font-size: 15px; line-height: 1.65; }
+.article-letter strong { color: #111113; }
+.article-letter > p:first-child { text-align: right; }
+@media (max-width: 639px) { .article-letter { padding: 20px; font-size: 14px; } }
 a:focus-visible, button:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
 h1, h2 { overflow-wrap: anywhere; }
 article h2 { text-transform: none; }

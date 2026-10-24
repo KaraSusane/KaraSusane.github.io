@@ -107,7 +107,7 @@ Nie każda kontrolka po zakupie jest ukrytą wadą. Nie każdy wyciek w starym s
 
 Tego typu sprawy polegają na pokazaniu, że wada była istotna, ukryta, niezgodna z umową albo z zapewnieniami, a jej źródło nie pojawiło się dopiero po zakupie.
 
-**Czytaj też:** [Mediacja a sprawa w sądzie – dwie drogi rozwiązywania sporu](/blog/mediacja-a-sprawa-w-sadzie-dwie-drogi-rozwiazywania-sporu/)
+**Czytaj też:** [Mediacja a sprawa w sądzie – dwie drogi rozwiązywania sporu](/blog/mediacja-a-sprawa-w-sadzie-dwie-drogi-rozwiazywania-sporu/) oraz [Jak napisać pismo w sprawie – zasady, przykład reklamacji i najczęstsze błędy](/blog/jak-napisac-pismo-w-sprawie/)
 
 **Autor: mgr prawa Karolina Zdrojek**
 
