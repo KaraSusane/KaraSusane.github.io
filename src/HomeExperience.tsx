@@ -12,7 +12,7 @@ import { Entrance } from './components/Entrance';
 const reveal = { opacity: 1, y: 0 };
 
 const faq = [
-  { question: 'Czy Pismo w Sprawie to kancelaria?', answer: 'Nie. Pismo w Sprawie nie jest kancelarią adwokacką ani radcowską. Nie prowadzę zastępstwa procesowego i nie podpisuję pism w imieniu klienta. Przygotowuję dokumenty i analizy, a o ich wykorzystaniu decydujesz samodzielnie.' },
+  { question: 'Czy Pismo w Sprawie to kancelaria adwokacka lub radcowska?', answer: 'Nie. Pismo w Sprawie nie jest kancelarią adwokacką ani radcowską. Nie prowadzę zastępstwa procesowego i nie podpisuję pism w imieniu klienta. Przygotowuję dokumenty i analizy, a o ich wykorzystaniu decydujesz samodzielnie.' },
   { question: 'Jak wygląda współpraca?', answer: 'Opisujesz sprawę w mailu i przesyłasz dokumenty. Otrzymujesz wycenę, ewentualne pytania, zakres i termin realizacji. Po akceptacji i płatności przygotowuję dokument, który otrzymujesz w pliku edytowalnym i PDF, z jedną turą poprawek w ustalonym zakresie.' },
   { question: 'Ile trwa przygotowanie pisma?', answer: 'Termin ustalamy indywidualnie. Proste pismo przygotowuję zwykle w 2–3 dni robocze. W sprawach pilnych możliwa jest szybsza realizacja po potwierdzeniu dostępności.' },
   { question: 'Ile to kosztuje?', answer: 'Każdą sprawę wyceniam indywidualnie, po zapoznaniu się z jej opisem i dokumentami. Wycena zależy od rodzaju sprawy, objętości dokumentów i terminu.' },

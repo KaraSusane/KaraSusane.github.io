@@ -641,7 +641,7 @@ test('Home page introduces practice areas, newest articles and common questions 
   }
   const newest = [...blogPosts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 3);
   for (const post of newest) assert.ok(html.includes(`href="/blog/${post.slug}/"`), post.slug);
-  for (const question of ['Czy Pismo w Sprawie to kancelaria?', 'Jak wygląda współpraca?', 'Ile trwa przygotowanie pisma?', 'Ile to kosztuje?']) {
+  for (const question of ['Czy Pismo w Sprawie to kancelaria adwokacka lub radcowska?', 'Jak wygląda współpraca?', 'Ile trwa przygotowanie pisma?', 'Ile to kosztuje?']) {
     assert.ok(html.includes(`<summary><h3>${question}</h3>`), question);
   }
   for (const id of ['home-practice-title', 'home-blog-title', 'home-faq-title']) {
