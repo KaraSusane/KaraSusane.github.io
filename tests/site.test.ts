@@ -166,7 +166,9 @@ test('Reading columns contain WebKit selection painting without changing justifi
   assert.ok(about.includes('class="relative selection-boundary space-y-6 text-justify'));
   for (const path of ['/polityka-prywatnosci/', '/nota-prawna/', '/wazne-informacje/']) {
     const html = renderToString(createElement(App, { pathname: path }));
-    assert.ok(html.includes('<article class="relative selection-boundary space-y-10'));
+    assert.ok(html.includes('id="legal-body" class="article-paper relative selection-boundary'));
+    assert.ok(html.includes('<div class="relative selection-boundary space-y-10">'));
+    assert.ok(html.includes('class="text-justify text-lg leading-[1.85]'));
   }
 });
 
@@ -178,7 +180,9 @@ test('Selection boundaries cover complete pages and the ebook cross-section read
     assert.ok(html.includes('selection:bg-[#ebc256] selection:text-[#111113]'), path);
   }
   const html = renderToString(createElement(App, { pathname: ebookPath(ebooks[0]) }));
-  assert.ok(html.includes('class="relative selection-boundary max-w-4xl space-y-14 pt-14"'));
+  assert.ok(html.includes('class="article-paper relative selection-boundary'));
+  assert.ok(html.includes('class="relative selection-boundary max-w-4xl space-y-14"'));
+  assert.ok(html.includes('class="relative selection-boundary space-y-5 text-justify text-lg leading-[1.85]"'));
   const css = await readFile('src/index.css', 'utf8');
   assert.ok(css.includes('.selection-boundary::selection,\nmain > :is(section, article)::selection {\n  background-color: transparent;'));
   assert.equal(css.includes('user-select: none'), false, 'Text must remain selectable and copyable');

@@ -134,11 +134,11 @@ summary:focus-visible { outline: 2px solid #ebc256; outline-offset: 5px; }
    Brand yellow is too pale for text on cream, so it marks links and accents while the text stays dark. */
 .article-paper { background: #f6f2ea; border-color: #e2d8c8; }
 .article-paper p, .article-paper li { color: #2b231c; }
-.article-paper h2 { color: #17120d; }
+.article-paper :is(h2, h3) { color: #17120d; }
 .article-paper strong { color: #17120d; }
 .article-paper a { color: #17120d; text-decoration-color: #ebc256; text-decoration-thickness: 3px; }
-.article-paper a:hover { background: #ebc25640; color: #17120d; }
-.article-paper li > span:first-child { background: #ebc256; }
+.article-paper :is(p, li, aside, footer) a:hover { background: #ebc25640; color: #17120d; }
+.article-paper li > span:first-child:empty { background: #ebc256; }
 .article-paper :is(.article-toc, aside) { background: #ede5d8; border-color: #d9ccb8; }
 .article-paper aside[class] { border-left-color: #ebc256; }
 .article-paper .article-toc summary { color: #17120d; }
