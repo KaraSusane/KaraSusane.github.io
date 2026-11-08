@@ -9,7 +9,7 @@ export const siteName = 'Pismo w Sprawie';
 export const authorName = 'Karolina Zdrojek';
 export const contactEmail = 'pismowsprawie@gmail.com';
 export const tiktokUrl = 'https://www.tiktok.com/@pismowsprawie';
-export const defaultCover = '/karolina-zdrojek.jpg';
+export const defaultCover = '/karolina-zdrojek-portret-2026.jpg';
 export const defaultShareImage = { url: '/og-image.jpg', width: 1200, height: 630, alt: 'Pismo w Sprawie - prawo po Twojej stronie' };
 export const mailto = (subject?: string) => `mailto:${contactEmail}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
 export const mailCtaLabel = 'Masz problem? Napisz maila!';

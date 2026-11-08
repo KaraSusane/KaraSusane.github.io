@@ -9,7 +9,7 @@ import { blogPosts } from '../src/data/blogPosts';
 import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
 import { intymnoscIGodnosc } from '../src/data/intymnoscIGodnosc';
 import { ebooks, ebookPath, findEbook } from '../src/data/ebooks';
-import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl, fullTitle, pageShareImage, tiktokUrl, mailCtaLabel, mailto } from '../src/data/site';
+import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl, fullTitle, pageShareImage, defaultCover, tiktokUrl, mailCtaLabel, mailto } from '../src/data/site';
 import { services } from '../src/data/services';
 import { servicesEnabled } from '../src/data/features';
 import { blogCategoryPages, categoryPath } from '../src/data/blogCategories';
@@ -493,7 +493,7 @@ test('Responsive images use valid WebP files and retain original image fallbacks
       assert.equal(bytes.subarray(0, 4).toString(), 'RIFF');
       assert.equal(bytes.subarray(8, 12).toString(), 'WEBP');
     }
-    if (original !== '/karolina-zdrojek.jpg') assert.ok(html.includes(`type="image/webp" srcSet="${image.srcSet}"`));
+    if (original !== defaultCover) assert.ok(html.includes(`type="image/webp" srcSet="${image.srcSet}"`));
   }
 });
 
@@ -593,6 +593,34 @@ test('Share images are landscape files with declared size and alt text', async (
     assert.ok(html.includes(`property="og:image:height" content="${image.height}"`), path);
     assert.ok(html.includes(`property="og:image:alt" content="${escape(image.alt)}"`), path);
     await access(resolve('dist', `.${image.url}`));
+  }
+});
+
+test('Page preview metadata agrees with the preferred image in structured data', async () => {
+  for (const path of paths) {
+    const nodes = await readSchema(path);
+    const page = nodes.find(node => ['WebPage', 'ProfilePage', 'CollectionPage'].includes(node['@type']));
+    if (!page) continue;
+    const image = pageShareImage(getPageMetadata(path));
+    assert.deepEqual(page.primaryImageOfPage, {
+      '@type': 'ImageObject', url: `${siteUrl}${image.url}`,
+      width: image.width, height: image.height, caption: image.alt,
+    }, path);
+  }
+  const home = await readSchema('/');
+  const organization = home.find(node => node['@type'] === 'LegalService');
+  assert.equal(organization.image, `${siteUrl}${pageShareImage(getPageMetadata('/')).url}`);
+  assert.equal(organization.founder.image, `${siteUrl}${defaultCover}`);
+});
+
+test('Author portraits use a new asset URL without changing their image content', async () => {
+  assert.equal(defaultCover, '/karolina-zdrojek-portret-2026.jpg');
+  for (const path of ['/', '/o-mnie']) {
+    const html = await readFile(resolve('dist', `.${path === '/' ? '' : path}/index.html`), 'utf8');
+    assert.ok(html.includes(`src="${defaultCover}"`), path);
+    assert.ok(html.includes(responsiveImages[defaultCover].srcSet), path);
+    assert.equal(html.includes('/karolina-zdrojek.jpg'), false, path);
+    assert.doesNotMatch(html, /\/images\/karolina-zdrojek-\d+\.webp/, path);
   }
 });
 

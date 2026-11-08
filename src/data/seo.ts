@@ -4,7 +4,7 @@ import { categoryPath, findBlogCategory, findCategoryByName } from './blogCatego
 import { services } from './services';
 import { servicesEnabled } from './features';
 import { ebooks, ebookPath, findEbook, type Ebook } from './ebooks';
-import { siteUrl, siteName, authorName, contactEmail, defaultCover, pageUrl, navItems, normalizePath, getPageMetadata, fullTitle, tiktokUrl } from './site';
+import { siteUrl, siteName, authorName, contactEmail, defaultCover, defaultShareImage, pageShareImage, pageUrl, navItems, normalizePath, getPageMetadata, fullTitle, tiktokUrl } from './site';
 
 export const postModifiedAt = (post: BlogPost) => post.updatedAt || post.publishedAt;
 export const latestPostDate = (posts: BlogPost[]) => posts.map(postModifiedAt).sort().at(-1);
@@ -32,7 +32,7 @@ const authorSchema = {
 };
 const legalServiceSchema = {
   '@type': 'LegalService', '@id': `${pageUrl('/')}#organization`, name: siteName, url: pageUrl('/'),
-  image: `${siteUrl}${defaultCover}`, logo: publisherLogo, email: contactEmail,
+  image: `${siteUrl}${defaultShareImage.url}`, logo: publisherLogo, email: contactEmail,
   ...(servicesEnabled ? { priceRange: services.find(service => service.number === '02')?.price } : {}), founder: authorSchema,
   areaServed: { '@type': 'Country', name: 'Polska' },
   sameAs: [tiktokUrl],
@@ -59,9 +59,11 @@ export function getPageSchema(pathname: string) {
   const category = findBlogCategory(path);
   const ebook = findEbook(path);
   const post = blogPosts.find(post => path === `/blog/${post.slug}`);
+  const image = pageShareImage(metadata);
   const webpage = {
     '@type': 'WebPage', '@id': `${pageUrl(path)}#webpage`, name: fullTitle(metadata.title),
     description: metadata.description, url: pageUrl(path), inLanguage: 'pl-PL', isPartOf: { '@id': websiteSchema['@id'] },
+    primaryImageOfPage: { '@type': 'ImageObject', url: `${siteUrl}${image.url}`, width: image.width, height: image.height, caption: image.alt },
   };
   const graph: Record<string, unknown>[] = [];
   if (ebook) {

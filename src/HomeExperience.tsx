@@ -2,7 +2,7 @@ import { Fragment, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { servicesEnabled } from './data/features';
-import { mailto, mailCtaLabel } from './data/site';
+import { defaultCover, mailto, mailCtaLabel } from './data/site';
 import { ResponsiveImage } from './components/ResponsiveImage';
 import { BlogCard } from './components/BlogCard';
 import { CopyEmailButton } from './components/CopyEmailButton';
@@ -80,7 +80,7 @@ export function HomeSections() {
       <a href="/praktyka/" className="home-text-link">Zobacz wszystkie obszary praktyki <ArrowRight size={20} /></a>
     </section>
     <section className="home-about home-band relative selection-boundary">
-      <ScrollReveal as="figure"><ResponsiveImage src="/karolina-zdrojek.jpg" alt="Karolina Zdrojek, założycielka Pismo w Sprawie" width="600" height="750" loading="lazy" sizes="(min-width: 761px) 410px, 270px" /></ScrollReveal>
+      <ScrollReveal as="figure"><ResponsiveImage src={defaultCover} alt="Karolina Zdrojek, założycielka Pismo w Sprawie" width="600" height="750" loading="lazy" sizes="(min-width: 761px) 410px, 270px" /></ScrollReveal>
       <div className="home-section-copy relative selection-boundary"><p className="home-eyebrow">Za każdym pismem stoi człowiek</p><h2>Karolina Zdrojek</h2><p className="home-about-lead">Wiedza prawnicza.<br />Uważność na Twoją sprawę.</p><p>Jestem prawnikiem i założycielką Pismo w Sprawie. Łączę analizę prawną z dbałością o język, strukturę dokumentów i ich praktyczne zastosowanie.</p><a href="/o-mnie/" className="home-button">Poznaj mnie <ArrowRight size={20} /></a></div>
     </section>
     <section className="home-blog home-wide" aria-labelledby="home-blog-title">
