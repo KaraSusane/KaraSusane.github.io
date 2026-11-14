@@ -8,6 +8,7 @@ import App from '../src/App';
 import { blogPosts } from '../src/data/blogPosts';
 import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
 import { intymnoscIGodnosc } from '../src/data/intymnoscIGodnosc';
+import { wezwanieDoZaplaty } from '../src/data/wezwanieDoZaplaty';
 import { ebooks, ebookPath, findEbook } from '../src/data/ebooks';
 import { standardPages, getPageMetadata, pageUrl, navItems, siteName, authorName, contactEmail, siteUrl, fullTitle, pageShareImage, defaultCover, tiktokUrl, mailCtaLabel, mailto } from '../src/data/site';
 import { services } from '../src/data/services';
@@ -19,6 +20,31 @@ import { getPageSchema, latestPostDate, pageModifiedAt, postModifiedAt } from '.
 
 const paths = [...Object.keys(standardPages), ...ebooks.map(ebook => ebookPath(ebook).replace(/\/$/, '')), ...blogCategoryPages.map(category => categoryPath(category).replace(/\/$/, '')), ...blogPosts.map(post => `/blog/${post.slug}`)];
 const escape = (value: string) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll("'", '&#039;');
+
+test('Invoice demand article preserves the supplied Word headings, letter and clickable sources', async () => {
+  const post = wezwanieDoZaplaty;
+  assert.equal(post.publishedAt, '2026-11-14');
+  assert.equal(post.category, 'Pisma i dokumenty');
+  assert.equal(post.coverImage, '/wezwanie-do-zaplaty-faktury.jpeg');
+  assert.equal(post.coverWidth, 1280);
+  assert.equal(post.coverHeight, 854);
+  assert.equal((post.content.match(/^## /gm) || []).length, 8);
+  assert.ok(post.content.includes('Stan prawny na 14 listopada 2026 r.'));
+  const html = await readFile(resolve('dist/blog', post.slug, 'index.html'), 'utf8');
+  assert.equal((html.match(/aria-label="Przykładowe pismo"/g) || []).length, 1);
+  assert.ok(html.includes('<strong class="font-black text-white">WEZWANIE DO ZAPŁATY</strong>'));
+  assert.ok(html.includes('[Dane wierzyciela]'));
+  assert.ok(html.includes('[Dane dłużnika]'));
+  assert.ok(html.includes('nie odroczenie pierwotnego terminu płatności'));
+  for (const source of [
+    'https://eli.gov.pl/api/acts/DU/2026/795/text/T/D20260795L.pdf',
+    'https://eli.gov.pl/api/acts/DU/2023/1790/text.html',
+    'https://eli.gov.pl/api/acts/DU/2026/468/text/U/D20260468Lj.pdf',
+  ]) assert.ok(html.includes(`href="${source}" target="_blank"`), source);
+  for (const path of ['dist/index.html', 'dist/blog/index.html', 'dist/blog/kategoria/pisma-i-dokumenty/index.html']) {
+    assert.ok((await readFile(path, 'utf8')).includes(`/blog/${post.slug}/`), path);
+  }
+});
 
 test('Routes, navigation and blog slugs are unique', () => {
   assert.equal(new Set(paths).size, paths.length);

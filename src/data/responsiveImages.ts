@@ -3,6 +3,7 @@ const variants = (name: string, width: number) => ({
 });
 
 export const responsiveImages: Record<string, { srcSet: string }> = {
+  '/wezwanie-do-zaplaty-faktury.jpeg': variants('wezwanie-do-zaplaty-faktury', 1280),
   '/karolina-zdrojek-portret-2026.jpg': variants('karolina-zdrojek-portret-2026', 1086),
   '/intymnosc-i-godnosc-w-szpitalu.jpeg': variants('intymnosc-i-godnosc-w-szpitalu', 1280),
   '/rodo-w-praktyce.jpeg': variants('rodo-w-praktyce', 1280),

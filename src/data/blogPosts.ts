@@ -4,8 +4,10 @@ import { najtaniejJestWyrwac } from './najtaniejJestWyrwac';
 import { rodoWPraktyce } from './rodoWPraktyce';
 import { intymnoscIGodnosc } from './intymnoscIGodnosc';
 import { jakNapisacPismo } from './jakNapisacPismo';
+import { wezwanieDoZaplaty } from './wezwanieDoZaplaty';
 
 export const blogPosts: BlogPost[] = [
+  wezwanieDoZaplaty,
   jakNapisacPismo,
   intymnoscIGodnosc,
   rodoWPraktyce,
