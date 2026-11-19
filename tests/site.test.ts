@@ -6,6 +6,7 @@ import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import App from '../src/App';
 import { blogPosts } from '../src/data/blogPosts';
+import { articleBodySlugs, articleSlugFromPath, loadArticleBody } from '../src/data/articleBodies';
 import { rodoWPraktyce } from '../src/data/rodoWPraktyce';
 import { intymnoscIGodnosc } from '../src/data/intymnoscIGodnosc';
 import { wezwanieDoZaplaty } from '../src/data/wezwanieDoZaplaty';
@@ -20,6 +21,8 @@ import { getPageSchema, latestPostDate, pageModifiedAt, postModifiedAt } from '.
 
 const paths = [...Object.keys(standardPages), ...ebooks.map(ebook => ebookPath(ebook).replace(/\/$/, '')), ...blogCategoryPages.map(category => categoryPath(category).replace(/\/$/, '')), ...blogPosts.map(post => `/blog/${post.slug}`)];
 const escape = (value: string) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll("'", '&#039;');
+// Article text lives in its own modules; load all of it once so tests and server renders can read it.
+const bodies: Record<string, string> = Object.fromEntries(await Promise.all(blogPosts.map(async post => [post.slug, await loadArticleBody(post.slug)] as const)));
 
 test('Invoice demand article preserves the supplied Word headings, letter and clickable sources', async () => {
   const post = wezwanieDoZaplaty;
@@ -28,8 +31,8 @@ test('Invoice demand article preserves the supplied Word headings, letter and cl
   assert.equal(post.coverImage, '/wezwanie-do-zaplaty-faktury.jpeg');
   assert.equal(post.coverWidth, 1280);
   assert.equal(post.coverHeight, 854);
-  assert.equal((post.content.match(/^## /gm) || []).length, 8);
-  assert.ok(post.content.includes('Stan prawny na 14 listopada 2026 r.'));
+  assert.equal((bodies[post.slug].match(/^## /gm) || []).length, 8);
+  assert.ok(bodies[post.slug].includes('Stan prawny na 14 listopada 2026 r.'));
   const html = await readFile(resolve('dist/blog', post.slug, 'index.html'), 'utf8');
   assert.equal((html.match(/aria-label="Przykładowe pismo"/g) || []).length, 1);
   assert.ok(html.includes('<strong class="font-black text-white">WEZWANIE DO ZAPŁATY</strong>'));
@@ -157,7 +160,7 @@ test('404 renders without redirecting to a 200 homepage', async () => {
 test('Article source links survive the shared SSR renderer', () => {
   for (const post of blogPosts) {
     const html = renderToString(createElement(App, { pathname: `/blog/${post.slug}/` }));
-    for (const link of post.content.matchAll(/\[[^\]]+\]\((https?:\/\/[^)]+)\)/g)) {
+    for (const link of bodies[post.slug].matchAll(/\[[^\]]+\]\((https?:\/\/[^)]+)\)/g)) {
       assert.ok(html.includes(`href="${escape(link[1])}"`), `${post.slug}: ${link[1]}`);
     }
   }
@@ -219,7 +222,7 @@ test('RODO article preserves publication date, cover, headings and Word formatti
   assert.ok(html.includes('dateTime="2026-10-05"'));
   assert.ok(html.includes('src="/rodo-w-praktyce.jpeg"'));
   assert.ok(html.includes('Ochrona danych osobowych'));
-  const headings = [...rodoWPraktyce.content.matchAll(/^## (.+)$/gm)];
+  const headings = [...bodies[rodoWPraktyce.slug].matchAll(/^## (.+)$/gm)];
   assert.equal(headings.length, 16);
   for (const [, heading] of headings) assert.ok(html.includes(escape(heading)));
   assert.ok(html.includes('<em>Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.</em>'));
@@ -239,14 +242,14 @@ test('Hospital privacy article preserves headings, quotes, bibliography and publ
   assert.ok(html.includes(`>${escape(post.title)}</h1>`));
   assert.ok(html.includes('dateTime="2026-10-13"'));
   assert.ok(html.includes('src="/intymnosc-i-godnosc-w-szpitalu.jpeg"'));
-  const headings = [...post.content.matchAll(/^## (.+)$/gm)];
+  const headings = [...bodies[post.slug].matchAll(/^## (.+)$/gm)];
   assert.equal(headings.length, 15);
   for (const [, heading] of headings) assert.ok(html.includes(escape(heading)));
   assert.ok(html.includes('„Proszę odnotować mój sprzeciw w dokumentacji”.'));
   assert.ok(html.includes('Szpital dydaktyczny nie stanowi wyłączenia godności i obowiązku informacji.'));
   assert.ok(html.includes('<em>Niniejszy artykuł ma charakter informacyjny i nie stanowi porady prawnej.</em>'));
   assert.ok(html.includes('<em>Autor: mgr. prawa Karolina Zdrojek</em>'));
-  assert.equal((post.content.match(/^- /gm) || []).length, 10);
+  assert.equal((bodies[post.slug].match(/^- /gm) || []).length, 10);
   assert.ok(html.includes('href="https://www.magnific.com"'));
   assert.ok(html.includes('href="https://eli.gov.pl/eli/DU/2009/417/ogl"'));
   assert.ok(html.includes('href="https://eli.gov.pl/eli/DU/1997/152/ogl"'));
@@ -525,9 +528,9 @@ test('Responsive images use valid WebP files and retain original image fallbacks
 
 test('Article 561 reference points to the civil code, not the unrelated pledge chapter', () => {
   const post = blogPosts.find(post => post.slug.startsWith('auto-po-zakupie'))!;
-  const reference = post.content.split('\n').find(line => line.startsWith('- Art. 561'))!;
+  const reference = bodies[post.slug].split('\n').find(line => line.startsWith('- Art. 561'))!;
   assert.ok(reference.includes('https://eli.gov.pl/eli/DU/1964/93/ogl'));
-  assert.equal(post.content.includes('rozdzial-ii-zastaw-na-prawach'), false);
+  assert.equal(bodies[post.slug].includes('rozdzial-ii-zastaw-na-prawach'), false);
 });
 
 test('Article covers reserve their real proportions and have appropriate loading priorities', async () => {
@@ -664,7 +667,7 @@ test('Articles expose publication dates and the organization links its social pr
 test('Articles link to related site pages in their content, in the same tab', () => {
   const routes = new Set(paths.map(path => pageUrl(path).replace(siteUrl, '')));
   for (const post of blogPosts) {
-    const targets = [...post.content.matchAll(/\]\((\/[^)]+)\)/g)].map(match => match[1]);
+    const targets = [...bodies[post.slug].matchAll(/\]\((\/[^)]+)\)/g)].map(match => match[1]);
     assert.ok(targets.length > 0, post.slug);
     const html = renderToString(createElement(App, { pathname: `/blog/${post.slug}/` }));
     for (const target of targets) {
@@ -683,11 +686,11 @@ test('The ebook is linked from its blog category, practice area and the RODO art
     assert.ok(renderToString(createElement(App, { pathname: categoryPath(category) })).includes(href));
     assert.ok(renderToString(createElement(App, { pathname: '/praktyka/' })).includes(href));
   }
-  assert.ok(rodoWPraktyce.content.includes('](/e-booki/przewodnik-po-rodo/)'));
+  assert.ok(bodies[rodoWPraktyce.slug].includes('](/e-booki/przewodnik-po-rodo/)'));
 });
 
 test('Outbound links carry no tracking parameters', () => {
-  for (const post of blogPosts) assert.equal(/[?&](utm_[a-z]+|_t|_r)=/.test(post.content), false, post.slug);
+  for (const post of blogPosts) assert.equal(/[?&](utm_[a-z]+|_t|_r)=/.test(bodies[post.slug]), false, post.slug);
   assert.equal(tiktokUrl.includes('?'), false);
 });
 
@@ -718,8 +721,8 @@ test('Articles show breadcrumbs, a working table of contents and highlighted rel
     assert.ok(html.includes('href="/blog/" class="hover:text-[#ebc256]">Blog</a>'), post.slug);
     const tocLinks = [...html.matchAll(/<nav aria-label="Spis treści"[\s\S]*?<\/nav>/g)].flatMap(nav => [...nav[0].matchAll(/href="#([^"]+)"/g)].map(match => match[1]));
     for (const id of tocLinks) assert.ok(html.includes(`<h2 id="${id}"`), `${post.slug}: #${id}`);
-    if ((post.content.match(/^## /gm) || []).length >= 5) assert.ok(tocLinks.length >= 4, post.slug);
-    if (post.content.includes('**Czytaj też:**')) assert.ok(/<aside class="border-l-4[^"]*"><strong[^>]*>Czytaj też:<\/strong>/.test(html), post.slug);
+    if ((bodies[post.slug].match(/^## /gm) || []).length >= 5) assert.ok(tocLinks.length >= 4, post.slug);
+    if (bodies[post.slug].includes('**Czytaj też:**')) assert.ok(/<aside class="border-l-4[^"]*"><strong[^>]*>Czytaj też:<\/strong>/.test(html), post.slug);
     assert.equal(/<h1 class="[^"]*uppercase/.test(html), false, post.slug);
   }
 });
@@ -757,5 +760,27 @@ test('Old portrait URLs keep serving the same image for links indexed before the
   for (const [oldPath, newPath] of pairs) {
     const [oldBytes, newBytes] = await Promise.all([readFile(resolve('dist', `.${oldPath}`)), readFile(resolve('dist', `.${newPath}`))]);
     assert.ok(oldBytes.equals(newBytes), oldPath);
+  }
+});
+
+test('Every article has its own text file, loaded only on that article page', async () => {
+  assert.deepEqual([...articleBodySlugs].sort(), blogPosts.map(post => post.slug).sort());
+  for (const post of blogPosts) {
+    assert.equal(articleSlugFromPath(`/blog/${post.slug}/`), post.slug);
+    assert.equal(articleSlugFromPath(`/blog/${post.slug}`), post.slug);
+  }
+  assert.equal(articleSlugFromPath('/blog/'), undefined);
+  assert.equal(articleSlugFromPath('/blog/kategoria/prawo-medyczne/'), undefined);
+  await assert.rejects(access(resolve('dist/.vite')));
+  const homeHtml = await readFile(resolve('dist/index.html'), 'utf8');
+  const sharedScripts = [...homeHtml.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map(match => match[1]);
+  const shared = (await Promise.all(sharedScripts.map(path => readFile(resolve('dist', `.${path}`), 'utf8')))).join('\n');
+  for (const post of blogPosts) {
+    const sample = bodies[post.slug].split('\n').find(line => line.length > 80)!.slice(0, 60);
+    assert.equal(shared.includes(sample), false, `shared bundle carries ${post.slug}`);
+    const html = await readFile(resolve('dist/blog', post.slug, 'index.html'), 'utf8');
+    const preloads = [...html.matchAll(/<link rel="modulepreload" crossorigin href="(\/assets\/[^"]+\.js)">/g)].map(match => match[1]).filter(path => !sharedScripts.includes(path));
+    assert.equal(preloads.length, 1, post.slug);
+    assert.ok((await readFile(resolve('dist', `.${preloads[0]}`), 'utf8')).includes(sample), post.slug);
   }
 });

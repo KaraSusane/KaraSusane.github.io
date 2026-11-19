@@ -42,7 +42,8 @@ main > :is(section, article)::selection {
 .document-top { display: flex; justify-content: space-between; gap: 12px; font-size: 9px; font-weight: 800; border-bottom: 2px solid #202023; padding-bottom: 18px; }
 .document-sheet h3 { margin-top: 28px; font-size: 26px; font-weight: 800; line-height: 1.15; }
 .document-caption { font-size: 10px; color: #666; margin: 12px 0 24px; }
-.document-block { position: relative; margin-top: 14px; background: #e8e8e4; padding: 16px; }
+.document-block { --assembly-x: -42px; --assembly-r: -7deg; position: relative; margin-top: 14px; background: #e8e8e4; padding: 16px; transform: translateX(calc(var(--assembly-x) * (1 - var(--assembly, 1)))) rotate(calc(var(--assembly-r) * (1 - var(--assembly, 1)))); }
+.document-block-right { --assembly-x: 42px; --assembly-r: 6deg; }
 .document-block > span { font-size: 12px; font-weight: 800; }
 .document-block p { font-size: 12px; line-height: 1.6; margin-top: 6px; }
 .document-conclusion { background: #ebc256; }
@@ -162,6 +163,8 @@ article h2 { text-transform: none; }
 .page-enter {
   animation: page-enter .55s cubic-bezier(.22, 1, .36, 1) var(--enter-delay, 0s) both;
 }
+@keyframes blog-card-in { from { opacity: 0; transform: translateY(18px); } }
+.blog-grid[data-animate] > article { animation: blog-card-in .28s ease-out both; }
 @keyframes hero-slash { from { opacity: 0; transform: translateX(180px); } }
 @keyframes hero-title { from { transform: translateY(110%); } }
 @keyframes hero-rule { from { transform: scaleX(0); } }

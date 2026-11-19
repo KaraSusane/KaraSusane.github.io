@@ -1,5 +1,4 @@
-import { Fragment, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { Fragment, useEffect, useRef, type RefObject } from 'react';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { servicesEnabled } from './data/features';
 import { defaultCover, mailto, mailCtaLabel } from './data/site';
@@ -40,13 +39,37 @@ export function AnimatedHero() {
   </section>;
 }
 
+// The three blocks straighten as the sheet scrolls in: tilted while its top is at 90% of the screen,
+// straight once its middle reaches 45%. Without JavaScript or with reduced motion they stay straight.
+function useAssemblyProgress(ref: RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const rect = element.getBoundingClientRect();
+      const start = window.innerHeight * 0.9;
+      const distance = start - (window.innerHeight * 0.45 - rect.height / 2);
+      const progress = Math.min(1, Math.max(0, (start - rect.top) / distance));
+      element.style.setProperty('--assembly', progress.toFixed(3));
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      cancelAnimationFrame(frame);
+      element.style.removeProperty('--assembly');
+    };
+  }, [ref]);
+}
+
 function DocumentAssembly() {
   const target = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target, offset: ['start 90%', 'center 45%'] });
-  const x = useTransform(scrollYProgress, [0, 1], [-42, 0]);
-  const right = useTransform(scrollYProgress, [0, 1], [42, 0]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [-7, 0]);
-  const rotateRight = useTransform(scrollYProgress, [0, 1], [6, 0]);
+  useAssemblyProgress(target);
   const [paper, written] = useRevealOnce<HTMLDivElement>(0.3);
   return <div ref={target} className="document-scene relative selection-boundary" aria-label="Przykładowe pismo: fakty, argumenty i wniosek">
     <ScrollReveal className="document-sheet relative selection-boundary" x={52} y={24} scale={0.96} delay={0.12} duration={0.75}>
@@ -55,9 +78,9 @@ function DocumentAssembly() {
       <div className="document-meta"><span className="document-date">Miejscowość, data</span><span className="document-to">Nadawca → Adresat</span><span className="document-subject"><span>Dotyczy: wezwania do zapłaty</span></span></div>
       <h3>Twoje stanowisko.<br />Jasno sformułowane.</h3>
       <p className="document-caption">Schemat pisma</p>
-      <motion.div className="document-block" style={{ x, rotate }}><span>01 — Fakty</span><p>Co się wydarzyło i jakie dokumenty to potwierdzają.</p></motion.div>
-      <motion.div className="document-block" style={{ x: right, rotate: rotateRight }}><span>02 — Argumenty</span><p>Stanowisko oparte na okolicznościach Twojej sprawy.</p></motion.div>
-      <motion.div className="document-block document-conclusion" style={{ x, rotate }}><span>03 — Wniosek</span><p>Precyzyjnie określony cel pisma.</p></motion.div>
+      <div className="document-block"><span>01 — Fakty</span><p>Co się wydarzyło i jakie dokumenty to potwierdzają.</p></div>
+      <div className="document-block document-block-right"><span>02 — Argumenty</span><p>Stanowisko oparte na okolicznościach Twojej sprawy.</p></div>
+      <div className="document-block document-conclusion"><span>03 — Wniosek</span><p>Precyzyjnie określony cel pisma.</p></div>
       <div className="document-sign" aria-hidden="true"><svg viewBox="0 0 220 64" fill="none"><path pathLength={1} d="M10 46c8-22 22-34 20-12s-14 28 4 16 18-30 26-20-4 26 8 20 14-24 22-18 0 18 10 14 12-20 20-16-6 18 6 16 14-18 22-16-6 16 6 14 16-12 30-10" /><path pathLength={1} className="document-sign-line" d="M40 56c50-4 110 2 170-6" /></svg></div>
       <div className="document-bottom">Precyzja ma znaczenie.<span>Pismo w Sprawie</span></div>
       </div>

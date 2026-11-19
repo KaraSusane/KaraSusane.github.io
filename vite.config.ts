@@ -13,14 +13,16 @@ export default defineConfig(() => {
       },
     },
     build: {
+      // Lets the prerender script preload each article's own text file (removed after the build).
+      manifest: true,
       rollupOptions: {
         output: {
           // Separate chunks load in parallel and stay cached when only articles change.
+          // Article bodies (src/data/articles) stay out of them: each loads only on its own page.
           manualChunks(id: string) {
             if (/node_modules\/(react|react-dom|scheduler)\//.test(id)) return 'react';
-            if (/node_modules\/(motion|framer-motion|motion-dom|motion-utils)\//.test(id)) return 'motion';
             if (id.includes('node_modules/lucide-react/')) return 'icons';
-            if (id.includes('/src/data/')) return 'content';
+            if (id.includes('/src/data/') && !id.includes('/src/data/articles/')) return 'content';
           },
         },
       },

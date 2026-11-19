@@ -1,9 +1,10 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import App from '../src/App.tsx';
 import { blogPosts } from '../src/data/blogPosts.ts';
+import { articleBodySlugs, loadArticleBody } from '../src/data/articleBodies.ts';
 import { blogCategoryPages, categoryPath } from '../src/data/blogCategories.ts';
 import { ebooks, ebookPath } from '../src/data/ebooks.ts';
 import { siteUrl, siteName, authorName, pageUrl, normalizePath, standardPages, getPageMetadata, fullTitle, pageShareImage } from '../src/data/site.ts';
@@ -11,6 +12,17 @@ import { getPageSchema, pageModifiedAt, postModifiedAt } from '../src/data/seo.t
 
 const distDir = resolve('dist');
 const baseHtml = await readFile(resolve(distDir, 'index.html'), 'utf8');
+// Every article's text in memory, so each page renders complete. Browsers fetch only their article's file,
+// preloaded in parallel with the main script (paths from Vite's manifest, which is not published).
+const manifestPath = resolve(distDir, '.vite/manifest.json');
+const manifest: Record<string, { file: string }> = JSON.parse(await readFile(manifestPath, 'utf8'));
+await rm(resolve(distDir, '.vite'), { recursive: true, force: true });
+await Promise.all(articleBodySlugs.map(loadArticleBody));
+const articleChunk = (slug: string) => {
+  const chunk = manifest[`src/data/articles/${slug}.ts`];
+  if (!chunk) throw new Error(`Brak pliku z treścią artykułu w buildzie: ${slug}`);
+  return `/${chunk.file}`;
+};
 const escapeHtml = (value: string) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 
 const renderPage = (path: string) => {
@@ -29,7 +41,8 @@ const renderPage = (path: string) => {
   const imageSize = shareImage.width && shareImage.height ? `
     <meta property="og:image:width" content="${shareImage.width}" />
     <meta property="og:image:height" content="${shareImage.height}" />` : '';
-  const head = `
+  const head = `${post ? `
+    <link rel="modulepreload" crossorigin href="${articleChunk(post.slug)}">` : ''}
     ${page.noindex ? '<meta name="robots" content="noindex, follow" />' : `<link rel="canonical" href="${escapeHtml(canonicalUrl)}" /><meta name="robots" content="index, follow, max-image-preview:large" />`}
     <meta property="og:locale" content="pl_PL" />
     <meta property="og:type" content="${post ? 'article' : 'website'}" />${articleMeta}
