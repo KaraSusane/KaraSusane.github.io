@@ -751,3 +751,11 @@ test('Home animations start from finished content in the server HTML', () => {
   assert.ok(article.includes('class="article-progress-bar" style="transform:scaleX(0)"'));
   assert.ok(article.includes('id="article-body"'));
 });
+
+test('Old portrait URLs keep serving the same image for links indexed before the rename', async () => {
+  const pairs = [['/karolina-zdrojek.jpg', defaultCover], ...[480, 960, 1086].map(width => [`/images/karolina-zdrojek-${width}.webp`, `/images/karolina-zdrojek-portret-2026-${width}.webp`])];
+  for (const [oldPath, newPath] of pairs) {
+    const [oldBytes, newBytes] = await Promise.all([readFile(resolve('dist', `.${oldPath}`)), readFile(resolve('dist', `.${newPath}`))]);
+    assert.ok(oldBytes.equals(newBytes), oldPath);
+  }
+});

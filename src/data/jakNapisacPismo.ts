@@ -67,6 +67,8 @@ Na końcu pisma umieszcza się podpis, jeżeli jest wymagany w danym przypadku. 
 
 Należy pamiętać, że nie wszystkie wymienione elementy są obowiązkowe w każdej sytuacji. Przykładowo brak tytułu czy miejscowości nie musi automatycznie oznaczać, że pismo jest nieskuteczne. Znaczenie ma przede wszystkim to, czy dokument spełnia wymagania przewidziane dla konkretnego rodzaju sprawy.
 
+**Czytaj też:** [Wezwanie do zapłaty faktury – wzór, termin i odsetki](/blog/wezwanie-do-zaplaty-faktury-wzor/)
+
 ## Pismo do urzędu – jakie wymagania określają przepisy?
 
 Jeżeli pismo jest składane w postępowaniu administracyjnym, zastosowanie mogą znaleźć przepisy Kodeksu postępowania administracyjnego.

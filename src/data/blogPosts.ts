@@ -145,7 +145,7 @@ Załóżmy, że umiera mężczyzna, który nie miał żony, dzieci ani testament
 
 Nie dziedziczy automatycznie partnerka, nawet jeżeli mieszkała z nim przez wiele lat. Nie dziedziczy też przyjaciel, który opiekował się nim w chorobie. Prawo ustawowe patrzy na formalne więzi rodzinne, a nie na to, kto był najbliżej emocjonalnie. Jeżeli zmarły chciałby zabezpieczyć partnerkę, powinien sporządzić testament. Bez testamentu spadek idzie według ustawowej kolejności.
 
-**Czytaj też:** [Mediacja a sprawa w sądzie – dwie drogi rozwiązywania sporu](/blog/mediacja-a-sprawa-w-sadzie-dwie-drogi-rozwiazywania-sporu/)
+**Czytaj też:** [Mediacja a sprawa w sądzie – dwie drogi rozwiązywania sporu](/blog/mediacja-a-sprawa-w-sadzie-dwie-drogi-rozwiazywania-sporu/) oraz [Prawo pierwokupu KOWR przy sprzedaży nieruchomości rolnej](/blog/prawo-pierwokupu-kowr-przy-sprzedazy-nieruchomosci-rolnej/)
 
 ## Bibliografia
 
