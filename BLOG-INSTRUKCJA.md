@@ -1,7 +1,12 @@
 # Jak dodać artykuł
 
-Artykuły znajdują się w pliku `src/data/blogPosts.ts`. Skopiuj jeden cały obiekt wpisu,
-wklej go na początku listy i zmień poniższe pola:
+Artykuł składa się z trzech części:
+
+1. metadane w `src/data/blogPosts.ts` (bez treści),
+2. treść w osobnym pliku `src/data/articles/<slug>.ts`,
+3. jedna linia w `src/data/articleBodies.ts`, dzięki której treść ładuje się tylko na stronie artykułu.
+
+Metadane: skopiuj jeden obiekt wpisu, wklej go na początku listy i zmień pola:
 
 ```ts
 {
@@ -16,13 +21,26 @@ wklej go na początku listy i zmień poniższe pola:
   coverAlt: 'Opis zdjęcia dla Google i czytników ekranu',
   coverWidth: 1280,
   coverHeight: 853,
-  content: `Treść artykułu.
+},
+```
+
+Treść, plik `src/data/articles/krotki-adres-artykulu-bez-polskich-znakow.ts`:
+
+```ts
+export default `Treść artykułu.
 
 ## Tytuł kolejnej części
 
-Kolejny akapit. **Ten fragment będzie pogrubiony.**`,
-},
+Kolejny akapit. **Ten fragment będzie pogrubiony.**`;
 ```
+
+Loader w `src/data/articleBodies.ts`:
+
+```ts
+'krotki-adres-artykulu-bez-polskich-znakow': () => import('./articles/krotki-adres-artykulu-bez-polskich-znakow'),
+```
+
+Jeśli zabraknie treści albo loadera, testy to zgłoszą.
 
 Zdjęcie dodaj do folderu `public`. Jeżeli nie podasz `coverImage`, strona użyje
 zdjęcia Karoliny.

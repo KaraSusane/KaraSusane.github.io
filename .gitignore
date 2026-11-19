@@ -9,3 +9,18 @@ coverage/
 JAK-WYSYLAC-NA-GITHUB.txt
 backup-strony-*.zip
 private-ebook-settings/
+
+# Lokalne ustawienia asystentów AI i edytorów (wspólne instrukcje są w AGENTS.md)
+.claude/settings.local.json
+.claude/worktrees/
+CLAUDE.local.md
+.codex/
+.cursor/
+.vscode/
+.idea/
+*.swp
+
+# Pliki tymczasowe
+.vite/
+*.tmp
+.cache/
