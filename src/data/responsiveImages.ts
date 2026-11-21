@@ -10,8 +10,8 @@ export const responsiveImages: Record<string, { srcSet: string }> = {
   '/auto-po-zakupie-okazalo-sie-mina.jpeg': variants('auto-po-zakupie-okazalo-sie-mina', 1280),
   '/najtaniej-jest-wyrwac.jpg': variants('najtaniej-jest-wyrwac', 1280),
   '/klauzula-sumienia-lekarza.jpg': variants('klauzula-sumienia-lekarza', 1280),
-  '/dziedziczenie-ustawowe.jpg': variants('dziedziczenie-ustawowe', 1800),
-  '/mediacja-a-sprawa-w-sadzie.jpg': variants('mediacja-a-sprawa-w-sadzie', 1800),
+  '/dziedziczenie-ustawowe.jpg': variants('dziedziczenie-ustawowe', 1280),
+  '/mediacja-a-sprawa-w-sadzie.jpg': variants('mediacja-a-sprawa-w-sadzie', 1280),
   '/prawo-pierwokupu-kowr.jpg': variants('prawo-pierwokupu-kowr', 1280),
   '/jak-napisac-pismo-w-sprawie.jpg': variants('jak-napisac-pismo-w-sprawie', 1280),
 };

@@ -1,6 +1,6 @@
 import type { BlogPost } from '../types';
 import { blogPosts } from './blogPosts';
-import { categoryPath, findBlogCategory, findCategoryByName } from './blogCategories';
+import { categoryPath, findBlogCategory, findCategoryByName, type BlogCategory } from './blogCategories';
 import { services } from './services';
 import { servicesEnabled } from './features';
 import { ebooks, ebookPath, findEbook, type Ebook } from './ebooks';
@@ -17,6 +17,8 @@ export const pageModifiedAt = (pathname: string) => {
   const category = findBlogCategory(path);
   if (category) return [category.updatedAt, latestPostDate(blogPosts.filter(post => post.category === category.name))].filter(Boolean).sort().at(-1);
   if (path === '/blog') return latestPostDate(blogPosts);
+  // The home cards show publication dates, not edits to article bodies.
+  if (path === '/') return blogPosts.map(post => post.publishedAt).sort().at(-1);
   if (path === '/praktyka') return '2026-10-19';
   if (path === '/e-booki') return ebooks.map(ebook => ebook.updatedAt).sort().at(-1);
 };
@@ -37,18 +39,31 @@ const legalServiceSchema = {
   areaServed: { '@type': 'Country', name: 'Polska' },
   sameAs: [tiktokUrl],
 };
-const breadcrumbSchema = (items: Array<{ name: string; path: string }>) => ({
+export type BreadcrumbItem = { name: string; path: string };
+const homeCrumb = { name: siteName, path: '/' };
+export const blogBreadcrumbs = (category?: BlogCategory): BreadcrumbItem[] => [
+  homeCrumb, { name: 'Blog', path: '/blog/' },
+  ...(category ? [{ name: category.name, path: categoryPath(category) }] : []),
+];
+export const ebookBreadcrumbs = (ebook: Ebook): BreadcrumbItem[] => [
+  homeCrumb, { name: 'E-booki', path: '/e-booki/' }, { name: ebook.title, path: ebookPath(ebook) },
+];
+
+const breadcrumbSchema = (items: BreadcrumbItem[]) => ({
   '@type': 'BreadcrumbList',
   itemListElement: items.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: pageUrl(item.path) })),
 });
 
 const bookSchema = (ebook: Ebook) => ({
   '@type': 'Book', '@id': `${pageUrl(ebookPath(ebook))}#book`, url: pageUrl(ebookPath(ebook)), name: ebook.title,
-  author: { '@type': 'Person', name: ebook.author, url: pageUrl('/o-mnie') }, inLanguage: 'pl-PL',
+  author: ebook.author === authorName
+    ? { '@type': 'Person', '@id': authorSchema['@id'], name: authorName, url: authorSchema.url }
+    : { '@type': 'Person', name: ebook.author },
+  inLanguage: 'pl-PL',
   bookFormat: 'https://schema.org/EBook', numberOfPages: ebook.pages,
   description: ebook.description, image: `${siteUrl}${ebook.cover}`,
   encoding: { '@type': 'MediaObject', contentUrl: `${siteUrl}${ebook.file}`, encodingFormat: 'application/pdf' },
-  mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl(ebookPath(ebook)) },
+  mainEntityOfPage: { '@id': `${pageUrl(ebookPath(ebook))}#webpage` },
 });
 
 // The build and in-page category navigation use exactly the same metadata graph.
@@ -65,36 +80,37 @@ export function getPageSchema(pathname: string) {
     description: metadata.description, url: pageUrl(path), inLanguage: 'pl-PL', isPartOf: { '@id': websiteSchema['@id'] },
     primaryImageOfPage: { '@type': 'ImageObject', url: `${siteUrl}${image.url}`, width: image.width, height: image.height, caption: image.alt },
   };
-  const graph: Record<string, unknown>[] = [];
+  const graph: Record<string, unknown>[] = [websiteSchema];
   if (ebook) {
-    graph.push(websiteSchema, {
+    graph.push({
       ...webpage, dateModified: ebook.updatedAt, mainEntity: { '@id': `${pageUrl(path)}#book` },
-    }, bookSchema(ebook), breadcrumbSchema([
-      { name: siteName, path: '/' }, { name: 'E-booki', path: '/e-booki' }, { name: ebook.title, path },
-    ]));
+    }, bookSchema(ebook), breadcrumbSchema(ebookBreadcrumbs(ebook)));
   } else if (post) {
     const postCategory = findCategoryByName(post.category);
+    const articleId = `${pageUrl(path)}#article`;
     graph.push({
-      '@type': 'BlogPosting', '@id': `${pageUrl(path)}#article`, headline: post.title, description: post.excerpt,
+      ...webpage, mainEntity: { '@id': articleId },
+    }, {
+      '@type': 'BlogPosting', '@id': articleId, headline: post.title, description: post.excerpt,
       image: [`${siteUrl}${post.coverImage || defaultCover}`], datePublished: post.publishedAt, dateModified: postModifiedAt(post),
       inLanguage: 'pl-PL', keywords: post.keywords?.join(', '), articleSection: post.category,
-      mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl(path) }, author: authorSchema,
+      mainEntityOfPage: { '@id': webpage['@id'] }, author: authorSchema,
       publisher: { '@type': 'Organization', '@id': legalServiceSchema['@id'], name: siteName, url: pageUrl('/'), logo: publisherLogo },
     }, breadcrumbSchema([
-      { name: siteName, path: '/' }, { name: 'Blog', path: '/blog' },
-      ...(postCategory ? [{ name: postCategory.name, path: categoryPath(postCategory) }] : []),
+      ...blogBreadcrumbs(postCategory),
       { name: post.title, path },
     ]));
-  } else if (category) {
-    graph.push(websiteSchema, {
+  } else if (category || path === '/blog') {
+    const posts = category ? blogPosts.filter(post => post.category === category.name) : blogPosts;
+    graph.push({
       ...webpage, '@type': 'CollectionPage', dateModified: pageModifiedAt(path),
       mainEntity: {
         '@type': 'ItemList',
-        itemListElement: blogPosts.filter(post => post.category === category.name).map((post, index) => ({
+        itemListElement: posts.map((post, index) => ({
           '@type': 'ListItem', position: index + 1, name: post.title, url: pageUrl(`/blog/${post.slug}`),
         })),
       },
-    }, breadcrumbSchema([{ name: siteName, path: '/' }, { name: 'Blog', path: '/blog' }, { name: category.name, path }]));
+    }, breadcrumbSchema(blogBreadcrumbs(category)));
   } else {
     const pageSchema = path === '/o-mnie' ? { ...webpage, '@type': 'ProfilePage', mainEntity: authorSchema }
       : path === '/e-booki' ? {
@@ -107,7 +123,7 @@ export function getPageSchema(pathname: string) {
           })),
         },
       } : webpage;
-    graph.push(websiteSchema, pageSchema);
+    graph.push(pageSchema);
     if (path === '/' || path === '/uslugi') graph.push(legalServiceSchema);
     if (path !== '/') graph.push(breadcrumbSchema([
       { name: siteName, path: '/' },

@@ -370,6 +370,7 @@ test('E-book structured data matches the published PDF rather than an invented o
 });
 
 test('Individual e-book structured data shares the book identity and a three-level breadcrumb', async () => {
+  const profile = (await readSchema('/o-mnie')).find(node => node['@type'] === 'ProfilePage');
   for (const ebook of ebooks) {
     const path = ebookPath(ebook);
     const schema = await readSchema(path.replace(/\/$/, ''));
@@ -377,9 +378,11 @@ test('Individual e-book structured data shares the book identity and a three-lev
     const book = schema.find(node => node['@type'] === 'Book');
     assert.ok(page && book);
     assert.equal(page.mainEntity['@id'], book['@id']);
+    assert.equal(book.mainEntityOfPage['@id'], page['@id']);
     assert.equal(book.url, pageUrl(path));
     assert.equal(book.name, ebook.title);
     assert.equal(book.author.name, ebook.author);
+    if (ebook.author === authorName) assert.equal(book.author['@id'], profile.mainEntity['@id']);
     assert.equal(book.numberOfPages, ebook.pages);
     assert.equal(book.encoding.contentUrl, `${siteUrl}${ebook.file}`);
     const items = schema.find(node => node['@type'] === 'BreadcrumbList').itemListElement;
@@ -407,6 +410,11 @@ test('Breadcrumbs and article schemas have canonical URLs, category and publishe
     if (post) {
       const article = schema.find(node => node['@type'] === 'BlogPosting');
       assert.ok(article);
+      const webpage = schema.find(node => node['@type'] === 'WebPage');
+      const website = schema.find(node => node['@type'] === 'WebSite');
+      assert.equal(webpage.isPartOf['@id'], website['@id']);
+      assert.equal(webpage.mainEntity['@id'], article['@id']);
+      assert.equal(article.mainEntityOfPage['@id'], webpage['@id']);
       assert.equal(article.articleSection, post.category);
       assert.equal(article.headline, post.title);
       assert.equal(article.author.name, authorName);
@@ -426,6 +434,39 @@ test('Blog sitemap date follows the newest article, regardless of array order', 
   assert.ok(blogEntry);
   const latest = latestPostDate(blogPosts);
   assert.ok(blogEntry[1].includes(`<lastmod>${latest}</lastmod>`));
+});
+
+test('Main blog exposes an ordered collection with its modification date', async () => {
+  const schema = await readSchema('/blog');
+  const collection = schema.find(node => node['@type'] === 'CollectionPage');
+  assert.equal(collection.dateModified, latestPostDate(blogPosts));
+  assert.equal(collection.mainEntity['@type'], 'ItemList');
+  assert.deepEqual(collection.mainEntity.itemListElement, blogPosts.map((post, index) => ({
+    '@type': 'ListItem', position: index + 1, name: post.title, url: pageUrl(`/blog/${post.slug}/`),
+  })));
+});
+
+test('Home sitemap date follows the latest publication, not an edit to an older article', async () => {
+  const sitemap = await readFile('dist/sitemap.xml', 'utf8');
+  const entry = [...sitemap.matchAll(/<url>(.*?)<\/url>/gs)].find(([, url]) => url.includes(`<loc>${pageUrl('/')}</loc>`));
+  const publishedAt = blogPosts.map(post => post.publishedAt).sort().at(-1);
+  assert.ok(entry?.[1].includes(`<lastmod>${publishedAt}</lastmod>`));
+});
+
+test('Category and e-book breadcrumbs agree with visible navigation in prerendered HTML', async () => {
+  for (const path of [...blogCategoryPages.map(categoryPath), ...ebooks.map(ebookPath)]) {
+    const schema = await readSchema(path);
+    const items = schema.find(node => node['@type'] === 'BreadcrumbList').itemListElement;
+    const html = await readFile(resolve('dist', `.${path}index.html`), 'utf8');
+    const nav = html.match(/<nav aria-label="Okruszki"[^>]*>(.*?)<\/nav>/s)?.[1];
+    assert.ok(nav, path);
+    for (const item of items.slice(0, -1)) {
+      const href = new URL(item.item).pathname;
+      const label = escape(item.name);
+      assert.ok(nav.includes(`href="${href}"`) && nav.includes(`>${label}</a>`), path);
+    }
+    assert.ok(nav.includes('aria-current="page"') && nav.includes(`>${escape(items.at(-1).name)}</span>`), path);
+  }
 });
 
 test('Category pages contain only matching articles and expose crawlable filters', async () => {

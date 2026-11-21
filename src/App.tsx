@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
-import { ArrowLeft, ArrowRight, Download, Menu, X } from 'lucide-react';
+import { ArrowRight, Download, Menu, X } from 'lucide-react';
 import { blogPosts } from './data/blogPosts';
 import { articleBody, loadArticleBody } from './data/articleBodies';
 import { ebooks, ebookPath, findEbook, type Ebook } from './data/ebooks';
@@ -10,7 +10,7 @@ import { servicesEnabled } from './data/features';
 import { contactEmail, tiktokUrl, defaultCover, mailto, mailCtaLabel, navItems, siteUrl, pageUrl, normalizePath, getPageMetadata, authorName, fullTitle, pageShareImage } from './data/site';
 import { blogCategoryPages, categoryPath, findBlogCategory, findCategoryByName, type BlogCategory } from './data/blogCategories';
 import { practiceAreas, practiceContent } from './data/practiceAreas';
-import { getPageSchema } from './data/seo';
+import { blogBreadcrumbs, ebookBreadcrumbs, getPageSchema, type BreadcrumbItem } from './data/seo';
 import { ResponsiveImage } from './components/ResponsiveImage';
 import { BlogCard, formatDate } from './components/BlogCard';
 import { CopyEmailButton } from './components/CopyEmailButton';
@@ -85,6 +85,17 @@ const PageShell = ({ children }: { children: ReactNode }) => <div className="rel
 
 const HomePage = () => <PageShell><AnimatedHero /><HomeSections /></PageShell>;
 
+const Breadcrumbs = ({ items }: { items: BreadcrumbItem[] }) => <nav aria-label="Okruszki" className="mb-8 text-sm">
+  <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[#b7b7bd]">
+    {items.map(({ name, path }, index) => <li key={path} className="min-w-0 break-words">
+      {index > 0 && <span aria-hidden="true" className="mr-2">&rsaquo;</span>}
+      {index === items.length - 1
+        ? <span aria-current="page" className="font-bold text-[#c9c9cf]">{name}</span>
+        : <a href={path} className="hover:text-[#ebc256]">{name}</a>}
+    </li>)}
+  </ol>
+</nav>;
+
 const CooperationSection = () => <section className="mt-24 border-t-4 border-[#ebc256] pt-16"><SectionHeading level="h2" eyebrow="Współpraca" title="Jak będzie wyglądała nasza współpraca?" /><div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]"><Reveal className="relative selection-boundary" x={-28}><ol className="divide-y divide-white/10 border border-white/10 bg-[#17171a]">{cooperationSteps.map((step, index) => <li key={step} className="flex gap-5 p-6 md:p-8"><span className="flex h-10 w-10 shrink-0 items-center justify-center bg-[#ebc256] font-black text-[#111113]">{index + 1}</span><span className="leading-relaxed text-[#d8d8dc]">{step}</span></li>)}</ol></Reveal><Reveal x={28} delay={0.1}><aside className="relative selection-boundary border border-white/10 bg-[#29292d] p-6 text-[#c4c4ca] md:p-7"><h2 className="mb-4 text-sm font-black uppercase tracking-wide text-[#e0e0e3]">Czego nie obejmuje usługa?</h2><div className="space-y-3 text-xs leading-relaxed md:text-sm"><p>Pismo w Sprawie nie jest kancelarią adwokacką ani radcowską. Nie prowadzimy zastępstwa procesowego, nie występujemy przed sądami, urzędami ani innymi instytucjami jako pełnomocnik klienta oraz nie podpisujemy pism w imieniu klienta.</p><p>Przygotowane materiały pomagają uporządkować sprawę, przedstawić stanowisko i stworzyć dokument dopasowany do opisanej sytuacji. Klient samodzielnie decyduje o jego wykorzystaniu.</p><p>Realizacja usługi nie oznacza gwarancji konkretnego wyniku sprawy.</p></div></aside></Reveal></div></section>;
 
 const ServicesPage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="relative selection-boundary mx-auto max-w-7xl"><SectionHeading eyebrow="Usługi" title="W czym mogę Ci pomóc?">Ceny są minimalne. Ostateczna wycena zależy od rodzaju sprawy, objętości dokumentów i terminu realizacji.</SectionHeading><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{services.map((service, index) => <article key={service.number} style={entranceStyle(index * 0.06)} className="page-enter relative selection-boundary flex min-h-[350px] flex-col border border-white/10 bg-[#1a1a1e] p-7 transition-colors hover:border-[#ebc256]"><div className="mb-8 flex items-start justify-between border-b border-white/10 pb-5"><span className="text-2xl font-black text-[#ebc256]">{service.number}</span><span className="bg-[#ebc256] px-3 py-2 text-xs font-black uppercase text-[#111113]">{service.price}</span></div><h2 className="text-3xl font-black uppercase">{service.title}</h2><p className="mt-4 text-sm leading-relaxed text-[#b7b7bd]">{service.description}</p><ul className="mt-7 space-y-3 border-t border-white/10 pt-6 text-sm leading-relaxed text-[#d1d1d5]">{service.details.map((detail) => { const label = 'JUŻ WKRÓTCE'; const upcoming = detail.endsWith(label); return <li key={detail} className="flex gap-3"><span className="mt-2 h-2 w-2 shrink-0 bg-[#ebc256]" /><span>{upcoming ? detail.slice(0, -label.length).trim() : detail}{upcoming && <span className="ml-2 text-xs font-black uppercase text-[#ebc256]">{label}</span>}</span></li>; })}</ul></article>)}</div><CooperationSection /></div></section></PageShell>;
@@ -144,7 +155,7 @@ const BlogPage = ({ category }: { category?: BlogCategory }) => {
     window.history.pushState(null, '', href);
     window.dispatchEvent(new PopStateEvent('popstate'));
   };
-  return <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="relative selection-boundary mx-auto max-w-7xl"><SectionHeading eyebrow="Blog" title={category?.name || "Prawo w życiu codziennym"}>{category && <div className="space-y-4">{category.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}{ebooks.filter(ebook => ebook.blogCategory === category.name).map(ebook => <p key={ebook.id}><a href={ebookPath(ebook)} className="inline-flex items-center gap-2 font-bold text-[#ebc256] underline underline-offset-4 hover:text-white">E-book: {ebook.title}<ArrowRight className="h-4 w-4 shrink-0" /></a></p>)}</div>}</SectionHeading><div className="mb-12 border-y border-white/10 py-5"><p className="mb-4 text-[10px] font-black uppercase text-[#77777f]">Wybierz obszar</p><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-label="Kategorie artykułów">{blogCategories.map((category, index) => { const count = category === 'Wszystkie' ? blogPosts.length : blogPosts.filter((post) => post.category === category).length; const active = category === activeCategory; return <a key={category} data-blog-category={category} href={category === 'Wszystkie' ? '/blog/' : categoryPath(findCategoryByName(category)!)} aria-current={active ? 'page' : undefined} onClick={event => {
+  return <PageShell><section className="px-5 pb-24 pt-36 md:px-8"><div className="relative selection-boundary mx-auto max-w-7xl">{category && <Breadcrumbs items={blogBreadcrumbs(category)} />}<SectionHeading eyebrow="Blog" title={category?.name || "Prawo w życiu codziennym"}>{category && <div className="space-y-4">{category.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}{ebooks.filter(ebook => ebook.blogCategory === category.name).map(ebook => <p key={ebook.id}><a href={ebookPath(ebook)} className="inline-flex items-center gap-2 font-bold text-[#ebc256] underline underline-offset-4 hover:text-white">E-book: {ebook.title}<ArrowRight className="h-4 w-4 shrink-0" /></a></p>)}</div>}</SectionHeading><div className="mb-12 border-y border-white/10 py-5"><p className="mb-4 text-[10px] font-black uppercase text-[#77777f]">Wybierz obszar</p><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-label="Kategorie artykułów">{blogCategories.map((category, index) => { const count = category === 'Wszystkie' ? blogPosts.length : blogPosts.filter((post) => post.category === category).length; const active = category === activeCategory; return <a key={category} data-blog-category={category} href={category === 'Wszystkie' ? '/blog/' : categoryPath(findCategoryByName(category)!)} aria-current={active ? 'page' : undefined} onClick={event => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
       selectCategory(category);
@@ -229,7 +240,7 @@ const EbooksPage = () => <PageShell><section className="px-5 pb-24 pt-36 md:px-8
 </div></section></PageShell>;
 
 const EbookPage = ({ ebook }: { ebook: Ebook }) => <PageShell><section className="px-5 pb-24 pt-32 md:px-8"><div className="relative selection-boundary mx-auto max-w-7xl">
-  <a href="/e-booki/" className="mb-8 inline-flex items-center gap-2 text-sm font-bold uppercase text-[#b7b7bd] hover:text-[#ebc256]"><ArrowLeft className="h-4 w-4" />Wróć do e-booków</a>
+  <Breadcrumbs items={ebookBreadcrumbs(ebook)} />
   <div className="border-y border-white/10"><EbookSummary ebook={ebook} detail /></div>
   <nav aria-label="Informacje o e-booku" className="flex flex-wrap gap-x-6 gap-y-4 border-b border-white/10 py-6 text-sm font-bold text-[#c9c9cf]">{[
     ['#o-ebooku', 'O e-booku'], ['#spis-tresci', 'Spis treści'], ['#fragment', 'Przeczytaj fragment'], ['#autorka', 'Autorka'],

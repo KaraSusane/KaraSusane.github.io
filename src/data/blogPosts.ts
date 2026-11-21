@@ -53,8 +53,8 @@ export const blogPosts: BlogPost[] = [
       'podział spadku',
     ],
     coverImage: '/dziedziczenie-ustawowe.jpg',
-    coverWidth: 1800,
-    coverHeight: 1200,
+    coverWidth: 1280,
+    coverHeight: 853,
     coverAlt: 'Dwie osoby obejmujące się podczas żałoby na cmentarzu',
   },
   {
@@ -74,8 +74,8 @@ export const blogPosts: BlogPost[] = [
       'rozwiązywanie sporów',
     ],
     coverImage: '/mediacja-a-sprawa-w-sadzie.jpg',
-    coverWidth: 1800,
-    coverHeight: 1200,
+    coverWidth: 1280,
+    coverHeight: 853,
     coverAlt: 'Dłoń dopasowująca biały element układanki na drewnianym stole',
   },
   {
