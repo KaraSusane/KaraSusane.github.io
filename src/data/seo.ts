@@ -56,9 +56,7 @@ const breadcrumbSchema = (items: BreadcrumbItem[]) => ({
 
 const bookSchema = (ebook: Ebook) => ({
   '@type': 'Book', '@id': `${pageUrl(ebookPath(ebook))}#book`, url: pageUrl(ebookPath(ebook)), name: ebook.title,
-  author: ebook.author === authorName
-    ? { '@type': 'Person', '@id': authorSchema['@id'], name: authorName, url: authorSchema.url }
-    : { '@type': 'Person', name: ebook.author },
+  author: { '@type': 'Person', '@id': authorSchema['@id'], name: ebook.author, url: authorSchema.url },
   inLanguage: 'pl-PL',
   bookFormat: 'https://schema.org/EBook', numberOfPages: ebook.pages,
   description: ebook.description, image: `${siteUrl}${ebook.cover}`,

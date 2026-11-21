@@ -382,7 +382,7 @@ test('Individual e-book structured data shares the book identity and a three-lev
     assert.equal(book.url, pageUrl(path));
     assert.equal(book.name, ebook.title);
     assert.equal(book.author.name, ebook.author);
-    if (ebook.author === authorName) assert.equal(book.author['@id'], profile.mainEntity['@id']);
+    assert.equal(book.author['@id'], profile.mainEntity['@id']);
     assert.equal(book.numberOfPages, ebook.pages);
     assert.equal(book.encoding.contentUrl, `${siteUrl}${ebook.file}`);
     const items = schema.find(node => node['@type'] === 'BreadcrumbList').itemListElement;
